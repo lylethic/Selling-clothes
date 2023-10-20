@@ -1,0 +1,150 @@
+﻿@{
+    Layout = "";
+}
+
+@* <h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<h3>Development Mode</h3>
+<p>
+    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+</p>
+<p>
+    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
+    It can result in displaying sensitive information from exceptions to end users.
+    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
+    and restarting the app.
+</p>
+ *@
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="logo-augusttrung.png">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    html {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    img {
+      background-size: cover;
+      width: 100%;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    :root {
+      --color-primary: #97e0ff;
+      --color-secondary: #be2c6c;
+      --color-tertiary: #fd1d1d;
+      --color-quaternary: #fc7535;
+      --color-quinary: #fcb045;
+}
+
+    body {
+      min-height: 100vh;
+      font-weight: 300;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .content {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .text-shadows {
+      text-shadow: 3px 3px 0 var(--color-secondary), 6px 6px 0 var(--color-tertiary),
+        9px 9px var(--color-quaternary), 12px 12px 0 var(--color-quinary);
+      font-family: bungee, sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: calc(2rem + 5vw);
+      text-align: center;
+      margin: 0;
+      color: var(--color-primary);
+      animation: shadows 1.2s ease-in infinite;
+      letter-spacing: 0.4rem;
+    }
+
+    @@keyframes shadows {
+      0% {
+        text-shadow: none;
+      }
+      10% {
+        transform: translate(-3px, -3px);
+        text-shadow: 3px 3px 0 var(--color-secondary);
+      }
+      20% {
+        transform: translate(-6px, -6px);
+        text-shadow: 3px 3px 0 var(--color-secondary),
+          6px 6px 0 var(--color-tertiary);
+      }
+      30% {
+        transform: translate(-9px, -9px);
+        text-shadow: 3px 3px 0 var(--color-secondary),
+          6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary);
+      }
+      40% {
+        transform: translate(-12px, -12px);
+        text-shadow: 3px 3px 0 var(--color-secondary),
+          6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary),
+          12px 12px 0 var(--color-quinary);
+      }
+      50% {
+        transform: translate(-12px, -12px);
+        text-shadow: 3px 3px 0 var(--color-secondary),
+          6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary),
+          12px 12px 0 var(--color-quinary);
+      }
+      60% {
+        text-shadow: 3px 3px 0 var(--color-secondary),
+          6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary),
+          12px 12px 0 var(--color-quinary);
+      }
+      70% {
+        text-shadow: 3px 3px 0 var(--color-secondary),
+          6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary);
+      }
+      80% {
+        text-shadow: 3px 3px 0 var(--color-secondary),
+          6px 6px 0 var(--color-tertiary);
+      }
+      90% {
+        text-shadow: 3px 3px 0 var(--color-secondary);
+      }
+      100% {
+        text-shadow: none;
+      }
+    }
+  </style>
+  <img src="~/assets/img/404.jpg" alt="">
+  <div class="content">
+        <h1 class="text-shadows">404</h1>
+        <h2 class="text-shadows">Page Not Found</h2>
+  </div>
+</body>
+</html>
