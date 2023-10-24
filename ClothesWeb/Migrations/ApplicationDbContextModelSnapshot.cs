@@ -22,6 +22,33 @@ namespace ClothesWeb.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ClothesWeb.Models.Cart", b =>
+                {
+                    b.Property<int>("IdCart")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCart"));
+
+                    b.Property<string>("AppnUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("LoaiId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdCart");
+
+                    b.HasIndex("AppnUserId");
+
+                    b.HasIndex("LoaiId");
+
+                    b.ToTable("Carts");
+                });
+
             modelBuilder.Entity("ClothesWeb.Models.Category", b =>
                 {
                     b.Property<int>("LoaiId")
@@ -292,6 +319,25 @@ namespace ClothesWeb.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("ClothesWeb.Models.Cart", b =>
+                {
+                    b.HasOne("ClothesWeb.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("AppnUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClothesWeb.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("LoaiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ClothesWeb.Models.Product", b =>

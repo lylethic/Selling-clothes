@@ -97,8 +97,12 @@
                 <div class="main-menu f-right d-none d-lg-block">
                   <nav>
                     <ul id="navigation">
-                      <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                      <li><a asp-controller="Home" asp-action="Catagori">Category</a></li>
+                      <li>
+                        <a asp-controller="Home" asp-action="Index">Home</a>
+                      </li>
+
+                      <vc:category></vc:category>
+
                       <li class="hot">
                         <a href="#">Latest</a>
                         <ul class="submenu">

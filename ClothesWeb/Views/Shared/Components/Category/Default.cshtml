@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Category>
+
+<li>
+  <a asp-controller="Home" asp-action="Catagori">Category</a>
+  <ul class="submenu">
+    @foreach (var item in Model)
+    {
+      <li><a asp-controller="Home" asp-action="Catagori">@item.Name</a></li>
+    }
+  </ul>
+</li>

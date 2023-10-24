@@ -1,5 +1,6 @@
 ﻿
-@model Product
+@model IEnumerable<Product>
+
 <main>
   <!-- slider Area Start -->
   <div class="slider-area ">
@@ -134,154 +135,37 @@
         <!-- card one -->
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
           <div class="row">
-            <div class="col-xl-4 col-lg-4 col-md-6">
-              <div class="single-product mb-60">
-                <div class="product-img">
-                  <img src="assets/img/categori/product1.png" alt="">
-                  <div class="new-product">
-                    <span>New</span>
+            @foreach (var item in @Model)
+            {
+              <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="single-product mb-60">
+                  <div class="product-img">
+                    <img src="@item.ImageUrl" alt="">
+                    <div class="new-product">
+                      <span>New</span>
+                    </div>
                   </div>
-                </div>
-                <div class="product-caption">
-                  <div class="product-ratting">
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star low-star"></i>
-                    <i class="far fa-star low-star"></i>
-                  </div>
-                  <h4><a asp-controller="Home" asp-action="Product_Details" asp-route-id="">Green Dress with details</a></h4>
-                  <div class="price">
-                    <ul>
-                      <li>$40.00</li>
-                      <li class="discount">$60.00</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-6">
-              <div class="single-product mb-60">
-                <div class="product-img">
-                  <img src="assets/img/categori/product2.png" alt="">
-                </div>
-                <div class="product-caption">
-                  <div class="product-ratting">
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star low-star"></i>
-                    <i class="far fa-star low-star"></i>
-                  </div>
-                  <h4><a asp-controller="Home" asp-action="Product_Details">Green Dress with details</a></h4>
-                  <div class="price">
-                    <ul>
-                      <li>$40.00</li>
-                      <li class="discount">$60.00</li>
-                    </ul>
+                  <div class="product-caption">
+                    <div class="product-ratting">
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star low-star"></i>
+                      <i class="far fa-star low-star"></i>
+                    </div>
+                    <h4><a asp-controller="Home" asp-action="Product_Details" asp-route-id="@item.Id_Product">@item.Name</a></h4>
+                    <div class="price">
+                      <ul>
+                        <li>$@item.Price</li>
+                        <li class="discount">$100</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-6">
-              <div class="single-product mb-60">
-                <div class="product-img">
-                  <img src="assets/img/categori/product3.png" alt="">
-                  <div class="new-product">
-                    <span>New</span>
-                  </div>
-                </div>
-                <div class="product-caption">
-                  <div class="product-ratting">
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star low-star"></i>
-                    <i class="far fa-star low-star"></i>
-                  </div>
-                  <h4><a asp-controller="Home" asp-action="Product_Details">Green Dress with details</a></h4>
-                  <div class="price">
-                    <ul>
-                      <li>$40.00</li>
-                      <li class="discount">$60.00</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-6">
-              <div class="single-product mb-60">
-                <div class="product-img">
-                  <img src="assets/img/categori/product4.png" alt="">
-                </div>
-                <div class="product-caption">
-                  <div class="product-ratting">
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star low-star"></i>
-                    <i class="far fa-star low-star"></i>
-                  </div>
-                  <h4><a asp-controller="Home" asp-action="Product_Details">Green Dress with details</a></h4>
-                  <div class="price">
-                    <ul>
-                      <li>$40.00</li>
-                      <li class="discount">$60.00</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-6">
-              <div class="single-product mb-60">
-                <div class="product-img">
-                  <img src="assets/img/categori/product5.png" alt="">
-                </div>
-                <div class="product-caption">
-                  <div class="product-ratting">
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star low-star"></i>
-                    <i class="far fa-star low-star"></i>
-                  </div>
-                  <h4><a asp-controller="Home" asp-action="Product_Details">Green Dress with details</a></h4>
-                  <div class="price">
-                    <ul>
-                      <li>$40.00</li>
-                      <li class="discount">$60.00</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-6">
-              <div class="single-product mb-60">
-                <div class="product-img">
-                  <img src="assets/img/categori/product6.png" alt="">
-                  <div class="new-product">
-                    <span>New</span>
-                  </div>
-                </div>
-                <div class="product-caption">
-                  <div class="product-ratting">
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star low-star"></i>
-                    <i class="far fa-star low-star"></i>
-                  </div>
-                  <h4><a asp-controller="Home" asp-action="Product_Details">Green Dress with details</a></h4>
-                  <div class="price">
-                    <ul>
-                      <li>$40.00</li>
-                      <li class="discount">$60.00</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
+            }
           </div>
+
         </div>
         <!-- Card two -->
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">

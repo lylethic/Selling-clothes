@@ -1,7 +1,6 @@
 using ClothesWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using ClothesWeb.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
 

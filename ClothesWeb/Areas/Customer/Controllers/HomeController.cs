@@ -20,7 +20,8 @@ namespace ClothesWeb.Areas.Customer.Controllers
 
     public IActionResult Index()
     {
-      return View();
+      IEnumerable<Product> products = _db.Product.Include("Category").ToList();
+      return View(products);
     }
 
     public IActionResult Privacy()
