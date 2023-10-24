@@ -37,11 +37,25 @@ namespace ClothesWeb.Areas.Customer.Controllers
       IEnumerable<Product> products = _db.Product.Include("Category").ToList();
       return View(products);
     }
-    public IActionResult Product_Details(int id)
+
+    //public IActionResult Product_Details(int productId)
+    //{
+    //  Product products = _db.Product.Include("Category").FirstOrDefault(sp => sp.Id_Product == productId);
+    //  return View(products);
+    //}
+
+    [HttpGet]
+    public IActionResult Product_Details(int productId)
     {
-      Product products = _db.Product.Include("Category").FirstOrDefault(sp => sp.Id_Product == id);
-      return View(products);
+      Cart cart = new Cart()
+      {
+        LoaiId = productId,
+        Product = _db.Product.Include("Category").FirstOrDefault(sp => sp.Id_Product == productId)!,
+        Quantity = 1,
+      };
+      return View(cart);
     }
+
     public IActionResult Blog()
     {
       return View();
