@@ -3719,7 +3719,7 @@ input:focus {
   border-radius: 30px;
   font-size: 12px;
   top: 0px;
-  right: -6px;
+  right: 4px;
   -webkit-transition: all 0.2s ease-out 0s;
   -moz-transition: all 0.2s ease-out 0s;
   -ms-transition: all 0.2s ease-out 0s;

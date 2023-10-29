@@ -7,17 +7,26 @@ namespace ClothesWeb.Models
   public class Cart
   {
     [Key]
-    public int IdCart { get; set; }
-    public int LoaiId { get; set; }
-    [ForeignKey("LoaiId")]
+    public int Id { get; set; }
+
+    public int ProductId { get; set; }
+
+    [ForeignKey("ProductId")]
     [ValidateNever]
     public Product Product { get; set; }
 
     public int Quantity { get; set; }
+    public string? Size { get; set; }
 
-    public string AppnUserId { get; set; }
-    [ForeignKey("AppnUserId")]
+    public bool isChecked { get; set; }
+
+    [NotMapped]
+    public double ProductPrice { get; set; }
+
+    public string ApplicationUserId { get; set; }
+
+    [ForeignKey("ApplicationUserId")]
     [ValidateNever]
-    public ApplicationUser ApplicationUser { get; set; } 
+    public ApplicationUser ApplicationUser { get; set; }
   }
 }

@@ -7,9 +7,10 @@ namespace ClothesWeb.Models
   public class Product
   {
     [Key]
-    public int Id_Product { get; set; }
+    public int IdProduct{ get; set; }
 
     [Required]
+    [Column(TypeName = "nvarchar(150)")]
     public string Name { get; set; }
 
     [Required(ErrorMessage = "Price is required")]
@@ -19,6 +20,10 @@ namespace ClothesWeb.Models
     public string? Description { get; set; }
 
     public string? ImageUrl { get; set; }
+
+    public string? Size { get; set; }
+
+    public string? Color { get; set; }
 
     [Required]
     public int LoaiId { get; set; }

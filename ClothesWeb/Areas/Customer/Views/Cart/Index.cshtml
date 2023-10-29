@@ -1,0 +1,152 @@
+﻿@model CartViewModel
+
+<main class="main">
+  <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="container">
+      <h1 class="page-title"><span>Shop</span></h1>
+    </div><!-- End .container -->
+  </div><!-- End .page-header -->
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+      </ol>
+    </div><!-- End .container -->
+  </nav><!-- End .breadcrumb-nav -->
+
+  <div class="page-content" style="color:#000f">
+    <div class="cart">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-9">
+            <table class="table table-cart table-mobile">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var item in Model.listCart)
+                {
+                  <tr>
+                    <td class="product-col">
+                      <div class="product">
+                        <figure class="product-media">
+                          <a href="#">
+                            <img src="@item.Product.ImageUrl" alt="Product image" style="width: 60px; height: 60px;">
+                          </a>
+                        </figure>
+
+                        <p class="product-title">
+                          <a href="#" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; color: black">
+                            @item.Product.Name
+                          </a>
+                        </p><!-- End .product-title -->
+                      </div><!-- End .product -->
+                    </td>
+                    <td class="price-col">@item.Product.Price</td>
+                    <td class="quantity-col">
+                      <div class="cart-product-quantity" style="max-width: 80px">
+                        <input type="number" class="form-control" value="@item.Quantity" min="1" max="10" step="1" data-decimals="0" required>
+                      </div><!-- End .cart-product-quantity -->
+                    </td>
+                    <td class="total-col">@item.ProductPrice VND</td>
+                    <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
+                  </tr>
+
+                }
+              </tbody>
+            </table><!-- End .table table-wishlist -->
+
+            <div class="cart-bottom">
+              <div class="cart-discount">
+                <form action="#">
+                  <div class="input-group align-items-center" style="height: 50px;">
+                    <input type="text" class="form-control h-100" required placeholder="coupon code" title="Nhập mã giảm giá">
+                    <div class="input-group-append h-100">
+                      <button class="btn btn-outline-primary" style="padding: 0 20px" type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                    </div><!-- .End .input-group-append -->
+                  </div><!-- End .input-group -->
+                </form>
+              </div><!-- End .cart-discount -->
+
+              <a href="#" class="btn btn-outline-dark mt-4"><span>UPDATE CART</span><i class="icon-refresh"></i></a>
+            </div><!-- End .cart-bottom -->
+          </div><!-- End .col-lg-9 -->
+          <aside class="col-lg-3">
+            <div class="summary summary-cart">
+              <h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
+
+              <table class="table table-summary">
+                <tbody>
+                  <tr class="summary-subtotal">
+                    <td>Subtotal:</td>
+                    <td>@String.Format("{0:0,0}", Model.TotalPrice) VND</td>
+                  </tr><!-- End .summary-subtotal -->
+                  <tr class="summary-shipping">
+                    <td>Shipping:</td>
+                    <td>&nbsp;</td>
+                  </tr>
+
+                  <tr class="summary-shipping-row">
+                    <td>
+                      <div class="custom-control custom-radio">
+                        <input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
+                        <label class="custom-control-label" for="free-shipping">Free Shipping</label>
+                      </div><!-- End .custom-control -->
+                    </td>
+                    <td>$0.00</td>
+                  </tr><!-- End .summary-shipping-row -->
+
+                  <tr class="summary-shipping-row">
+                    <td>
+                      <div class="custom-control custom-radio">
+                        <input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
+                        <label class="custom-control-label" for="standart-shipping">Standart:</label>
+                      </div><!-- End .custom-control -->
+                    </td>
+                    <td>10.00 VND</td>
+                  </tr><!-- End .summary-shipping-row -->
+
+                  <tr class="summary-shipping-row">
+                    <td>
+                      <div class="custom-control custom-radio">
+                        <input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
+                        <label class="custom-control-label" for="express-shipping">Express:</label>
+                      </div><!-- End .custom-control -->
+                    </td>
+                    <td>20.00 VND</td>
+                  </tr><!-- End .summary-shipping-row -->
+
+                  <tr class="summary-shipping-estimate">
+                    <td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
+                    <td>&nbsp;</td>
+                  </tr><!-- End .summary-shipping-estimate -->
+
+                  <tr class="summary-total">
+                    <td>Total:</td>
+                    <td>@String.Format("{0:0,0}", Model.TotalPrice) VND</td>
+                  </tr><!-- End .summary-total -->
+                </tbody>
+              </table><!-- End .table table-summary -->
+
+              <a href="#" class="btn btn-outline-primary btn-order btn-block mb-3" style="padding: 24px 20px;">
+                <span style="font-size: 18px;">PROCEED TO CHECKOUT</span>
+              </a>
+            </div><!-- End .summary -->
+
+            <a asp-controller="Home" asp-action="Catagori" class="btn btn-outline-dark btn-block mb-3" style="padding: 24px 20px;">
+              <span style="font-size: 18px;">CONTINUE SHOPPING</span>
+            </a>
+          </aside><!-- End .col-lg-3 -->
+        </div><!-- End .row -->
+      </div><!-- End .container -->
+    </div><!-- End .cart -->
+  </div><!-- End .page-content -->
+</main><!-- End .main -->

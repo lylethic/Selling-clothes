@@ -9,9 +9,9 @@ namespace ClothesWeb.Data
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Product> Product { get; set; }
     public DbSet<ApplicationUser> ApplicationUser { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Product> Products { get; set; }
     public DbSet<Cart> Carts { get; set; }
   }
 }

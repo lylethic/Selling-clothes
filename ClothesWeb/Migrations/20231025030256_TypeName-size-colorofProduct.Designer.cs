@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClothesWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231023143038_init")]
-    partial class init
+    [Migration("20231025030256_TypeName-size-colorofProduct")]
+    partial class TypeNamesizecolorofProduct
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,27 +27,33 @@ namespace ClothesWeb.Migrations
 
             modelBuilder.Entity("ClothesWeb.Models.Cart", b =>
                 {
-                    b.Property<int>("IdCart")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCart"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppnUserId")
+                    b.Property<string>("ApplicationUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("LoaiId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("IdCart");
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AppnUserId");
+                    b.Property<bool>("isChecked")
+                        .HasColumnType("bit");
 
-                    b.HasIndex("LoaiId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Carts");
                 });
@@ -66,7 +72,7 @@ namespace ClothesWeb.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("LoaiId");
 
@@ -75,11 +81,14 @@ namespace ClothesWeb.Migrations
 
             modelBuilder.Entity("ClothesWeb.Models.Product", b =>
                 {
-                    b.Property<int>("Id_Product")
+                    b.Property<int>("IdProduct")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_Product"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdProduct"));
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -92,16 +101,19 @@ namespace ClothesWeb.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.HasKey("Id_Product");
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdProduct");
 
                     b.HasIndex("LoaiId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -328,13 +340,13 @@ namespace ClothesWeb.Migrations
                 {
                     b.HasOne("ClothesWeb.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("AppnUserId")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ClothesWeb.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("LoaiId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -18,7 +18,7 @@
   <div class="container-md p-4 mt-5 m-auto  border shadow">
     <h3 class="text-center">Thêm mới sản phẩm</h3>
     <form method="post" asp-action="Upsert" class="">
-      <input type="hidden" asp-for="Id_Product" />
+      <input type="hidden" asp-for="IdProduct" />
 
       <div class="form-group">
         <label asp-for="Name">Tên sản phẩm</label>
@@ -53,7 +53,7 @@
       </div>
 
       <div class="form-group mt-2">
-        <button type="submit" class="btn btn-warning">@(Model.Id_Product == 0 ? "Tạo mới" : "Cập nhật")</button>
+        <button type="submit" class="btn btn-warning">@(Model.IdProduct == 0 ? "Tạo mới" : "Cập nhật")</button>
         <a asp-action="Dashboard" class="btn btn-secondary">Hủy</a>
       </div>
     </form>

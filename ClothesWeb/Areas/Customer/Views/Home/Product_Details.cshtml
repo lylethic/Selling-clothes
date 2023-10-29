@@ -1,17 +1,19 @@
-﻿@model Product
-<div class="container mt-5 mb-5">
-  <div class="row d-flex justify-content-center">
-    @if (Model != null)
-    {
+﻿@model Cart
+
+<form method="post">
+  <div class="container mt-5 mb-5">
+    <div class="row d-flex justify-content-center">
       <div class="col-md-12">
         <div class="card">
           <div class="row">
             <div class="col-md-6">
               <div class="images p-3">
-                <div class="text-center p-4"> <img id="main-image" src="@Model.ImageUrl" width="350" /></div>
+                <a class="text-center p-4">
+                  <img id="main-image" src="@Model.Product.ImageUrl" width="350" />
+                </a>
                 <div class="thumbnail text-center">
-                  <img onclick="change_image(this)" src="@Model.ImageUrl" width="100">
-                  <img onclick="change_image(this)" src="@Model.ImageUrl" width="100">
+                  <img onclick="change_image(this)" src="@Model.Product.ImageUrl" width="100">
+                  <img onclick="change_image(this)" src="@Model.Product.ImageUrl" width="100">
                 </div>
               </div>
             </div>
@@ -29,34 +31,45 @@
                     </a>
                   </div>
                   @*End Back to Shop page*@
-
                   <i class="fa fa-shopping-cart text-muted"></i>
                 </div>
                 <div class="mt-4 mb-3">
                   <span class="text-uppercase text-muted brand">Orianz</span>
-                  <h5 class="text-uppercase">Men's slim fit t-shirt</h5>
+                  <h5 class="text-uppercase">@Model.Product.Name</h5>
                   <div class="price d-flex flex-row align-items-center">
-                    <span class="act-price">$@Model.Price</span>
+                    <span class="act-price">
+                      @*$@Model.Product.Price*@
+                      @String.Format("{0:0,0}", Model.Product.Price) VND
+                    </span>
                     <div class="ml-2"> <small class="dis-price">$100</small> <span>80% OFF</span> </div>
                   </div>
                 </div>
-                <p class="about">@Model.Description</p>
-                <div class="sizes mt-5">
-                  <h6 class="text-uppercase">Size</h6> <label class="radio"> <input type="radio" name="size" value="S" checked> <span>S</span> </label> <label class="radio">
-                    <input type="radio" name="size" value="M">
-                    <span>M</span>
-                  </label> <label class="radio">
-                    <input type="radio" name="size" value="L">
-                    <span>L</span>
-                  </label> <label class="radio">
-                    <input type="radio" name="size" value="XL">
-                    <span>XL</span>
-                  </label> <label class="radio">
-                    <input type="radio" name="size" value="XXL"> <span>XXL</span>
-                  </label>
+                <p class="about">@Model.Product.Description</p>
+
+                @*Quantity*@
+                <div class="mt-4 mb-3 ">
+                  <label for="qty">Quantity: </label>
+                  <div class="product-details-quantity">
+                    <input asp-for="Quantity" value="@Model.Quantity" type="number"
+                           id="qty" class="form-control w-50" min="1" max="100" step="1" data-decimals="0" required />
+                  </div>
                 </div>
-                <div class="cart mt-4 align-items-center">
-                  <button class="btn btn-danger text-uppercase mr-2 px-4">Add to cart</button>
+
+                <div class="row">
+                  <div class="form-floating col-12 mb-3">
+                    <select class="form-control" id="shirt-size" value="@Model.Size" asp-for="Size">
+                      <option disabled selected>Select size</option>
+                      <option value="S">S</option>
+                      <option value="M">M</option>
+                      <option value="L">L</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="cart mt-4 align-items-center product-details-action">
+                  <button type="submit" class="btn btn-danger text-uppercase mr-2 px-4">
+                    <span>Add to cart</span>
+                  </button>
                   <i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>
                 </div>
               </div>
@@ -64,7 +77,6 @@
           </div>
         </div>
       </div>
-    }
-
+    </div>
   </div>
-</div>
+</form>

@@ -22,7 +22,7 @@ namespace ClothesWeb.Areas.Admin.Controllers
 
     public IActionResult Dashboard()
     {
-      IEnumerable<Product> products = _db.Product.Include("Category").ToList();
+      IEnumerable<Product> products = _db.Products.Include("Category").ToList();
       return View(products);
     }
 
@@ -45,7 +45,7 @@ namespace ClothesWeb.Areas.Admin.Controllers
       }
       else
       {
-        product = _db.Product.Include("Category").FirstOrDefault(product => product.Id_Product == id);
+        product = _db.Products.Include("Category").FirstOrDefault(product => product.IdProduct == id);
         return View(product);
       }
     }
@@ -55,13 +55,13 @@ namespace ClothesWeb.Areas.Admin.Controllers
     {
       if (ModelState.IsValid)
       {
-        if (product.Id_Product == 0)
+        if (product.IdProduct == 0)
         {
-          _db.Product.Add(product);
+          _db.Products.Add(product);
         }
         else
         {
-          _db.Product.Update(product);
+          _db.Products.Update(product);
         }
         _db.SaveChanges();
         return RedirectToAction("Dashboard");
@@ -71,12 +71,12 @@ namespace ClothesWeb.Areas.Admin.Controllers
 
     public IActionResult Delete(int id)
     {
-      var product = _db.Product.FirstOrDefault(product => product.Id_Product == id);
+      var product = _db.Products.FirstOrDefault(product => product.IdProduct == id);
       if (product == null)
       {
         return NotFound();
       }
-      _db.Product.Remove(product);
+      _db.Products.Remove(product);
       _db.SaveChanges();
 
       //return Json(new { success = true });

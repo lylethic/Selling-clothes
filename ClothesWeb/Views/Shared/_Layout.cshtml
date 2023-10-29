@@ -75,7 +75,7 @@
                     <li><a asp-controller="Home" asp-action="Login">My Account </a></li>
                     <li><a asp-controller="Home" asp-action="Confirmation">Confirmation</a></li>
                     <li><a asp-controller="Home" asp-action="Category">Shopping</a></li>
-                    <li><a asp-controller="Home" asp-action="Cart">Cart</a></li>
+                    <li><a asp-controller="Cart" asp-action="Index">Cart</a></li>
                     <li><a asp-controller="Home" asp-action="Checkout">Checkout</a></li>
                   </ul>
                 </div>
@@ -113,8 +113,6 @@
                       <li>
                         <a asp-controller="Home" asp-action="Blogvion=" Blog_Details">Blog Details</a>
                       </li>
-                    </ul>
-                    <ul>
                       <li><a asp-controller="Home" asp-action="About">About</a></li>
                       <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                     </ul>
@@ -138,7 +136,7 @@
                   </li>
                   <li>
                     <div class="shopping-card">
-                      <a asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i></a>
+                      <a asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i></a>
                     </div>
                   </li>
                   @*<li class="d-none d-lg-block"> <a asp-controller="Home" asp-action="Login" class="btn header-btn">Sign in</a></li>*@

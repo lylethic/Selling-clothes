@@ -1,8 +1,10 @@
 ﻿using ClothesWeb.Data;
 using ClothesWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace ClothesWeb.Areas.Customer.Controllers
 {
@@ -20,8 +22,9 @@ namespace ClothesWeb.Areas.Customer.Controllers
 
     public IActionResult Index()
     {
-      IEnumerable<Product> products = _db.Product.Include("Category").ToList();
+      IEnumerable<Product> products = _db.Products.Include("Category").ToList();
       return View(products);
+
     }
 
     public IActionResult Privacy()
@@ -34,13 +37,14 @@ namespace ClothesWeb.Areas.Customer.Controllers
     }
     public IActionResult Catagori()
     {
-      IEnumerable<Product> products = _db.Product.Include("Category").ToList();
+      IEnumerable<Product> products = _db.Products.Include("Category").ToList();
       return View(products);
+
     }
 
     //public IActionResult Product_Details(int productId)
     //{
-    //  Product products = _db.Product.Include("Category").FirstOrDefault(sp => sp.Id_Product == productId);
+    //  Product products = _db.Products.Include("Category").FirstOrDefault(sp => sp.IdProduct == productId);
     //  return View(products);
     //}
 
@@ -49,11 +53,23 @@ namespace ClothesWeb.Areas.Customer.Controllers
     {
       Cart cart = new Cart()
       {
-        LoaiId = productId,
-        Product = _db.Product.Include("Category").FirstOrDefault(sp => sp.Id_Product == productId)!,
+        ProductId = productId,
+        Product = _db.Products.Include("Category").FirstOrDefault(sp => sp.IdProduct == productId),
         Quantity = 1,
       };
       return View(cart);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public IActionResult Product_Details(Cart cart)
+    {
+      var identity = (ClaimsIdentity)User.Identity;
+      var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
+      cart.ApplicationUserId = claim.Value;
+      _db.Carts.Add(cart);
+      _db.SaveChanges();
+      return RedirectToAction("Catagori");
     }
 
     public IActionResult Blog()
