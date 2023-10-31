@@ -13032,3 +13032,7 @@ input:focus {
   display: flex;
   align-items: center;
 }*/
+
+ul.submenu .dropdown-cart-products {
+  display: none;
+}
