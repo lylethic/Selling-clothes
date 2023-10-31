@@ -1,10 +1,11 @@
 ﻿using ClothesWeb.Data;
 using ClothesWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClothesWeb.ViewComponents
 {
-  public class CartViewComponent
+  public class CartViewComponent : ViewComponent
   {
     private readonly ApplicationDbContext _db;
 
@@ -15,9 +16,8 @@ namespace ClothesWeb.ViewComponents
 
     public IViewComponentResult Invoke()
     {
-      //Get products category
-      IEnumerable<Category> cat = _db.Categories.ToList();
-      return View(cat);
+      IEnumerable<Cart> carts = _db.Carts.ToList();
+      return View(carts);
     }
   }
 }

@@ -51,15 +51,38 @@
                       </div><!-- End .product -->
                     </td>
                     <td class="price-col">@item.Product.Price</td>
-                    <td class="quantity-col">
-                      <div class="cart-product-quantity" style="max-width: 80px">
-                        <input type="number" class="form-control" value="@item.Quantity" min="1" max="10" step="1" data-decimals="0" required>
+                    <td class="quantity-col" style="max-width: 40px">
+                      <div class="cart-product-quantity">
+                        <div class="input-group input-spinner">
+                          <div class="input-group-prepend flex-center">
+                            <a asp-action="Giam" asp-route-cartId="@item.Id"
+                               class="quantity-control decrement btn-secondary text-center"
+                               style="min-width: 26px">-</a>
+                          </div>
+
+                          <input type="text"
+                                 class="form-control text-center"
+                                 style="min-width: 26px; min-height: 26px;"
+                                 value="@item.Quantity"
+                                 min="1" max="10" step="1"
+                                 data-decimals="0" required>
+                          <div class="input-group-prepend flex-center">
+                            <a asp-action="Tang" asp-route-cartId="@item.Id"
+                               class="quantity-control increment btn-secondary text-center"
+                               style="min-width: 26px;">+</a>
+                          </div>
+                        </div>
                       </div><!-- End .cart-product-quantity -->
                     </td>
                     <td class="total-col">@item.ProductPrice VND</td>
-                    <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
+                    <td class="remove-col">
+                      <a class="btn btn-close-white"
+                         asp-action="DeleteProduct"
+                         asp-route-cartId="@item.Id">
+                        X
+                      </a>
+                    </td>
                   </tr>
-
                 }
               </tbody>
             </table><!-- End .table table-wishlist -->

@@ -24,7 +24,6 @@ namespace ClothesWeb.Areas.Customer.Controllers
     {
       IEnumerable<Product> products = _db.Products.Include("Category").ToList();
       return View(products);
-
     }
 
     public IActionResult Privacy()
@@ -41,12 +40,6 @@ namespace ClothesWeb.Areas.Customer.Controllers
       return View(products);
 
     }
-
-    //public IActionResult Product_Details(int productId)
-    //{
-    //  Product products = _db.Products.Include("Category").FirstOrDefault(sp => sp.IdProduct == productId);
-    //  return View(products);
-    //}
 
     [HttpGet]
     public IActionResult Product_Details(int productId)
@@ -67,8 +60,23 @@ namespace ClothesWeb.Areas.Customer.Controllers
       var identity = (ClaimsIdentity)User.Identity;
       var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
       cart.ApplicationUserId = claim.Value;
-      _db.Carts.Add(cart);
+
+      // Check product
+      var cartdb = _db.Carts.FirstOrDefault(x => x.ProductId == cart.ProductId
+      && x.ApplicationUserId == cart.ApplicationUserId);
+
+      // ko tim thay => them moi
+      if (cartdb == null)
+      {
+        _db.Carts.Add(cart);
+      }
+      // tim thay => tang quantity
+      else
+      {
+        cartdb.Quantity += cart.Quantity;
+      }
       _db.SaveChanges();
+
       return RedirectToAction("Catagori");
     }
 
