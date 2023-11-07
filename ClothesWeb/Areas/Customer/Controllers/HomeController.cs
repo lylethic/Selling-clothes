@@ -62,8 +62,7 @@ namespace ClothesWeb.Areas.Customer.Controllers
       cart.ApplicationUserId = claim.Value;
 
       // Check product
-      var cartdb = _db.Carts.FirstOrDefault(x => x.ProductId == cart.ProductId
-      && x.ApplicationUserId == cart.ApplicationUserId);
+      var cartdb = _db.Carts.FirstOrDefault(x => x.ProductId == cart.ProductId && x.ApplicationUserId == cart.ApplicationUserId);
 
       // ko tim thay => them moi
       if (cartdb == null)

@@ -1,40 +1,57 @@
-﻿@model IEnumerable<Cart>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
-<a asp-controller="Cart" asp-action="Index" class="hover-icon-cart">
-  <i class="fas fa-shopping-cart">
-    <ul class="submenu">
+@model IEnumerable<Cart>
+<div class="header__cart-list header__cart-list--cart">
+  @if (Model.Any())
+  {
+    @if (SignInManager.IsSignedIn(User))
+    {
+      <div class="header__cart-list--title">
+        <p>Sản phẩm mới thêm</p>
+      </div>
       @foreach (var item in Model)
       {
-        <div class="dropdown-cart-products" style="background: red; display: none;">
-          <div class="product">
-            <div class="product-cart-details">
-              <h4 class="product-title">
-                <a href="product.html">@item.Product.Name</a>
-              </h4>
-
-              <span class="cart-product-info">
-                <span class="cart-product-qty">@item.Quantity</span>
-                x @item.Product.Price
-              </span>
+        @if (item.Product != null)
+        {
+          <a class="d-flex header__cart-list-item">
+            <div class="col-2">
+              <img src="@item.Product.ImageUrl"
+                   class="header__cart-cart-img" />
             </div>
-            <figure class="product-image-container">
-              <a href="product.html" class="product-image">
-                <img src="@item.Product.ImageUrl" style="max-width: 50px;" alt="product">
-              </a>
-            </figure>
-            <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
+            <div class="col">
+              <div class="header__cart-list-name">
+                @item.Product.Name
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="header__cart-list-price">@item.Product.Price VND</div>
+            </div>
+          </a>
+        }
+        else
+        {
+          <div class="header__cart-list header__cart-list--no-cart">
+            <img src="~/assets/img/no-product-found.png" alt="" class="header__cart-list--no-cart-img" />
           </div>
-          <div class="dropdown-cart-total">
-            <span>Total</span>
-
-            <span class="cart-total-price">@item.</span>
-          </div>
-          <div class="dropdown-cart-action">
-            <a href="cart.html" class="btn btn-primary">View Cart</a>
-            <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
-          </div>
-        </div>
+        }
       }
-    </ul>
-  </i>
-</a>
+      <div class="header__cart-btn">
+        <a asp-controller="Cart" asp-action="Index" class="header__cart-btn-link">Xem giỏ hàng</a>
+      </div>
+    }
+    else
+    {
+      <div class="header__cart-list--no-title">
+        <img src="~/assets/img/no-product-found.png" alt="" class="header__cart-list--no-cart-img" />
+      </div>
+    }
+  }
+  else
+  {
+    <div class="header__cart-list--no-title">
+      <img src="~/assets/img/no-product-found.png" alt="" class="header__cart-list--no-cart-img" />
+    </div>
+  }
+</div>

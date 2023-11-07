@@ -127,5 +127,13 @@ namespace ClothesWeb.Areas.Admin.Controllers
     {
       return View();
     }
+    public IActionResult AdminProducts()
+    {
+      return View();
+    }
+    public IActionResult AddProducts()
+    {
+      return View();
+    }
   }
 }
