@@ -395,7 +395,7 @@
         </div>
         <div class="row">
           <h1 class="m-4 text-center">Danh sách sản phẩm</h1>
-          @foreach (var item in @Model)
+          @foreach (var item in @Model.Skip(Math.Max(0, Model.Count() - 5)))
           {
             <div class="col-sm-6 col-xl-3" id="box">
               <div class="card overflow-hidden rounded-2 border shadow">

@@ -129,7 +129,8 @@ namespace ClothesWeb.Areas.Admin.Controllers
     }
     public IActionResult AdminProducts()
     {
-      return View();
+      IEnumerable<Product> products = _db.Products.Include("Category").ToList();
+      return View(products);
     }
     public IActionResult AddProducts()
     {

@@ -30,9 +30,12 @@ namespace ClothesWeb.Areas.Customer.Controllers
     {
       return View();
     }
+
+    [HttpGet]
     public IActionResult Product_List()
     {
-      return View();
+      IEnumerable<Product> products = _db.Products.Include("Category").ToList();
+      return View(products);
     }
     public IActionResult Catagori()
     {
