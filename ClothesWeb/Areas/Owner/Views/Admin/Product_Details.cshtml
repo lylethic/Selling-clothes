@@ -1,35 +1,28 @@
-﻿@model IEnumerable<Product>
+﻿@model Cart
 
 @{
   Layout = "";
-  Pager pager = new Pager();
-  int pageNo = 0;
-  if (ViewBag.Pager != null)
-  {
-    pager = ViewBag.Pager;
-    pageNo = pager.CurentPage;
-  }
 }
 
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Modernize Free</title>
+  <title>Dashboard</title>
   <link rel="shortcut icon" type="image/png" href="~/assets_admin/images/logos/favicon.png" />
   <link rel="stylesheet" href="~/assets_admin/css/styles.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="Content/sweetalert/sweet-alert.css" rel="stylesheet" />
 
+  <style>
+    .truncate-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+  </style>
 </head>
-
-<!--  Body Wrapper -->
 <body>
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -74,12 +67,25 @@
                 <span class="hide-menu">Trang sản phẩm</span>
               </a>
             </li>
+            <!-- SỬA TẠI ĐÂY -->
             <li class="sidebar-item">
               <a class="sidebar-link" asp-controller="Admin" asp-action="AddProducts" aria-expanded="false">
                 <span>
                   <i class="ti ti-alert-circle"></i>
                 </span>
                 <span class="hide-menu">Thêm sản phẩm</span>
+              </a>
+            </li>
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Tài khoản</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" asp-controller="Admin" asp-action="UserAccount" aria-expanded="false">
+                <span>
+                  <i class="ti ti-user-circle"></i>
+                </span>
+                <span class="hide-menu">Quản lý tài khoản User</span>
               </a>
             </li>
           </ul>
@@ -138,64 +144,70 @@
       </header>
       <!--  Header End -->
       <div class="container-fluid">
-        <div class="row">
-          <h1 class="m-4 text-center">Danh sách sản phẩm</h1>
-          @if (Model != null)
-          {
-            @foreach (var item in Model)
-            {
-              <div class="col-sm-6 col-xl-3" id="box">
-                <div class="card overflow-hidden rounded-2 border shadow">
-                  <div class="position-relative w-60">
-                    <a href="javascript:void(0)"><img src="@item.ImageUrl" class="card-img-top rounded-0" alt="..."></a>
-                    <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-                       data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i class="ti ti-basket fs-4"></i></a>
-                  </div>
-                  <div class="card-body pt-3 p-4">
-                    <h6 class="fw-semibold fs-4 truncate-text">@item.Name</h6>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <h6 class="fw-semibold fs-4 mb-0">@String.Format("{0:0,0}", @item.Price)<span class="ms-2 fw-normal text-muted fs-3"><del>$65</del></span></h6>
-                      <ul class="list-unstyled d-flex align-items-center mb-0">
-                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                        <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                      </ul>
+        <form method="post">
+          <div class="container mt-5 mb-5">
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="images p-3">
+                        <a class="text-center p-4">
+                          <img id="main-image" src="@Model.Product.ImageUrl" width="350" />
+                        </a>
+                        <div class="thumbnail text-center">
+                          <img onclick="change_image(this)" src="@Model.Product.ImageUrl" width="100">
+                          <img onclick="change_image(this)" src="@Model.Product.ImageUrl" width="100">
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="d-flex flex-column">
-                    <a class="btn btn-warning" asp-action="Upsert" asp-route-id="@item.IdProduct">Cập nhật</a>
-                    <a class="btn btn-secondary">Chi tiết</a>
-                    <a class="btn btn-danger" onclick="Xoa(@item.IdProduct, $(this))">Xóa</a>
+                    <div class="col-md-6">
+                      <div class="product p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+
+                          @*Back to Shop page*@
+                          <div class="d-flex align-items-center">
+                            <a class="text-black-50" asp-area="Owner" asp-controller="Admin" asp-action="Dashboard">
+                              <span class="ml-1">
+                                <i class="fa-solid fa-arrow-left fs-10"></i>
+                                Back
+                              </span>
+                            </a>
+                          </div>
+                          @*End Back to Shop page*@
+                          <i class="fa fa-shopping-cart text-muted"></i>
+                        </div>
+                        <div class="mt-4 mb-3">
+                          <span class="text-uppercase text-muted brand">Orianz</span>
+                          <h5 class="text-uppercase">@Model.Product.Name</h5>
+                          <div class="price d-flex flex-row align-items-center">
+                            <span class="act-price">
+                              @*$@Model.Product.Price*@
+                              @String.Format("{0:0,0}", Model.Product.Price) đ
+                            </span>
+                            <div class="ml-2"> <small class="dis-price">$100</small> <span>80% OFF</span> </div>
+                          </div>
+                        </div>
+                        <p class="about">@Model.Product.Description</p>
+
+                        <div class="cart mt-4 align-items-center product-details-action">
+                          <a class="btn btn-danger text-uppercase mr-2 px-4" asp-controller="Admin" asp-action="Upsert" asp-route-id="@Model.ProductId">
+                              <span>Cập nhật</span>
+                            @*<button type="submit" class="btn btn-danger text-uppercase mr-2 px-4">
+                            </button>*@
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            }
-          }
-          <div class="container">
-            @if (pager.TotalPages > 0)
-            {
-              <ul class="pagination justify-content-center">
-                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
-                {
-                  <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
-                    <a class="page-link" asp-controller="Admin"
-                       asp-action="AdminProducts"
-                       asp-route-page="@pge">@pge</a>
-                    </li>
-                  }
-              </ul>
-            }
+            </div>
           </div>
-          <span>
-            <a asp-controller="Admin" asp-action="Upsert" class="btn btn-primary">Tạo mới</a>
-          </span>
-        </div>
+        </form>
       </div>
     </div>
   </div>
-
 
   <script>
     function Xoa(id, row) {

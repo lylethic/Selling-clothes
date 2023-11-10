@@ -1,6 +1,10 @@
 using ClothesWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using ClothesWeb.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,32 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
   .AddDefaultUI().AddEntityFrameworkStores<ApplicationDbContext>();
+
+//builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+//  .AddEntityFrameworkStores<ApplicationDbContext>()
+//  .AddDefaultTokenProviders();
+
+builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+
+//builder.Services.AddAuthentication(options =>
+//{
+//  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//  options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//}).AddJwtBearer(options =>
+//{
+//  options.SaveToken = true;
+//  options.RequireHttpsMetadata = false;
+//  options.TokenValidationParameters = new TokenValidationParameters
+//  {
+//    ValidateIssuer = true,
+//    ValidateAudience = true,
+//    ValidAudience = "",
+//    ValidIssuer = "",
+//    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(""))
+//  };
+
+//});
 
 builder.Services.AddSession();
 
@@ -37,7 +67,9 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+    //pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Owner}/{controller=Admin}/{action=Dashboard}/{id?}");
+
 
 app.MapRazorPages();
 

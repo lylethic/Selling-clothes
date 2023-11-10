@@ -3,8 +3,10 @@ using ClothesWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
 using System.Diagnostics;
 using System.Security.Claims;
+using X.PagedList;
 
 namespace ClothesWeb.Areas.Customer.Controllers
 {
@@ -32,10 +34,19 @@ namespace ClothesWeb.Areas.Customer.Controllers
     }
 
     [HttpGet]
-    public IActionResult Product_List()
+    public IActionResult Product_List(int? page)
     {
+
       IEnumerable<Product> products = _db.Products.Include("Category").ToList();
       return View(products);
+
+      //int pageNumber = page ?? 1; // Số trang mặc định là 1 nếu không có trang nào được chỉ định.
+      //int pageSize = 10; // Số lượng sản phẩm trên mỗi trang.
+
+      //IQueryable<Product> products = _db.Products.Include("Category"); // Sử dụng IQueryable thay vì IEnumerable
+      //IPagedList<Product> productPagedList = products.ToPagedList(pageNumber, pageSize);
+
+      //return View(productPagedList);
     }
     public IActionResult Catagori()
     {
@@ -65,7 +76,8 @@ namespace ClothesWeb.Areas.Customer.Controllers
       cart.ApplicationUserId = claim.Value;
 
       // Check product
-      var cartdb = _db.Carts.FirstOrDefault(x => x.ProductId == cart.ProductId && x.ApplicationUserId == cart.ApplicationUserId);
+      var cartdb = _db.Carts
+        .FirstOrDefault(x => x.ProductId == cart.ProductId && x.Size == cart.Size && x.ApplicationUserId == cart.ApplicationUserId);
 
       // ko tim thay => them moi
       if (cartdb == null)

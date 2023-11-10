@@ -2,33 +2,37 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-@model IEnumerable<Cart>
+@model CartViewModel
 <div class="header__cart-list header__cart-list--cart">
-  @if (Model.Any())
+  @if (SignInManager.IsSignedIn(User))
   {
-    @if (SignInManager.IsSignedIn(User))
+    if (Model.listCart.Any())
     {
       <div class="header__cart-list--title">
         <p>Sản phẩm mới thêm</p>
       </div>
-      @foreach (var item in Model)
+      @foreach (var item in Model.listCart)
       {
         @if (item.Product != null)
         {
-          <a class="d-flex header__cart-list-item">
+          <div class="d-flex header__cart-list-item">
             <div class="col-2">
-              <img src="@item.Product.ImageUrl"
-                   class="header__cart-cart-img" />
+              <a asp-action="Product_Details" asp-route-productId="@item.Product.IdProduct">
+                <img src="@item.Product.ImageUrl" class="header__cart-cart-img" />
+              </a>
+
             </div>
             <div class="col">
               <div class="header__cart-list-name">
-                @item.Product.Name
+                <a asp-action="Product_Details" asp-route-productId="@item.Product.IdProduct">
+                  @item.Product.Name
+                </a>
               </div>
             </div>
             <div class="col-4">
-              <div class="header__cart-list-price">@item.Product.Price VND</div>
+              <div class="header__cart-list-price">@String.Format("{0:0,0}", @item.Product.Price)đ</div>
             </div>
-          </a>
+          </div>
         }
         else
         {
@@ -54,4 +58,6 @@
       <img src="~/assets/img/no-product-found.png" alt="" class="header__cart-list--no-cart-img" />
     </div>
   }
+
+
 </div>

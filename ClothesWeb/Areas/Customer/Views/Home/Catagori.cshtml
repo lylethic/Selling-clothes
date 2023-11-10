@@ -58,7 +58,7 @@
             {
               <div class="col-xl-4 col-lg-4 col-md-6">
                 <div class="single-product mb-60">
-                  <a class="product-img"  asp-action="Product_Details" asp-route-productId="@item.IdProduct">
+                  <a class="product-img" asp-action="Product_Details" asp-route-productId="@item.IdProduct">
                     <img src="@item.ImageUrl" alt="">
                     <div class="new-product">
                       <span>New</span>
@@ -75,8 +75,8 @@
                     <h4><a asp-controller="Home" asp-action="Product_Details" asp-route-productId="@item.IdProduct">@item.Name</a></h4>
                     <div class="price">
                       <ul>
-                        <li>$@item.Price</li>
-                        <li class="discount">$100</li>
+                        <li>@String.Format("{0:0,0}", @item.Price) đ</li>
+                        <li class="discount">$999,000</li>
                       </ul>
                     </div>
                   </div>

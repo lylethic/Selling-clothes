@@ -15,10 +15,10 @@
 
   <style>
     .truncate-text {
-      white-space: nowrap; /* Ngăn chữ tràn xuống dòng mới */
-      overflow: hidden; /* Ẩn phần nội dung bị tràn */
-      text-overflow: ellipsis; /* Hiển thị dấu ba chấm (...) nếu nội dung tràn */
-      max-width: 200px; /* Độ rộng tối đa của dòng */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
     }
   </style>
 </head>
@@ -66,12 +66,25 @@
                 <span class="hide-menu">Trang sản phẩm</span>
               </a>
             </li>
+            <!-- SỬA TẠI ĐÂY -->
             <li class="sidebar-item">
               <a class="sidebar-link" asp-controller="Admin" asp-action="AddProducts" aria-expanded="false">
                 <span>
                   <i class="ti ti-alert-circle"></i>
                 </span>
                 <span class="hide-menu">Thêm sản phẩm</span>
+              </a>
+            </li>
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Tài khoản</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" asp-controller="Admin" asp-action="UserAccount" aria-expanded="false">
+                <span>
+                  <i class="ti ti-user-circle"></i>
+                </span>
+                <span class="hide-menu">Quản lý tài khoản User</span>
               </a>
             </li>
           </ul>
@@ -394,20 +407,22 @@
           </div>
         </div>
         <div class="row">
-          <h1 class="m-4 text-center">Danh sách sản phẩm</h1>
-          @foreach (var item in @Model.Skip(Math.Max(0, Model.Count() - 5)))
+          <h1 class="m-4 text-center">Sản phẩm mới nhất</h1>
+          @foreach (var item in @Model.Skip(Math.Max(0, Model.Count() - 8)))
           {
             <div class="col-sm-6 col-xl-3" id="box">
               <div class="card overflow-hidden rounded-2 border shadow">
                 <div class="position-relative w-60">
-                  <a href="javascript:void(0)"><img src="@item.ImageUrl" class="card-img-top rounded-0" alt="..."></a>
-                  <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
+                  <a asp-controller="Admin" asp-action="Product_Details" asp-route-productId="@item.IdProduct"><img src="@item.ImageUrl" class="card-img-top rounded-0" alt="..."></a>
+                  <a class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
                      data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i class="ti ti-basket fs-4"></i></a>
                 </div>
                 <div class="card-body pt-3 p-4">
-                  <h6 class="fw-semibold fs-4 truncate-text">@item.Name</h6>
+                  <a asp-controller="Admin" asp-action="Product_Details" asp-route-productId="@item.IdProduct">
+                    <h6 class="fw-semibold fs-4 truncate-text">@item.Name</h6>
+                  </a>
                   <div class="d-flex align-items-center justify-content-between">
-                    <h6 class="fw-semibold fs-4 mb-0">$@item.Price <span class="ms-2 fw-normal text-muted fs-3"><del>$65</del></span></h6>
+                    <h6 class="fw-semibold fs-4 mb-0">@String.Format("{0:0,0}", @item.Price) đ <span class="ms-2 fw-normal text-muted fs-3"><del>$65</del></span></h6>
                     <ul class="list-unstyled d-flex align-items-center mb-0">
                       <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
                       <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
@@ -419,7 +434,7 @@
                 </div>
                 <div class="d-flex flex-column">
                   <a class="btn btn-warning" asp-action="Upsert" asp-route-id="@item.IdProduct">Cập nhật</a>
-                  <a class="btn btn-secondary">Chi tiết</a>
+                  <a class="btn btn-secondary"asp-controller="Admin" asp-action="Product_Details" asp-route-productId="@item.IdProduct">Chi tiết</a>
                   <a class="btn btn-danger" onclick="Xoa(@item.IdProduct, $(this))">Xóa</a>
                 </div>
               </div>

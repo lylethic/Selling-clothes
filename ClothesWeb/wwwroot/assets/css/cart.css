@@ -28,9 +28,9 @@
   align-items: center;
 }
 
-.header__cart-list-item:hover {
-  background-color: #fff;
-}
+  .header__cart-list-item:hover {
+    background-color: #fff;
+  }
 
 .header__cart-list > div.d-flex {
   align-items: center;
@@ -44,8 +44,9 @@
 
     .header__cart-list > div.d-flex:not(:last-child):after {
       position: absolute;
-      content: "-------------------------------------------";
+      content: "";
       top: calc(100%);
+      color: #000;
     }
 
 .header__cart-list-name {
@@ -58,8 +59,12 @@
   max-width: 180px;
 }
 
+  .header__cart-list-name a {
+    color: #825e5e;
+  }
+
 .header__cart-list-price {
-  color: #825e5e;
+  color: #fd5c32;
   font-size: 14px;
 }
 
@@ -129,3 +134,31 @@
   .header__cart-btn-link:hover {
     background-color: #f7442e;
   }
+
+
+/* Define a class for quantity input */
+.quantity-input {
+  width: 50px; /* Set the width of the input */
+  padding: 5px; /* Add padding to the input for spacing */
+  text-align: center; /* Center-align text inside the input */
+  border: 1px solid #ccc; /* Add a border to the input */
+  border-radius: 4px; /* Add rounded corners */
+  font-size: 16px; /* Set the font size */
+  outline: none; /* Remove the default focus border */
+}
+
+  /* Style the input on hover and focus */
+  .quantity-input:hover,
+  .quantity-input:focus {
+    border: 1px solid #007bff; /* Change the border color on hover and focus */
+  }
+/* Default styles for quantity input */
+.quantity-input {
+  width: 50px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+}

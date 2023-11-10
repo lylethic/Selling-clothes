@@ -1,8 +1,14 @@
-﻿using ClothesWeb.Data;
+﻿using Azure;
+using ClothesWeb.Data;
 using ClothesWeb.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
+using System.Security.Claims;
+using X.PagedList;
 
 namespace ClothesWeb.Areas.Admin.Controllers
 {
@@ -10,9 +16,14 @@ namespace ClothesWeb.Areas.Admin.Controllers
   public class AdminController : Controller
   {
     private readonly ApplicationDbContext _db;
-    public AdminController(ApplicationDbContext db)
+    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    public AdminController(ApplicationDbContext db, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
     {
       _db = db;
+      _roleManager = roleManager;
+      _userManager = userManager;
     }
 
     public IActionResult Index()
@@ -24,6 +35,13 @@ namespace ClothesWeb.Areas.Admin.Controllers
     {
       IEnumerable<Product> products = _db.Products.Include("Category").ToList();
       return View(products);
+    }
+
+    [HttpGet]
+    public IActionResult ListUser()
+    {
+      var users = _userManager.Users;
+      return View(users);
     }
 
     [HttpGet]
@@ -64,7 +82,7 @@ namespace ClothesWeb.Areas.Admin.Controllers
           _db.Products.Update(product);
         }
         _db.SaveChanges();
-        return RedirectToAction("Dashboard");
+        return RedirectToAction("AdminProducts");
       }
       return View();
     }
@@ -79,8 +97,7 @@ namespace ClothesWeb.Areas.Admin.Controllers
       _db.Products.Remove(product);
       _db.SaveChanges();
 
-      //return Json(new { success = true });
-      return RedirectToAction("Dashboard");
+      return RedirectToAction("AdminProducts");
     }
 
     public IActionResult Login()
@@ -127,14 +144,40 @@ namespace ClothesWeb.Areas.Admin.Controllers
     {
       return View();
     }
-    public IActionResult AdminProducts()
+    public IActionResult AdminProducts(int page = 1)
     {
+      //page = page < 1 ? 1 : page;
+      //int pagesize = 12;
+      //IEnumerable<Product> products = _db.Products.Include("Category").ToList().ToPagedList(page, pagesize);
+      //return View(products);
+
       IEnumerable<Product> products = _db.Products.Include("Category").ToList();
-      return View(products);
+      const int pageSize = 12;
+      page = page < 1 ? 1 : page;
+      int recsCount = products.Count();
+      var pager = new Pager(recsCount, page, pageSize);
+      int recSkip = (page - 1) * pageSize;
+      var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+      this.ViewBag.Pager = pager;
+      return View(data);
     }
+
     public IActionResult AddProducts()
     {
       return View();
     }
+
+    [HttpGet]
+    public IActionResult Product_Details(int productId)
+    {
+      Cart cart = new Cart()
+      {
+        ProductId = productId,
+        Product = _db.Products.Include("Category").FirstOrDefault(sp => sp.IdProduct == productId),
+        Quantity = 1,
+      };
+      return View(cart);
+    }
+
   }
 }

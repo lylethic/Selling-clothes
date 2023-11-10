@@ -1,10 +1,15 @@
 ﻿using ClothesWeb.Data;
+using ClothesWeb.Migrations;
 using ClothesWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace ClothesWeb.ViewComponents
 {
+  [Area("Customer")]
+  [Authorize]
   public class CartViewComponent : ViewComponent
   {
     private readonly ApplicationDbContext _db;
@@ -16,23 +21,21 @@ namespace ClothesWeb.ViewComponents
 
     public IViewComponentResult Invoke()
     {
-      IEnumerable<Cart> carts = _db.Carts.ToList();
-      return View(carts);
-    }
-
-    public IViewComponentResult ViewCartItem(int Id)
-    {
-      // Retrieve the cart item based on the provided ID
-      var cartItem = _db.Carts.FirstOrDefault(c => c.ProductId == Id);
-
-      if (cartItem == null)
+      // is Login
+      if (User.Identity.IsAuthenticated)
       {
-        // Handle the case where the cart item is not found
-        return View("CartItemNotFound");
-      }
+        var identity = (ClaimsIdentity)User.Identity;
+        var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
 
-      // Process and display the cart item
-      return View(cartItem);
+        CartViewModel cart = new CartViewModel()
+        {
+          listCart = _db.Carts
+          .Include("Product")
+          .Where(x => x.ApplicationUserId == claim.Value).ToList()
+        };
+        return View(cart);
+      }
+      else { return View(new CartViewModel()); }
     }
   }
 }

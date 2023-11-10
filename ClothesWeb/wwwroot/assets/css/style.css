@@ -195,7 +195,8 @@
 /* 1. Theme default css */
 /* line 8, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_common.scss */
 body {
-  font-family: "Poppins", sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
+  font-family: 'Montserrat', sans-serif;
   font-weight: normal;
   font-style: normal;
 }
@@ -207,7 +208,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Playfair Display", serif;
+  /*font-family: "Playfair Display", serif;*/
+  font-family: 'Montserrat', sans-serif;
   color: #0b1c39;
   margin-top: 0px;
   font-style: normal;
@@ -217,7 +219,8 @@ h6 {
 
 /* line 27, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_common.scss */
 p {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
   color: #506172;
   font-size: 16px;
   line-height: 30px;
@@ -3182,7 +3185,8 @@ input:focus {
   color: #556172;
   text-transform: capitalize;
   line-height: 30px;
-  font-family: "Poppins", sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
+  font-family: 'Montserrat', sans-serif;
 }
 
 @media (max-width: 576px) {
@@ -4400,8 +4404,8 @@ input:focus {
   /* line 30, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_latest_products.scss */
   .latest-product-area .single-product .product-img .new-product {
     position: absolute;
-    top: 25px;
-    left: 23px;
+    top: -100px;
+    left: 4px;
   }
 
     /* line 34, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_latest_products.scss */
@@ -4687,7 +4691,8 @@ input:focus {
   writing-mode: vertical-lr;
   transform: rotate(180deg);
   font-size: 117px;
-  font-family: "Poppins", sans-serif;
+  /* /*font-family: "Poppins", sans-serif;*/ font-family: 'Montserrat', sans-serif;
+  */ font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   -webkit-text-stroke: 1px #e6dfc6;
@@ -4792,7 +4797,7 @@ input:focus {
         /* line 159, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_best-product.scss */
         .best-collection-area .best-right-cap .best-single .single-cap.active h4 {
           color: #fff;
-          font-family: "Poppins", sans-serif;
+          /*font-family: "Poppins", sans-serif;*/
         }
 
       /* line 165, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_best-product.scss */
@@ -4800,7 +4805,8 @@ input:focus {
         color: #000000;
         font-size: 18px;
         line-height: 1.6;
-        font-family: "Poppins", sans-serif;
+        /*font-family: "Poppins", sans-serif;*/
+        font-family: 'Montserrat', sans-serif;
       }
 
     /* line 172, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_best-product.scss */
@@ -4991,7 +4997,8 @@ input:focus {
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 12px;
-  font-family: "Poppins", sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* line 303, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_best-product.scss */
@@ -5051,7 +5058,8 @@ input:focus {
   margin-bottom: 29px;
   font-weight: 500;
   text-transform: capitalize;
-  font-family: "Poppins", sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* line 26, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_footer.scss */
@@ -6906,7 +6914,8 @@ input:focus {
   cursor: pointer;
   display: block;
   float: left;
-  font-family: "Poppins", sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
+  font-family: 'Montserrat', sans-serif;
   font-weight: normal;
   width: 100% !important;
   /* height: 42px; */
@@ -8443,7 +8452,8 @@ del {
   text-align: center;
   background-color: #fff;
   font-size: 15px;
-  font-family: "Poppins", sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
+  font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   color: #1e1e1e;
   -o-transition: all .4s ease-in-out;
@@ -9103,7 +9113,8 @@ input:focus {
   margin-top: 22px;
   line-height: 1.5;
   margin-bottom: 25px;
-  font-family: "Poppins", sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
+  font-family: 'Montserrat', sans-serif;
 }
 
 @media (max-width: 991px) {
@@ -9771,7 +9782,8 @@ input:focus {
 
     /* line 65, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_product.scss */
     .single-product .product-btm span {
-      font-family: "Poppins", sans-serif;
+      /*font-family: "Poppins", sans-serif;*/
+      font-family: 'Montserrat', sans-serif;
       font-size: 20px;
       font-weight: 500;
       line-height: 16px;
@@ -12180,7 +12192,8 @@ input:focus {
   font-size: 16px;
   color: #000;
   text-transform: capitalize;
-  font-family: "Poppins", sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
+  font-family: 'Montserrat', sans-serif;
   margin-left: 35px;
   display: inline-block;
   cursor: pointer;
