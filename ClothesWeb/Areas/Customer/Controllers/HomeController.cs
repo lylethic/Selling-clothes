@@ -39,7 +39,9 @@ namespace ClothesWeb.Areas.Customer.Controllers
       IEnumerable<Product> products = _db.Products.Include("Category").ToList();
       const int pageSize = 12;
       page = page < 1 ? 1 : page;
+      // Tổng số sản phẩm.
       int recsCount = products.Count();
+      // Một đối tượng Pager được tạo để quản lý thông tin về phân trang, bao gồm số trang, trang hiện tại, và số lượng sản phẩm trên mỗi trang.
       var pager = new Pager(recsCount, page, pageSize);
       int recSkip = (page - 1) * pageSize;
       var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
