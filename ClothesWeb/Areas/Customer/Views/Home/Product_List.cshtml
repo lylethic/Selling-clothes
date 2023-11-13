@@ -1,4 +1,13 @@
 ﻿@model IEnumerable<Product>
+@{
+  Pager pager = new Pager();
+  int pageNo = 0;
+  if (ViewBag.Pager != null)
+  {
+    pager = ViewBag.Pager;
+    pageNo = pager.CurentPage;
+  }
+}
 
 <div class="slider-area ">
   <!-- Mobile Menu -->
@@ -66,13 +75,25 @@
                       @item.Name
                     </a>
                   </h3>
-                  <p>From $@item.Price đ</p>
+                  <p>@String.Format("{0:0,0}", @item.Price)đ</p>
                 </div>
               </div>
             }
-          </div>
-          <div class="load_more_btn text-center">
-            <a href="#" class="btn_3">Load More</a>
+            <div class="container">
+              @if (pager.TotalPages > 0)
+              {
+                <ul class="pagination justify-content-center">
+                  @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                  {
+                    <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
+                      <a class="page-link" asp-controller="Home"
+                         asp-action="Product_List"
+                         asp-route-page="@pge">@pge</a>
+                      </li>
+                    }
+                </ul>
+              }
+            </div>
           </div>
         </div>
       </div>

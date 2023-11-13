@@ -74,12 +74,18 @@
                 <span class="hide-menu">Trang sản phẩm</span>
               </a>
             </li>
+            <!-- SỬA TẠI ĐÂY -->
+            
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Tài khoản</span>
+            </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" asp-controller="Admin" asp-action="AddProducts" aria-expanded="false">
+              <a class="sidebar-link" asp-controller="Admin" asp-action="ListUser" aria-expanded="false">
                 <span>
-                  <i class="ti ti-alert-circle"></i>
+                  <i class="ti ti-user-circle"></i>
                 </span>
-                <span class="hide-menu">Thêm sản phẩm</span>
+                <span class="hide-menu">Quản lý tài khoản User</span>
               </a>
             </li>
           </ul>
@@ -153,8 +159,9 @@
                   </div>
                   <div class="card-body pt-3 p-4">
                     <h6 class="fw-semibold fs-4 truncate-text">@item.Name</h6>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <h6 class="fw-semibold fs-4 mb-0">@String.Format("{0:0,0}", @item.Price)<span class="ms-2 fw-normal text-muted fs-3"><del>$65</del></span></h6>
+                    <div class="d-flex flex-column align-items-center justify-content-between">
+                      <h6 class="fw-semibold fs-4 mb-0">@String.Format("{0:0,0}", @item.Price)đ<span class="ms-2 fw-normal text-muted fs-3"><del>999,000đ</del></span></h6>
+                      
                       <ul class="list-unstyled d-flex align-items-center mb-0">
                         <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
                         <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>

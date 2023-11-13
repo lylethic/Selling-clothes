@@ -13,12 +13,15 @@ var connectionString = builder.Configuration.GetConnectionString("MyLocal");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+  //.AddUserManager<UserManager<IdentityUser>>()
+  //.AddRoleManager<RoleManager<IdentityRole>>()
+  .AddDefaultTokenProviders()
   .AddDefaultUI().AddEntityFrameworkStores<ApplicationDbContext>();
 
-//builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-//  .AddEntityFrameworkStores<ApplicationDbContext>()
-//  .AddDefaultTokenProviders();
+//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+//  .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
@@ -67,8 +70,8 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    //pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
-    pattern: "{area=Owner}/{controller=Admin}/{action=Dashboard}/{id?}");
+pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+//pattern: "{area=Owner}/{controller=Admin}/{action=Dashboard}/{id?}");
 
 
 app.MapRazorPages();

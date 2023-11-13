@@ -1,7 +1,14 @@
-﻿@*@model IEnumerable<ApplicationUser>*@
+﻿@model IEnumerable<ApplicationUser>
 
 @{
   Layout = "";
+  Pager pager = new Pager();
+  int pageNo = 0;
+  if (ViewBag.Pager != null)
+  {
+    pager = ViewBag.Pager;
+    pageNo = pager.CurentPage;
+  }
 }
 
 <!doctype html>
@@ -13,6 +20,13 @@
   <title>Modernize Free</title>
   <link rel="shortcut icon" type="image/png" href="~/assets_admin/images/logos/favicon.png" />
   <link rel="stylesheet" href="~/assets_admin/css/styles.min.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      background-color: #FFE53B;
+      background-image: linear-gradient(147deg, #FFE53B 0%, #FF2525 100%);
+    }
+  </style>
 </head>
 
 <body>
@@ -57,14 +71,6 @@
                   <i class="ti ti-article"></i>
                 </span>
                 <span class="hide-menu">Trang sản phẩm</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" asp-controller="Admin" asp-action="AddProducts" aria-expanded="false">
-                <span>
-                  <i class="ti ti-alert-circle"></i>
-                </span>
-                <span class="hide-menu">Thêm sản phẩm</span>
               </a>
             </li>
             <li class="nav-small-cap">
@@ -134,55 +140,86 @@
         </nav>
       </header>
       @*Header End*@
-      <div class="container">
-        <h2>Striped Rows</h2>
-        <p>The .table-striped class adds zebra-stripes to a table:</p>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th></th>
-              <th>User Id</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Address</th>
-            </tr>
-          </thead>
-          @*@foreach (var item in Model)
-            {
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>@item.Id</td>
-                  <td>@item.Name</td>
-                  <td>@item.Email</td>
-                  <td>@item.Address</td>
-                </tr>
-              </tbody>
-            }*@
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="container-fluid row py-5">
+        <div class="col-lg-10 mt-5">
+          <div class="card rounded shadow border-0">
+            <div class="card-body p-5 bg-white rounded">
+              <div class="table-responsive">
+                <h2>Danh sách người dùng</h2>
+                @if (Model.Any())
+                {
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>User Id</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                      </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                      <tbody>
+                        <tr>
+                          <td></td>
+                          <td>@item.Id</td>
+                          <td>@item.UserName</td>
+                          <td>@item.Email</td>
+                          <td>@item.Address</td>
+                        </tr>
+                      </tbody>
+                    }
+                  </table>
+                }
+                else
+                {
+                  <div class="card">
+                    <div class="card-header">
+                      Không có người dùng
+                    </div>
+                    <div class="card-body">
+                      <h5 class="cart-title">
+                        Đăng ký mới
+                      </h5>
+                      <a class="btn btn-primary" style="width: auto;" asp-controller="Admin" asp-action="ListUsers">
+                        Thêm mới người dùng
+                      </a>
+                    </div>
+                  </div>
+                }
+                <div class="container">
+                  @if (pager.TotalPages > 0)
+                  {
+                    <ul class="pagination justify-content-center">
+                      @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                      {
+                        <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
+                          <a class="page-link" asp-controller="Admin"
+                             asp-action="ListUser"
+                             asp-route-page="@pge">@pge</a>
+                          </li>
+                        }
+                    </ul>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
 
 
-  <script src="~/assets_admin/libs/jquery/dist/jquery.min.js"></script>
-  <script src="~/assets_admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="~/assets_admin/js/sidebarmenu.js"></script>
-  <script src="~/assets_admin/js/app.min.js"></script>
-  <script src="~/assets_admin/libs/apexcharts/dist/apexcharts.min.js"></script>
-  <script src="~/assets_admin/libs/simplebar/dist/simplebar.js"></script>
-  <script src="~/assets_admin/js/dashboard.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+      <script src="~/assets_admin/libs/jquery/dist/jquery.min.js"></script>
+      <script src="~/assets_admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="~/assets_admin/js/sidebarmenu.js"></script>
+      <script src="~/assets_admin/js/app.min.js"></script>
+      <script src="~/assets_admin/libs/apexcharts/dist/apexcharts.min.js"></script>
+      <script src="~/assets_admin/libs/simplebar/dist/simplebar.js"></script>
+      <script src="~/assets_admin/js/dashboard.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

@@ -34,25 +34,31 @@ namespace ClothesWeb.Areas.Customer.Controllers
     }
 
     [HttpGet]
-    public IActionResult Product_List(int? page)
+    public IActionResult Product_List(int page = 1)
     {
-
       IEnumerable<Product> products = _db.Products.Include("Category").ToList();
-      return View(products);
-
-      //int pageNumber = page ?? 1; // Số trang mặc định là 1 nếu không có trang nào được chỉ định.
-      //int pageSize = 10; // Số lượng sản phẩm trên mỗi trang.
-
-      //IQueryable<Product> products = _db.Products.Include("Category"); // Sử dụng IQueryable thay vì IEnumerable
-      //IPagedList<Product> productPagedList = products.ToPagedList(pageNumber, pageSize);
-
-      //return View(productPagedList);
+      const int pageSize = 12;
+      page = page < 1 ? 1 : page;
+      int recsCount = products.Count();
+      var pager = new Pager(recsCount, page, pageSize);
+      int recSkip = (page - 1) * pageSize;
+      var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+      this.ViewBag.Pager = pager;
+      return View(data);
     }
-    public IActionResult Catagori()
+
+    [HttpGet]
+    public IActionResult Catagori(int page = 1)
     {
       IEnumerable<Product> products = _db.Products.Include("Category").ToList();
-      return View(products);
-
+      const int pageSize = 12;
+      page = page < 1 ? 1 : page;
+      int recsCount = products.Count();
+      var pager = new Pager(recsCount, page, pageSize);
+      int recSkip = (page - 1) * pageSize;
+      var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+      this.ViewBag.Pager = pager;
+      return View(data);
     }
 
     [HttpGet]

@@ -1,5 +1,15 @@
 ﻿@model IEnumerable<Product>
 
+@{
+  Pager pager = new Pager();
+  int pageNo = 0;
+  if (ViewBag.Pager != null)
+  {
+    pager = ViewBag.Pager;
+    pageNo = pager.CurentPage;
+  }
+}
+
 <main>
   @*slider Area Start*@
   <div class="slider-area latest-padding ">
@@ -83,6 +93,21 @@
                 </div>
               </div>
             }
+            <div class="container">
+              @if (pager.TotalPages > 0)
+              {
+                <ul class="pagination justify-content-center">
+                  @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                  {
+                    <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
+                      <a class="page-link" asp-controller="Home"
+                         asp-action="Catagori"
+                         asp-route-page="@pge">@pge</a>
+                      </li>
+                    }
+                </ul>
+              }
+            </div>
           </div>
         </div>
       </div>
@@ -90,7 +115,7 @@
     </div>
   </section>
   @*Latest Products End
-  Latest Offers Start*@
+    Latest Offers Start*@
   <div class="latest-wrapper lf-padding">
     <div class="latest-area latest-height d-flex align-items-center" data-background="~/assets/img/collection/latest-offer.png">
       <div class="container">
@@ -118,7 +143,7 @@
     </div>
   </div>
   @*Latest Offers End
-  Shop Method Start*@
+    Shop Method Start*@
   <div class="shop-method-area section-padding30">
     <div class="container">
       <div class="row d-flex justify-content-between">
@@ -147,7 +172,7 @@
     </div>
   </div>
   @*Shop Method End
-  Gallery Start*@
+    Gallery Start*@
   <div class="gallery-wrapper lf-padding">
     <div class="gallery-area">
       <div class="container-fluid">

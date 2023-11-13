@@ -9,9 +9,11 @@
   <nav aria-label="breadcrumb" class="breadcrumb-nav">
     <div class="container">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Shop</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Catagori">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+          <a asp-controller="Cart" asp-action="Index">Shopping Cart</a>
+        </li>
       </ol>
     </div><!-- End .container -->
   </nav><!-- End .breadcrumb-nav -->
@@ -25,6 +27,7 @@
               <thead>
                 <tr class="text-center">
                   <th>Product</th>
+                  <th>Size</th>
                   <th>Price</th>
                   <th class="col-2">Quantity</th>
                   <th>Total</th>
@@ -38,7 +41,7 @@
                     <td class="product-col text-left">
                       <div class="product">
                         <figure class="product-media">
-                          <a asp-action="Product_Details" asp-route-productId="@item.Product.IdProduct">
+                          <a asp-controller="Home" asp-action="Product_Details" asp-route-productId="@item.Product.IdProduct">
                             <img src="@item.Product.ImageUrl" alt="Product image" style="width: 60px; height: 60px;">
                           </a>
                         </figure>
@@ -50,6 +53,8 @@
                         </a>
                       </div><!-- End .product -->
                     </td>
+                    <td class="total-col">@item.Size</td>
+
                     <td class="price-col">@String.Format("{0:0,0}", @item.Product.Price) đ </td>
                     <td class="quantity-col" style="max-width: 40px">
                       <div class="cart-product-quantity">

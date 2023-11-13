@@ -4,6 +4,7 @@ using ClothesWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Printing;
@@ -17,9 +18,9 @@ namespace ClothesWeb.Areas.Admin.Controllers
   {
     private readonly ApplicationDbContext _db;
     private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public AdminController(ApplicationDbContext db, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+    public AdminController(ApplicationDbContext db, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
     {
       _db = db;
       _roleManager = roleManager;
@@ -38,10 +39,17 @@ namespace ClothesWeb.Areas.Admin.Controllers
     }
 
     [HttpGet]
-    public IActionResult ListUser()
+    public IActionResult ListUser(int page = 1)
     {
-      var users = _userManager.Users;
-      return View(users);
+      IEnumerable<ApplicationUser> users = _db.ApplicationUser;
+      const int pageSize = 6;
+      page = page < 1 ? 1 : page;
+      int recsCount = users.Count();
+      var pager = new Pager(recsCount, page, pageSize);
+      int recSkip = (page - 1) * pageSize;
+      var data = users.Skip(recSkip).Take(pager.PageSize).ToList();
+      this.ViewBag.Pager = pager;
+      return View(data);
     }
 
     [HttpGet]
@@ -146,11 +154,6 @@ namespace ClothesWeb.Areas.Admin.Controllers
     }
     public IActionResult AdminProducts(int page = 1)
     {
-      //page = page < 1 ? 1 : page;
-      //int pagesize = 12;
-      //IEnumerable<Product> products = _db.Products.Include("Category").ToList().ToPagedList(page, pagesize);
-      //return View(products);
-
       IEnumerable<Product> products = _db.Products.Include("Category").ToList();
       const int pageSize = 12;
       page = page < 1 ? 1 : page;
