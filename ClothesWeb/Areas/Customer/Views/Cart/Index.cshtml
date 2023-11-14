@@ -1,5 +1,4 @@
 ﻿@model CartViewModel
-
 <main class="main">
   <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
     <div class="container">
@@ -91,6 +90,7 @@
               </tbody>
             </table><!-- End .table table-wishlist -->
 
+
             <div class="cart-bottom">
               <div class="cart-discount">
                 <form action="#">
@@ -114,7 +114,7 @@
                 <tbody>
                   <tr class="summary-subtotal">
                     <td>Subtotal:</td>
-                    <td>@String.Format("{0:0,0}", Model.TotalPrice) đ</td>
+                    <td>@String.Format("{0:0,0}", Model.HoaDon.TotalPrice) đ</td>
                   </tr><!-- End .summary-subtotal -->
                   <tr class="summary-shipping">
                     <td>Shipping:</td>
@@ -158,12 +158,12 @@
 
                   <tr class="summary-total">
                     <td>Total:</td>
-                    <td>@String.Format("{0:0,0}", Model.TotalPrice) đ</td>
+                    <td>@String.Format("{0:0,0}", Model.HoaDon.TotalPrice) đ</td>
                   </tr><!-- End .summary-total -->
                 </tbody>
               </table><!-- End .table table-summary -->
 
-              <a href="#" class="btn btn-outline-primary btn-order btn-block mb-3" style="padding: 24px 20px;">
+              <a asp-controller="Cart" asp-action="ThanhToan" class="btn btn-outline-primary btn-order btn-block mb-3" style="padding: 24px 20px;">
                 <span style="font-size: 16px;">PROCEED TO CHECKOUT</span>
               </a>
             </div><!-- End .summary -->

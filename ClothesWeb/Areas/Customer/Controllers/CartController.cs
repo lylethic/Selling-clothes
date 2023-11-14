@@ -30,7 +30,8 @@ namespace ClothesWeb.Areas.Customer.Controllers
       {
         listCart = _db.Carts
         .Include("Product")
-        .Where(x => x.ApplicationUserId == claim.Value).ToList()
+        .Where(x => x.ApplicationUserId == claim.Value).ToList(),
+        HoaDon = new HoaDon()
       };
 
       foreach (var item in cart.listCart)
@@ -38,9 +39,94 @@ namespace ClothesWeb.Areas.Customer.Controllers
         //Pay by product quantity.
         item.ProductPrice = item.Quantity * item.Product.Price;
         //Check out the shopping cart.
-        cart.TotalPrice += item.ProductPrice;
+        cart.HoaDon.TotalPrice += item.ProductPrice;
       }
+
+      if (cart.listCart.Count() == 0)
+      {
+        return RedirectToAction("NoProductPage");
+      }
+
       return View(cart);
+    }
+
+    [HttpGet]
+    public IActionResult ThanhToan()
+    {
+      //Get Infor of Account
+      var identity = (ClaimsIdentity)User.Identity;
+      var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
+
+      //Get List of Product in Cart of User
+      CartViewModel cart = new CartViewModel()
+      {
+        listCart = _db.Carts
+        .Include("Product")
+        .Where(x => x.ApplicationUserId == claim.Value).ToList(),
+        HoaDon = new HoaDon()
+      };
+
+      foreach (var item in cart.listCart)
+      {
+        //Pay by product quantity.
+        item.ProductPrice = item.Quantity * item.Product.Price;
+        //Check out the shopping cart.
+        cart.HoaDon.TotalPrice += item.ProductPrice;
+      }
+
+      cart.HoaDon.User = _db.ApplicationUser.FirstOrDefault(user => user.Id == claim.Value);
+      cart.HoaDon.Name = cart.HoaDon.User.Name;
+      cart.HoaDon.Address = cart.HoaDon.User.Address;
+      cart.HoaDon.PhoneNumber = cart.HoaDon.User.PhoneNumber;
+      return View(cart);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult ThanhToan(CartViewModel cart)
+    {
+      //Get Infor of Account
+      var identity = (ClaimsIdentity)User.Identity;
+      var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
+
+      // Update cart and hoadon
+      cart.listCart = _db.Carts.Include("Product").Where(cart => cart.ApplicationUserId == claim.Value).ToList();
+      if (cart.listCart.Count() == 0)
+      {
+        TempData["EmptyCartMessage"] = "Chưa có sản phẩm trong giỏ hàng.";
+        return RedirectToAction("Index", "Home");
+      }
+      cart.HoaDon.ApplicationUserId = claim.Value;
+      cart.HoaDon.OrderDate = DateTime.Now;
+      cart.HoaDon.OrderStatus = "Dang xac nhan";
+
+      foreach (var item in cart.listCart)
+      {
+        //Pay by product quantity.
+        item.ProductPrice = item.Quantity * item.Product.Price;
+        //Check out the shopping cart.
+        cart.HoaDon.TotalPrice += item.ProductPrice;
+      }
+      _db.HoaDons.Add(cart.HoaDon);
+      _db.SaveChanges();
+
+      //
+      foreach (var item in cart.listCart)
+      {
+        ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon()
+        {
+          ProductId = item.ProductId,
+          HoaDonId = cart.HoaDon.Id,
+          ProductPrice = item.ProductPrice,
+          Quantity = item.Quantity,
+        };
+        _db.ChiTietHoaDons.Add(chiTietHoaDon);
+        _db.SaveChanges();
+      }
+      //
+      _db.Carts.RemoveRange(cart.listCart);
+      _db.SaveChanges();
+      return RedirectToAction("Index", "Home");
     }
 
     public IActionResult DeleteProduct(int cartId)
@@ -72,6 +158,11 @@ namespace ClothesWeb.Areas.Customer.Controllers
       _db.SaveChanges();
 
       return RedirectToAction("Index");
+    }
+
+    public IActionResult NoProductPage()
+    {
+      return View();
     }
   }
 }

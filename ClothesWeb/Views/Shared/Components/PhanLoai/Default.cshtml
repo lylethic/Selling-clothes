@@ -1,0 +1,8 @@
+﻿@model IEnumerable<Category>
+
+@foreach (var item in Model)
+{
+  <div class="select_option_dropdown">
+    <p><a class="cursor-pointer" asp-controller="Home" asp-action="Product_List" asp-route-loaiId="@item.LoaiId">@item.Name</a></p>
+  </div>
+}

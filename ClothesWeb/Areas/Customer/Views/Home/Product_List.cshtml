@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Product>
+﻿@using X.PagedList.Mvc.Core
+@model IEnumerable<Product>
+
 @{
   Pager pager = new Pager();
   int pageNo = 0;
@@ -11,7 +13,7 @@
 
 <div class="slider-area ">
   <!-- Mobile Menu -->
-  <div class="single-slider slider-height2 d-flex align-items-center" data-background="~./assets/img/hero/category.jpg">
+  <div class="single-slider slider-height2 d-flex align-items-center" data-background="~/assets/img/hero/category.jpg">
     <div class="container">
       <div class="row">
         <div class="col-xl-12">
@@ -28,7 +30,7 @@
 <section class="product_list section_padding">
   <div class="container">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="product_sidebar">
           <div class="single_sedebar">
             <form action="#">
@@ -39,67 +41,57 @@
           <div class="single_sedebar">
             <div class="select_option">
               <div class="select_option_list">Category <i class="right fas fa-caret-down"></i> </div>
-              <div class="select_option_dropdown">
-                <p><a href="#">Category 1</a></p>
-                <p><a href="#">Category 2</a></p>
-                <p><a href="#">Category 3</a></p>
-                <p><a href="#">Category 4</a></p>
-              </div>
-            </div>
-          </div>
-          <div class="single_sedebar">
-            <div class="select_option">
-              <div class="select_option_list">Type <i class="right fas fa-caret-down"></i> </div>
-              <div class="select_option_dropdown">
-                <p><a href="#">Type 1</a></p>
-                <p><a href="#">Type 2</a></p>
-                <p><a href="#">Type 3</a></p>
-                <p><a href="#">Type 4</a></p>
-              </div>
+              @await Component.InvokeAsync("PhanLoai")
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-8">
-        <div class="product_list">
-          <div class="row">
-            @foreach (var item in Model)
-            {
-              <div class="col-lg-6 col-sm-6">
-                <div class="single_product_item">
+      @* Lọc sản phẩm *@
+      <div class="col-md-9">
+        <span class="m-5 font-weight-bold">Phân loại: @Model.FirstOrDefault()?.Category.Name</span>
+        <hr />
+        <div class="product_list d-flex flex-wrap">
+          @foreach (var item in Model)
+          {
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
+              <form asp-controller="Home" asp-action="Product_List" asp-route-loaiId="@item.LoaiId" method="get">
+                <div class="single_product_item" style="width: 400px; height: 400px; object-fit: cover; text-align: center; align-items:center; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
                   <a asp-controller="Home" asp-action="Product_Details" asp-route-productId="@item.IdProduct">
-                    <img src="@item.ImageUrl" alt="" class="img-fluid">
+                    <img src="@item.ImageUrl" alt="" class="img-thumbnail" style="width: 250px; height: 250px;object-fit: cover;">
                   </a>
-                  <h3>
+                  <h3 style="font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; padding: 0 4px;">
                     <a asp-controller="Home" asp-action="Product_Details" asp-route-productId="@item.IdProduct">
                       @item.Name
                     </a>
                   </h3>
+
                   <p>@String.Format("{0:0,0}", @item.Price)đ</p>
                 </div>
-              </div>
-            }
-            <div class="container">
-              @if (pager.TotalPages > 0)
-              {
-                <ul class="pagination justify-content-center">
-                  @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
-                  {
-                    <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
-                      <a class="page-link" asp-controller="Home"
-                         asp-action="Product_List"
-                         asp-route-page="@pge">@pge</a>
-                      </li>
-                    }
-                </ul>
-              }
+              </form>
             </div>
-          </div>
+          }
+        </div>
+
+        <div class="container">
+          @if (pager.TotalPages > 0)
+          {
+            <ul class="pagination justify-content-center">
+              @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+              {
+                <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
+                  <a class="page-link" asp-controller="Home" asp-route-loaiId="@Model.FirstOrDefault()?.LoaiId"
+                     asp-action="Product_List"
+                     asp-route-page="@pge">@pge</a>
+                  </li>
+                }
+            </ul>
+          }
         </div>
       </div>
     </div>
   </div>
 </section>
+
 <!-- product list part end-->
 <!-- client review part here -->
 <section class="client_review">
@@ -180,3 +172,10 @@
     </div>
   </div>
 </section>
+<script>
+  function displaySelectedCategory() {
+    var selectBox = document.getElementById("categorySelect");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].text;
+    document.getElementById("selectedCategory").innerHTML = "Selected category: " + selectedValue;
+  }
+</script>

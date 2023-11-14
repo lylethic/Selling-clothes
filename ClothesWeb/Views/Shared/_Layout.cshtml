@@ -108,10 +108,10 @@
                       <vc:category></vc:category>
 
                       <li class="hot">
-                        <a href="#">Latest</a>
+                        <a asp-controller="Home" asp-action="Product_List">Shop</a>
                         <ul class="submenu">
                           <li><a asp-controller="Home" asp-action="Product_List"> Product list</a></li>
-                          <li><a asp-controller="Home" asp-action="Product_Details">Product Details</a></li>
+                          @*<li><a asp-controller="Home" asp-action="Product_Details">Product Details</a></li>*@
                         </ul>
                       </li>
                       <li>
@@ -126,11 +126,14 @@
               <div class="col-xl-5 col-lg-3 col-md-3 col-sm-3 fix-card">
                 <ul class="header-right f-right d-none d-lg-block d-flex justify-content-between">
                   <li class="d-none d-xl-block">
+                    @* SEARCH Ở ĐÂY *@
                     <div class="form-box f-right">
-                      <input type="text" name="Search" placeholder="Search products">
-                      <div class="search-icon">
-                        <i class="fas fa-search special-tag"></i>
-                      </div>
+                      <form action="TimKiemSanPham" method="get">
+                        <input type="text" name="name" placeholder="Search products" class="form-control">
+                        <button type="submit" class="search-icon" value="Search" asp-controller="Home" asp-action="TimKiemSanPham">
+                          <i class="fas fa-search special-tag"></i>
+                        </button>
+                      </form>
                     </div>
                   </li>
                   <li class="d-none d-xl-block">
@@ -153,7 +156,7 @@
                   @*<li class="d-none d-lg-block"> <a asp-controller="Home" asp-action="Login" class="btn header-btn">Sign in</a></li>*@
 
                   @*REGISTER LOGIN*@
-                  <li>
+                  <li nav-item dropdown>
                     <partial name="_LoginPartial" />
                   </li>
                 </ul>
@@ -237,12 +240,12 @@
         <div class="row">
           <div class="col-xl-7 col-lg-7 col-md-7">
             <div class="footer-copy-right">
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                Copyright &copy;
-                <script>document.write(new Date().getFullYear());</script>
-                <i class="ti-heart" aria-hidden="true"></i><a href="https://colorlib.com" target="_blank"></a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;
+              <script>document.write(new Date().getFullYear());</script>
+              <i class="ti-heart" aria-hidden="true"></i><a href="https://colorlib.com" target="_blank"></a>
 
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
               </p>
             </div>
           </div>

@@ -12,14 +12,15 @@
 
 <main>
   @*slider Area Start*@
-  <div class="slider-area latest-padding ">
+  <div class="slider-area latest-padding" style="padding: 2rem;">
     @*Mobile Menu*@
     <div class="single-slider d-flex align-items-center" data-background="~/assets/img/hero/category.jpg">
       <div class="container">
         <div class="row">
           <div class="col-xl-12">
             <div class="hero-cap text-center">
-              <h2>Shop</h2>
+              <h3>Kết quả tìm kiếm</h3>
+              <hr />
             </div>
           </div>
         </div>
@@ -30,19 +31,19 @@
   @*Latest Products Start*@
   <section class="latest-product-area">
     <div class="container">
-      <div class="row product-btn d-flex justify-content-between">
-        <div class="properties__button">
-          @*Nav Button*@
-          <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">All</a>
-              <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">New</a>
-              <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Featured</a>
-              <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">Offer</a>
-            </div>
-          </nav>
-          @*End Nav Button*@
+      <!--<div class="row product-btn d-flex justify-content-between">
+        <div class="properties__button">-->
+      @*Nav Button*@
+      <!--<nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">All</a>
+          <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">New</a>
+          <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Featured</a>
+          <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last" role="tab" aria-controls="nav-contact" aria-selected="false">Offer</a>
         </div>
+      </nav>-->
+      @*End Nav Button*@
+      <!--</div>
         <div class="select-this d-flex">
           <div class="featured">
             <span>Short by: </span>
@@ -58,57 +59,64 @@
             </div>
           </form>
         </div>
-      </div>
+      </div>-->
       @*Nav Card*@
       <div class="tab-content" id="nav-tabContent">
         @*card one*@
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-          <div class="row">
-            @foreach (var item in @Model)
-            {
-              <div class="col-xl-4 col-lg-4 col-md-6">
-                <div class="single-product mb-60">
-                  <a class="product-img" asp-action="Product_Details" asp-route-productId="@item.IdProduct">
-                    <img src="@item.ImageUrl" alt="">
-                    <div class="new-product">
-                      <span>New</span>
-                    </div>
-                  </a>
-                  <div class="product-caption">
-                    <div class="product-ratting">
-                      <i class="far fa-star"></i>
-                      <i class="far fa-star"></i>
-                      <i class="far fa-star"></i>
-                      <i class="far fa-star low-star"></i>
-                      <i class="far fa-star low-star"></i>
-                    </div>
-                    <h4><a asp-controller="Home" asp-action="Product_Details" asp-route-productId="@item.IdProduct">@item.Name</a></h4>
-                    <div class="price">
-                      <ul>
-                        <li>@String.Format("{0:0,0}", @item.Price) đ</li>
-                        <li class="discount">$999,000</li>
-                      </ul>
+          @if (Model.Any())
+          {
+            <div class="row">
+              @foreach (var item in @Model)
+              {
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                  <div class="single-product mb-60">
+                    <a class="product-img" asp-action="Product_Details" asp-route-productId="@item.IdProduct">
+                      <img src="@item.ImageUrl" alt="">
+                      <div class="new-product">
+                        <span>New</span>
+                      </div>
+                    </a>
+                    <div class="product-caption">
+                      <div class="product-ratting">
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star low-star"></i>
+                        <i class="far fa-star low-star"></i>
+                      </div>
+                      <h4><a asp-controller="Home" asp-action="Product_Details" asp-route-productId="@item.IdProduct">@item.Name</a></h4>
+                      <div class="price">
+                        <ul>
+                          <li>@String.Format("{0:0,0}", @item.Price) đ</li>
+                          <li class="discount">$999,000</li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            }
-            <div class="container">
-              @if (pager.TotalPages > 0)
-              {
-                <ul class="pagination justify-content-center">
-                  @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
-                  {
-                    <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
-                      <a class="page-link" asp-controller="Home"
-                         asp-action="Catagori" asp-route-loaiId="@Model.FirstOrDefault()?.LoaiId"
-                         asp-route-page="@pge">@pge</a>
-                      </li>
-                    }
-                </ul>
               }
+              <div class="container">
+                @if (pager.TotalPages > 0)
+                {
+                  <ul class="pagination justify-content-center">
+                    @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                    {
+                      <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
+                        <a class="page-link" asp-controller="Home"
+                           asp-action="Catagori"
+                           asp-route-page="@pge">@pge</a>
+                        </li>
+                      }
+                  </ul>
+                }
+              </div>
             </div>
-          </div>
+          }
+          else
+          {
+            <h2 class="text-center">Không tìm thấy sản phẩm.</h2>
+          }
         </div>
       </div>
       @*End Nav Card*@

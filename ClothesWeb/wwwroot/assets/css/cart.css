@@ -162,3 +162,72 @@
   font-size: 16px;
   outline: none;
 }
+
+.product-name {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Style for accordion container */
+.accordion-summary {
+  width: 100%;
+  max-width: 600px; /* Adjust the maximum width as needed */
+  margin: 0 auto; /* Center the accordion */
+}
+
+/* Style for each card in the accordion */
+.card {
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Style for card header */
+.card-header {
+  background-color: #f5f5f5;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* Style for card title */
+.card-title {
+  margin: 0;
+  font-size: 16px;
+}
+
+  /* Style for collapsed card title */
+  .card-title a.collapsed {
+    color: #333;
+  }
+
+  /* Style for expanded card title */
+  .card-title a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+/* Style for card body */
+.card-body {
+  padding: 15px;
+}
+
+/* Style for the PayPal link */
+.paypal-link {
+  font-size: 12px;
+  color: #007bff;
+}
+
+/* Style for the image inside the Credit Card (Stripe) card */
+.card-title img {
+  max-width: 100%;
+  height: auto;
+  margin-left: 10px; /* Adjust margin as needed */
+}
+
+/* Style for the active state of the card */
+.card.active {
+  border-color: #007bff;
+}

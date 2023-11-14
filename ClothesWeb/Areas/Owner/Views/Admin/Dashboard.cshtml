@@ -67,7 +67,7 @@
               </a>
             </li>
             <!-- SỬA TẠI ĐÂY -->
-            
+
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Tài khoản</span>
@@ -78,6 +78,19 @@
                   <i class="ti ti-user-circle"></i>
                 </span>
                 <span class="hide-menu">Quản lý tài khoản User</span>
+              </a>
+            </li>
+
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Đơn hàng</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" asp-controller="DonHang" asp-action="Index" aria-expanded="false">
+                <span>
+                  <i class="ti ti-shopping-cart""></i>
+                </span>
+                <span class="hide-menu">Quản lý đơn hàng</span>
               </a>
             </li>
           </ul>
@@ -427,7 +440,7 @@
                 </div>
                 <div class="d-flex flex-column">
                   <a class="btn btn-warning" asp-action="Upsert" asp-route-id="@item.IdProduct">Cập nhật</a>
-                  <a class="btn btn-secondary"asp-controller="Admin" asp-action="Product_Details" asp-route-productId="@item.IdProduct">Chi tiết</a>
+                  <a class="btn btn-secondary" asp-controller="Admin" asp-action="Product_Details" asp-route-productId="@item.IdProduct">Chi tiết</a>
                   <a class="btn btn-danger" onclick="Xoa(@item.IdProduct, $(this))">Xóa</a>
                 </div>
               </div>
@@ -466,6 +479,13 @@
       }).then((result) => {
         if (result.isConfirmed) {
           // Perform the action for creating a new item here.
+          $.ajax({
+            url: `/Owner/Admin/Delete/${id}`,
+            type: "POST",
+            success: function (data) {
+              row.closest("tr").remove();
+            }
+          })
           Swal.fire(
             'Deleted!',
             'Your file has been deleted.',

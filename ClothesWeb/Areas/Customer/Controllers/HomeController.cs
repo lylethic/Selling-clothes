@@ -1,12 +1,17 @@
-﻿using ClothesWeb.Data;
+﻿using Azure;
+using ClothesWeb.Data;
+using ClothesWeb.Migrations;
 using ClothesWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PagedList;
+using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
+using System.Linq;
+using System.Net.NetworkInformation;
 using System.Security.Claims;
 using X.PagedList;
+using X.PagedList.Mvc.Core;
 
 namespace ClothesWeb.Areas.Customer.Controllers
 {
@@ -33,26 +38,61 @@ namespace ClothesWeb.Areas.Customer.Controllers
       return View();
     }
 
+    //[HttpGet]
+    //public IActionResult Product_List(int page = 1)
+    //{
+    //  IEnumerable<Product> products = _db.Products.Include("Category").ToList();
+    //  const int pageSize = 12;
+    //  page = page < 1 ? 1 : page;
+    //  // Tổng số sản phẩm.
+    //  int recsCount = products.Count();
+    //  // Một đối tượng Pager được tạo để quản lý thông tin về phân trang, bao gồm số trang, trang hiện tại, và số lượng sản phẩm trên mỗi trang.
+    //  var pager = new Pager(recsCount, page, pageSize);
+    //  int recSkip = (page - 1) * pageSize;
+    //  var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+    //  this.ViewBag.Pager = pager;
+    //  return View(data);
+    //}
+
+    //[HttpGet]
+    //public IActionResult Product_List(int loaiId)
+    //{
+    //  IEnumerable<Product> product = _db.Products.Include("Category").Where(x => x.LoaiId == loaiId);
+    //  return View(product);
+    //}
+
     [HttpGet]
-    public IActionResult Product_List(int page = 1)
+    public IActionResult Product_List(int loaiId, int page = 1)
     {
-      IEnumerable<Product> products = _db.Products.Include("Category").ToList();
-      const int pageSize = 12;
+      const int pageSize = 8;
+      IEnumerable<Product> products;
+
+      if (loaiId != 0)
+      {
+        products = _db.Products.Include("Category")
+                               .Where(x => x.LoaiId == loaiId)
+                               .ToList();
+      }
+      else
+      {
+        products = _db.Products.Include("Category")
+                               .ToList();
+      }
       page = page < 1 ? 1 : page;
-      // Tổng số sản phẩm.
       int recsCount = products.Count();
-      // Một đối tượng Pager được tạo để quản lý thông tin về phân trang, bao gồm số trang, trang hiện tại, và số lượng sản phẩm trên mỗi trang.
       var pager = new Pager(recsCount, page, pageSize);
       int recSkip = (page - 1) * pageSize;
       var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+
       this.ViewBag.Pager = pager;
       return View(data);
     }
 
+
     [HttpGet]
-    public IActionResult Catagori(int page = 1)
+    public IActionResult Catagori(int loaiId, int page = 1)
     {
-      IEnumerable<Product> products = _db.Products.Include("Category").ToList();
+      IEnumerable<Product> products = _db.Products.Include("Category").Where(x => x.LoaiId == loaiId).ToList();
       const int pageSize = 12;
       page = page < 1 ? 1 : page;
       int recsCount = products.Count();
@@ -135,6 +175,45 @@ namespace ClothesWeb.Areas.Customer.Controllers
       return View();
     }
     public IActionResult Contact()
+    {
+      return View();
+    }
+
+    [HttpGet]
+    public IActionResult TimKiemSanPham(string name = "", int page = 1)
+    {
+      var products = from b in _db.Products select b;
+
+      if (!string.IsNullOrEmpty(name))
+      {
+        products = products.Where(x => x.Name.Contains(name));
+      }
+
+      const int pageSize = 12;
+      page = page < 1 ? 1 : page;
+      int recsCount = products.Count();
+      var pager = new Pager(recsCount, page, pageSize);
+      int recSkip = (page - 1) * pageSize;
+      var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+
+      this.ViewBag.Pager = pager;
+      return View(data);
+    }
+
+    //[HttpGet]
+    //public IActionResult TimKiemSanPham(string name)
+    //{
+    //  var products = from b in _db.Products select b;
+
+    //  if (!string.IsNullOrEmpty(name))
+    //  {
+    //    products = products.Where(x => x.Name.Contains(name));
+    //  }
+    //  return View(products);
+    //}
+
+    [HttpGet]
+    public IActionResult DonHang()
     {
       return View();
     }

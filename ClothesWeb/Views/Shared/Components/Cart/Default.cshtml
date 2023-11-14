@@ -11,7 +11,7 @@
       <div class="header__cart-list--title">
         <p>Sản phẩm mới thêm</p>
       </div>
-      @foreach (var item in Model.listCart)
+      @foreach (var item in Model.listCart.OrderByDescending(item => item.Id).Take(5))
       {
         @if (item.Product != null)
         {

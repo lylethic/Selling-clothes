@@ -2986,13 +2986,13 @@ input:focus {
 
 /* line 936, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_common.scss */
 .section_padding {
-  padding: 200px 0px;
+  padding: 2rem 0px;
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1200px) {
   /* line 936, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_common.scss */
   .section_padding {
-    padding: 100px 0px;
+    padding: 2rem 0px;
   }
 }
 
@@ -3663,6 +3663,9 @@ input:focus {
     position: absolute;
     top: 12px;
     right: 17px;
+    padding: 0;
+    border: none;
+    background-color: #fff;
   }
 
     /* line 183, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_headerMenu.scss */
@@ -3937,7 +3940,7 @@ input:focus {
 
 /* line 24, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_h1-hero.scss */
 .slider-height2 {
-  min-height: 300px;
+  min-height: 100px;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -9082,6 +9085,8 @@ input:focus {
 
 /* line 12, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_trending_items.scss */
 .single_product_item {
+  position: relative;
+  overflow: hidden;
   margin-bottom: 58px;
 }
 
