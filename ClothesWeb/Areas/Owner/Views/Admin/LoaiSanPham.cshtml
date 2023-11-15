@@ -1,0 +1,47 @@
+﻿@model Category
+@{
+  Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CSS Template</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppđJzQIu9"
+        crossorigin="anonymous">
+  <title>Loai</title>
+</head>
+<body style="font-size: 18px">
+  <div class="container-md p-4 mt-5 m-auto  border shadow">
+    <h3 class="text-center">Thêm mới loại sản phẩm</h3>
+    <form method="post" asp-action="LoaiSanPham">
+    <input type="hidden" asp-for="LoaiId" />
+      <div class="form-group">
+        <label asp-for="Name">Phân loại sản phẩm</label>
+        <input type="text" asp-for="Name" class="form-control" />
+        <span class="text-danger" asp-validation-for="Name"></span>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="DateCreated">Ngày tạo</label>
+        <input type="text" asp-for="DateCreated" class="form-control" />
+        <span class="text-danger" asp-validation-for="DateCreated"></span>
+      </div>
+
+      <div class="form-group mt-2">
+        <button type="submit" class="btn btn-warning" asp-route-id="@Model.LoaiId">@(Model.LoaiId == 0 ? "Tạo mới" : "Cập nhật")</button>
+        <a asp-action="ViewLoaiSanPham" class="btn btn-secondary">Hủy</a>
+      </div>
+    </form>
+  </div>
+
+  @section Scripts{
+    @{
+      <partial name="_ValidationScriptsPartial" />
+    }
+  }
+</body>
+</html>

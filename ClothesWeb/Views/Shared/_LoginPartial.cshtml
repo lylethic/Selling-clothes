@@ -2,7 +2,6 @@
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-@*@inject UserManager<ApplicationUser> ApplicationUser*@
 
 
 @if (!SignInManager.IsSignedIn(User))
@@ -18,7 +17,7 @@ else
 {
   <div class="favorit-items">
     <a class="nav-link" style="color: #000; padding: 0;" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-user"></i>
+      <i class="fas fa-user bg-primary-subtle"></i>
     </a>
     <div class="dropdown-menu" aria-labelledby="userDropdown">
       <a class="dropdown-item" href="/Account/Manage/Index">Tài khoản</a>
@@ -29,5 +28,5 @@ else
       </form>
     </div>
   </div>
-  @*<a id="manage" class="nav-link text-dark" style="font-size: 12px" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @ApplicationUser.Name</a>*@
+  @*<a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)</a>*@
 }

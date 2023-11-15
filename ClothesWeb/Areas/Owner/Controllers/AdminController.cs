@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Printing;
 using System.Security.Claims;
@@ -165,9 +166,67 @@ namespace ClothesWeb.Areas.Admin.Controllers
       return View(data);
     }
 
-    public IActionResult AddProducts()
+    public IActionResult ViewLoaiSanPham()
     {
+      var loaiSP = _db.Categories.ToList();
+      ViewBag.LoaiSP = loaiSP;  
+      return View(loaiSP);
+    }
+
+    [HttpGet]
+    public IActionResult LoaiSanPham(int id)
+    {
+      Category loaiSanPham = new Category();
+      IEnumerable<SelectListItem> dstheloai = _db.Categories.Select(
+        loaiSanPham => new SelectListItem
+        {
+          Value = loaiSanPham.LoaiId.ToString(),
+          Text = loaiSanPham.Name,
+        });
+
+      ViewBag.Dstheloai = dstheloai;
+
+      if (id == 0)
+      {
+        return View(loaiSanPham);
+      }
+      else
+      {
+        loaiSanPham = _db.Categories.FirstOrDefault(loaiSanPham => loaiSanPham.LoaiId == id);
+        return View(loaiSanPham);
+      }
+    }
+
+    [HttpPost]
+    public IActionResult LoaiSanPham(Category category)
+    {
+      if (ModelState.IsValid)
+      {
+        if (category.LoaiId == 0)
+        {
+          _db.Categories.Add(category);
+        }
+        else
+        {
+          _db.Categories.Update(category);
+        }
+        _db.SaveChanges();
+        return RedirectToAction("ViewLoaiSanPham");
+      }
       return View();
+    }
+
+    public IActionResult DeleteLoaiSanPham(int id)
+    {
+      var category = _db.Categories.FirstOrDefault(c => c.LoaiId == id);
+      if (category == null)
+      {
+        return NotFound();
+      }
+      _db.Categories.Remove(category);
+      _db.SaveChanges();
+
+      return RedirectToAction("ViewLoaiSanPham");
     }
 
     [HttpGet]
@@ -182,5 +241,27 @@ namespace ClothesWeb.Areas.Admin.Controllers
       return View(cart);
     }
 
+    [HttpGet]
+    public IActionResult TimKiemSanPham(string name = "", int page = 1)
+    {
+      var products = from b in _db.Products select b;
+
+      if (!string.IsNullOrEmpty(name))
+      {
+        products = products.Where(x => x.Name.Contains(name));
+      }
+
+      const int pageSize = 12;
+      page = page < 1 ? 1 : page;
+      int recsCount = products.Count();
+      var pager = new Pager(recsCount, page, pageSize);
+      int recSkip = (page - 1) * pageSize;
+      var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+      ViewBag.SearchString = name;
+      this.ViewBag.Pager = pager;
+      return View(data);
+    }
+
+    
   }
 }

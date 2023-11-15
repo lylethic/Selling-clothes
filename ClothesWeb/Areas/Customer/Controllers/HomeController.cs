@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Security.Claims;
+using System.Security.Principal;
 using X.PagedList;
 using X.PagedList.Mvc.Core;
 
@@ -238,7 +239,7 @@ namespace ClothesWeb.Areas.Customer.Controllers
       var pager = new Pager(recsCount, page, pageSize);
       int recSkip = (page - 1) * pageSize;
       var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
-
+      ViewBag.SearchString = name;
       this.ViewBag.Pager = pager;
       return View(data);
     }
@@ -255,19 +256,20 @@ namespace ClothesWeb.Areas.Customer.Controllers
     //  return View(products);
     //}
 
+    //[HttpGet]
+    //public IActionResult DonHang(int hoaDonId)
+    //{
+    //  //Get Infor of Account
+    //  var identity = (ClaimsIdentity)User.Identity;
+    //  var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
+
+    //  var 
+    //}
+
     [HttpGet]
-    public IActionResult DonHang()
+    public IActionResult GetUserName()
     {
-      var identity = (ClaimsIdentity)User.Identity;
-      var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
-
-      IEnumerable<ChiTietHoaDon> userOrders = _db.ChiTietHoaDons
-          .Where(cthd => cthd.HoaDon != null && cthd.HoaDon.ApplicationUserId == claim.Value)
-          .Include(cthd => cthd.HoaDon)
-          .Include(cthd => cthd.Product)
-          .ToList();
-
-      return View(userOrders);
+      return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

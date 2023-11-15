@@ -15,5 +15,6 @@ namespace ClothesWeb.Data
     public DbSet<Cart> Carts { get; set; }
     public DbSet<HoaDon> HoaDons { get; set; }
     public DbSet<ChiTietHoaDon> ChiTietHoaDons { get; set; }
+    public DbSet<DonHang> DonHangs { get; set; }
   }
 }

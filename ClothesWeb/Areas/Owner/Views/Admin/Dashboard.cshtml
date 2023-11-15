@@ -88,9 +88,22 @@
             <li class="sidebar-item">
               <a class="sidebar-link" asp-controller="DonHang" asp-action="Index" aria-expanded="false">
                 <span>
-                  <i class="ti ti-shopping-cart""></i>
+                  <i class="ti ti-shopping-cart"></i>
                 </span>
                 <span class="hide-menu">Quản lý đơn hàng</span>
+              </a>
+            </li>
+
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Loại sản phẩm</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" asp-controller="Admin" asp-action="ViewLoaiSanPham" aria-expanded="false">
+                <span>
+                  <i class="ti ti-clothes-rack"></i>
+                </span>
+                <span class="hide-menu">Quản lý loại hàng</span>
               </a>
             </li>
           </ul>

@@ -104,7 +104,7 @@
                     {
                       <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
                         <a class="page-link" asp-controller="Home"
-                           asp-action="Catagori"
+                           asp-action="TimKiemSanPham" asp-route-name="@ViewBag.SearchString"
                            asp-route-page="@pge">@pge</a>
                         </li>
                       }

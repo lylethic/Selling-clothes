@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ChiTietHoaDon>
+﻿@model List<HoaDon>
 
 <main class="main">
   <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
@@ -51,8 +51,18 @@
               <tbody>
                 @foreach (var item in Model)
                 {
-                  <tr class="text-center">
-                    <td class="total-col">@item.Product.ImageUrl</td>
+                  <tr>
+                    <td>
+                      @if (item.OrderStatus == "Đã xác nhận")
+                      {
+                        <span>Đơn hàng của bạn đã được xác nhận.</span>
+                      }
+                      else
+                      {
+                        <span>Đơn hàng của bạn đang chờ xác nhận.</span>
+                      }
+                    </td>
+                    <!-- Các cột khác của đơn hàng có thể điền vào đây -->
                   </tr>
                 }
               </tbody>

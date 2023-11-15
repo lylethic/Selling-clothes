@@ -90,7 +90,11 @@ namespace ClothesWeb.Areas.Customer.Controllers
       var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
 
       // Update cart and hoadon
-      cart.listCart = _db.Carts.Include("Product").Where(cart => cart.ApplicationUserId == claim.Value).ToList();
+      cart.listCart = _db.Carts
+        .Include("Product")
+        .Where(cart => cart.ApplicationUserId == claim.Value)
+        .ToList();
+
       if (cart.listCart.Count() == 0)
       {
         TempData["EmptyCartMessage"] = "Chưa có sản phẩm trong giỏ hàng.";
@@ -127,6 +131,27 @@ namespace ClothesWeb.Areas.Customer.Controllers
       //
       _db.Carts.RemoveRange(cart.listCart);
       _db.SaveChanges();
+
+      //
+      //foreach (var item in cart.DsChiTietHoaDon)
+      //{
+      //  DonHang donHang = new DonHang()
+      //  {
+      //    OrderDetailId = item.Id,
+      //    ProductId = item.ProductId,
+      //    HoaDonId = cart.HoaDon.Id,
+      //    ImgUrl = item.Product.ImageUrl,
+      //    NameProduct = item.Product.Name,
+      //    PriceOfProduct = item.ProductPrice,
+      //    Quantity = item.Quantity,
+      //    OrderDate = item.HoaDon.OrderDate,
+      //    OrderStatus = item.HoaDon.OrderStatus,
+      //    Total = item.HoaDon.TotalPrice,
+      //  };
+      //  _db.DonHangs.Add(donHang);
+      //  _db.SaveChanges();
+      //}
+
       return RedirectToAction("Index", "Home");
     }
 

@@ -108,6 +108,19 @@
                 <span class="hide-menu">Quản lý đơn hàng</span>
               </a>
             </li>
+
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Loại sản phẩm</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" asp-controller="Admin" asp-action="ViewLoaiSanPham" aria-expanded="false">
+                <span>
+                  <i class="ti ti-clothes-rack"></i>
+                </span>
+                <span class="hide-menu">Quản lý loại hàng</span>
+              </a>
+            </li>
           </ul>
         </nav>
         <!-- End Sidebar navigation -->
@@ -166,6 +179,15 @@
       <div class="container-fluid">
         <div class="row">
           <h1 class="m-4 text-center">Danh sách sản phẩm</h1>
+
+          <form class="input-group rounded" action="TimKiemSanPham" method="get">
+            <input type="search" name="name" class="form-control rounded" placeholder="Search Products" aria-label="Search" aria-describedby="search-addon" />
+            <button class="input-group-text border-0" id="search-addon" value="Search" asp-controller="Admin" asp-action="TimKiemSanPham">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
+          <hr style="margin: 4rem 0;" />
+
           @if (Model != null)
           {
             @foreach (var item in Model)
