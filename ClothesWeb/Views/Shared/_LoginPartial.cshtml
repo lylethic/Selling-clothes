@@ -2,27 +2,32 @@
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@*@inject UserManager<ApplicationUser> ApplicationUser*@
 
 
-  @if (!SignInManager.IsSignedIn(User))
-  {
-    <div class="favorit-items">
-      <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login" style="color: #000; padding: 0;"><i class="fas fa-user"></i></a>
+@if (!SignInManager.IsSignedIn(User))
+{
+  <div class="favorit-items">
+    <a class="nav-link" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #000; padding: 0;"><i class="fas fa-user"></i></a>
+    <div class="dropdown-menu" aria-labelledby="userDropdown">
+      <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </div>
-  }
-  else
-  {
-    <div class="favorit-items">
-      <a class="nav-link" style="color: #000; padding: 0;" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-user"></i>
-      </a>
-      <div class="dropdown-menu" aria-labelledby="userDropdown">
-        <a class="dropdown-item" href="/Account/Manage/Index">Tài khoản</a>
-        <a class="dropdown-item" href="/Orders">Đơn hàng</a>
-        <div class="dropdown-divider"></div>
-        <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-          <button class="dropdown-item" type="submit">Logout</button>
-        </form>
-      </div>
+  </div>
+}
+else
+{
+  <div class="favorit-items">
+    <a class="nav-link" style="color: #000; padding: 0;" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fas fa-user"></i>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="userDropdown">
+      <a class="dropdown-item" href="/Account/Manage/Index">Tài khoản</a>
+      <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="DonHang">Đơn hàng</a>
+      <div class="dropdown-divider"></div>
+      <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button class="dropdown-item" type="submit">Logout</button>
+      </form>
     </div>
-  }
+  </div>
+  @*<a id="manage" class="nav-link text-dark" style="font-size: 12px" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @ApplicationUser.Name</a>*@
+}

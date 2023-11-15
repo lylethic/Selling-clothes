@@ -4,6 +4,7 @@ using ClothesWeb.Migrations;
 using ClothesWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
@@ -92,7 +93,19 @@ namespace ClothesWeb.Areas.Customer.Controllers
     [HttpGet]
     public IActionResult Catagori(int loaiId, int page = 1)
     {
-      IEnumerable<Product> products = _db.Products.Include("Category").Where(x => x.LoaiId == loaiId).ToList();
+      IEnumerable<Product> products;
+
+      if (loaiId != 0)
+      {
+        products = _db.Products.Include("Category")
+                               .Where(x => x.LoaiId == loaiId)
+                               .ToList();
+      }
+      else
+      {
+        products = _db.Products.Include("Category")
+                               .ToList();
+      }
       const int pageSize = 12;
       page = page < 1 ? 1 : page;
       int recsCount = products.Count();
@@ -101,6 +114,36 @@ namespace ClothesWeb.Areas.Customer.Controllers
       var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
       this.ViewBag.Pager = pager;
       return View(data);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Sort(string sortOrder, string searchString)
+    {
+      ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+      ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
+      ViewData["CurrentFilter"] = searchString;
+
+      var products = from s in _db.Products select s;
+      if (!String.IsNullOrEmpty(searchString))
+      {
+        products = products.Where(s => s.Name.Contains(searchString));
+      }
+      switch (sortOrder)
+      {
+        case "name_desc":
+          products = products.OrderByDescending(s => s.Name);
+          break;
+        case "Price":
+          products = products.OrderBy(s => s.Price);
+          break;
+        case "price_desc":
+          products = products.OrderByDescending(s => s.Price);
+          break;
+        default:
+          products = products.OrderBy(s => s.Name);
+          break;
+      }
+      return View(await products.AsNoTracking().ToListAsync());
     }
 
     [HttpGet]
@@ -215,7 +258,16 @@ namespace ClothesWeb.Areas.Customer.Controllers
     [HttpGet]
     public IActionResult DonHang()
     {
-      return View();
+      var identity = (ClaimsIdentity)User.Identity;
+      var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
+
+      IEnumerable<ChiTietHoaDon> userOrders = _db.ChiTietHoaDons
+          .Where(cthd => cthd.HoaDon != null && cthd.HoaDon.ApplicationUserId == claim.Value)
+          .Include(cthd => cthd.HoaDon)
+          .Include(cthd => cthd.Product)
+          .ToList();
+
+      return View(userOrders);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

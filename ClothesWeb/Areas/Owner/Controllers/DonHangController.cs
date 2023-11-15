@@ -1,5 +1,6 @@
 ﻿using Azure;
 using ClothesWeb.Data;
+using ClothesWeb.Migrations;
 using ClothesWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,12 +32,22 @@ namespace ClothesWeb.Areas.Owner.Controllers
 
     public IActionResult DonHangDetail(int donHangId)
     {
-      ChiTietHoaDon chiTietDonHang = new ChiTietHoaDon()
+      var detailsOrder = _db.ChiTietHoaDons.
+        Include(od => od.Product)
+        .Where(od => od.HoaDonId == donHangId)
+        .ToList();
+      return View(_db.HoaDons.OrderByDescending(p => p.Id).ToList());
+    }
+
+    public IActionResult XacNhan(int donHangId)
+    {
+      var hoadon = _db.HoaDons.FirstOrDefault(x => x.Id == donHangId);
+      if (hoadon != null)
       {
-        Id = donHangId,
-        HoaDon = _db.HoaDons.Include(x => x.User).FirstOrDefault(User => User.Id == donHangId),
-      };
-      return View(chiTietDonHang);
+        hoadon.OrderStatus = "Đã xác nhận";
+        _db.SaveChanges();
+      }
+      return RedirectToAction("Index");
     }
   }
 }

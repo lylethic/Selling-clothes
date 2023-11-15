@@ -231,3 +231,15 @@
 .card.active {
   border-color: #007bff;
 }
+
+.btn__donhang {
+  padding: 6px 6px;
+  width: 100%;
+  color: #000;
+  border: none;
+  text-align: start;
+}
+
+.aside-color{
+  background-color: #f1f1f1;
+}

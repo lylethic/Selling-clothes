@@ -26,7 +26,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-
+  <style>
+    .truncate-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+  </style>
 </head>
 
 <!--  Body Wrapper -->
@@ -174,7 +181,7 @@
                     <h6 class="fw-semibold fs-4 truncate-text">@item.Name</h6>
                     <div class="d-flex flex-column align-items-center justify-content-between">
                       <h6 class="fw-semibold fs-4 mb-0">@String.Format("{0:0,0}", @item.Price)đ<span class="ms-2 fw-normal text-muted fs-3"><del>999,000đ</del></span></h6>
-                      
+
                       <ul class="list-unstyled d-flex align-items-center mb-0">
                         <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
                         <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>

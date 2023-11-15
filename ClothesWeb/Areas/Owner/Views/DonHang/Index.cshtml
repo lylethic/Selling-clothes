@@ -85,11 +85,11 @@
               <span class="hide-menu">TÀI KHOẢN</span>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" asp-controller="Admin" asp-action="UserAccount" aria-expanded="false">
+              <a class="sidebar-link" asp-controller="Admin" asp-action="ListUser" aria-expanded="false">
                 <span>
                   <i class="ti ti-user-circle"></i>
                 </span>
-                <span class="hide-menu">Quản lý tài khoản người dùng</span>
+                <span class="hide-menu">Quản lý tài khoản User</span>
               </a>
             </li>
 
@@ -193,9 +193,19 @@
                             <td>@item.OrderStatus</td>
                             <td>@item.OrderDate</td>
                             <td>@String.Format("{0:0,0}", item.TotalPrice)</td>
-                            <td>
-                              <a href="#" class="btn btn-success text-white">Chi tiết đơn hàng</a>
-                            </td>
+                            @if (item.OrderStatus != "Đã xác nhận")
+                            {
+                              <td>
+                                @*<a asp-controller="DonHang" asp-action="DonHangDetail" asp-route-donHangId="@item.Id" class="btn btn-success text-white">Chi tiết</a>*@
+                                <a asp-controller="DonHang" asp-action="XacNhan" asp-route-donHangId="@item.Id" class="btn btn-warning text-white">Xác nhận</a>
+                              </td>
+                            }
+                            else
+                            {
+                              <td>
+                                <p class="btn btn-success text-white">Đã duyệt</p>
+                              </td>
+                            }
                           </tr>
                         }
                       </tbody>

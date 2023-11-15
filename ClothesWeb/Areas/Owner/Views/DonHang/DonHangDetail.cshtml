@@ -1,4 +1,4 @@
-﻿@model ChiTietHoaDon
+﻿@model List<ChiTietHoaDon>
 
 @{
   Layout = "";
@@ -122,30 +122,33 @@
             Thông tin đơn hàng
           </div>
           <div class="card-body">
-            <h5 class="card-title">Đơn hàng số: @Model.Id</h5>
-            <p class="card-text">Ngày đặt hàng: @Model.HoaDon.OrderDate</p>
-            <!-- Thêm thông tin khác về đơn hàng -->
-            <!-- Danh sách sản phẩm trong đơn hàng -->
-            <h5 class="mt-4">Sản phẩm trong đơn hàng</h5>
             <table class="table">
               <thead>
                 <tr>
-                  <th>Tên sản phẩm</th>
+                  <th>#</th>
+                  <th>IdUser</th>
+                  <th>Hóa đơn Id</th>
+                  <th>Id Sản phẩm</th>
+                  <th>Tên khách hàng</th>
                   <th>Số lượng</th>
-                  <th>Đơn giá</th>
-                  <th>Thành tiền</th>
+                  <th>Ngày dặt hàng</th>
+                  <th>Trạng thái đơn hàng</th>
                 </tr>
               </thead>
               <tbody>
-                @*@foreach (var item in @Model.HoaDon)*@
+                @foreach (var item in @Model)
                 {
                   <tr>
-                    @*<td>@item.ProductName</td>
+                    <td></td>
+                    <td>@item.HoaDon.ApplicationUserId</td>
+                    <td>@item.HoaDonId</td>
+                    <td>@item.ProductId</td>
+                    <td>@item.HoaDon.Name</td>
                     <td>@item.Quantity</td>
-                    <td>@item.UnitPrice</td>
-                    <td>@item.TotalPrice</td>*@
+                    <td>@item.HoaDon.OrderDate</td>
+                    <td>@item.HoaDon.OrderStatus</td>
                   </tr>
-                @*  *@}
+                }
               </tbody>
             </table>
 

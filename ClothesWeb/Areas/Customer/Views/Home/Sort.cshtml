@@ -40,72 +40,39 @@
           </nav>
           @*End Nav Button*@
         </div>
-        <div class="select-this d-flex">
-          <div class="featured">
-            <span>Short by: </span>
-          </div>
-          <form asp-action="Sort" method="get">
-            <div class="select-items">
-              <select name="sortOrder" id="select1">
-                <option name="SearchString" value="name_desc">
-                  <a class="option" asp-action="Sort" asp-route-sortOrder="@ViewData["CurrentFilter"]">
-
-                  </a>
-                </option>
-                <option value="price_desc">Giá giảm dần</option>
-                <option value="price_asc">Giá tăng dần</option>
-              </select>
-            </div>
-          </form>
-        </div>
-      </div>
-      @*Nav Card*@
-      <div class="tab-content" id="nav-tabContent">
-        @*card one*@
-        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-          <div class="row">
-            @foreach (var item in @Model)
-            {
-              <div class="col-xl-4 col-lg-4 col-md-6">
-                <div class="single-product mb-60">
-                  <a class="product-img" asp-action="Product_Details" asp-route-productId="@item.IdProduct">
-                    <img src="@item.ImageUrl" alt="">
-                    <div class="new-product">
-                      <span>New</span>
-                    </div>
-                  </a>
-                  <div class="product-caption">
-                    <div class="product-ratting">
-                      <i class="far fa-star"></i>
-                      <i class="far fa-star"></i>
-                      <i class="far fa-star"></i>
-                      <i class="far fa-star low-star"></i>
-                      <i class="far fa-star low-star"></i>
-                    </div>
-                    <h4><a asp-controller="Home" asp-action="Product_Details" asp-route-productId="@item.IdProduct">@item.Name</a></h4>
-                    <div class="price">
-                      <ul>
-                        <li>@String.Format("{0:0,0}", @item.Price) đ</li>
-                        <li class="discount">$999,000</li>
-                      </ul>
+        @*Nav Card*@
+        <div class="tab-content" id="nav-tabContent">
+          @*card one*@
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="row">
+              @foreach (var item in @Model)
+              {
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                  <div class="single-product mb-60">
+                    <a class="product-img" asp-action="Product_Details" asp-route-productId="@item.IdProduct">
+                      <img src="@item.ImageUrl" alt="">
+                      <div class="new-product">
+                        <span>New</span>
+                      </div>
+                    </a>
+                    <div class="product-caption">
+                      <div class="product-ratting">
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star low-star"></i>
+                        <i class="far fa-star low-star"></i>
+                      </div>
+                      <h4><a asp-controller="Home" asp-action="Product_Details" asp-route-productId="@item.IdProduct">@item.Name</a></h4>
+                      <div class="price">
+                        <ul>
+                          <li>@String.Format("{0:0,0}", @item.Price) đ</li>
+                          <li class="discount">$999,000</li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            }
-            <div class="container">
-              @if (pager.TotalPages > 0)
-              {
-                <ul class="pagination justify-content-center">
-                  @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
-                  {
-                    <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
-                      <a class="page-link" asp-controller="Home"
-                         asp-action="Catagori" asp-route-loaiId="@Model.FirstOrDefault()?.LoaiId"
-                         asp-route-page="@pge">@pge</a>
-                      </li>
-                    }
-                </ul>
               }
             </div>
           </div>

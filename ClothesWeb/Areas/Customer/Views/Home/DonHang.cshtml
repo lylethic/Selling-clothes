@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ChiTietHoaDon>
+
+<main class="main">
+  <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="container">
+      <h1 class="page-title"><span>Đơn hàng</span></h1>
+    </div><!-- End .container -->
+    <hr class="m-5" />
+  </div><!-- End .page-header -->
+  <div class="page-content" style="color:#000f">
+    <div class="cart">
+      <div class="container">
+        <div class="row">
+          <aside class="col-lg-3 aside-color">
+            <div class="user-info mb-10">
+              <div class="d-flex align-items-center mb-10 mt-10">
+                <img class="mr-10" src="~/assets/img/client_2.png" alt="User Avatar">
+                <p class="mb-1">User Name</p>
+              </div>
+              <!-- Tài khoản của tôi -->
+              <div class="user-links d-flex flex-column p-2">
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-user-circle"></i>
+                  <a href="#" class="btn__donhang">Tài khoản của tôi</a>
+                </div>
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-book"></i>
+                  <a asp-controller="Home" asp-action="DonHang" class="btn__donhang">Đơn mua</a>
+                </div>
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-bell"></i>
+                  <a href="#" class="btn__donhang">Thông báo</a>
+                </div>
+              </div>
+            </div>
+
+            <a asp-controller="Home" asp-action="Product_List" class="btn btn-outline-dark btn-block mt-10 mb-3" style="padding: 24px 20px;">
+              <span style="font-size: 16px;">CONTINUE SHOPPING</span>
+            </a>
+          </aside><!-- End .col-lg-3 -->
+          <div class="col-lg-9">
+            <table class="table table-cart table-mobile">
+              <thead>
+                <tr class="">
+                  <th>Tất cả</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var item in Model)
+                {
+                  <tr class="text-center">
+                    <td class="total-col">@item.Product.ImageUrl</td>
+                  </tr>
+                }
+              </tbody>
+            </table><!-- End .table table-wishlist -->
+          </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+      </div><!-- End .container -->
+    </div><!-- End .cart -->
+  </div><!-- End .page-content -->
+</main><!-- End .main -->

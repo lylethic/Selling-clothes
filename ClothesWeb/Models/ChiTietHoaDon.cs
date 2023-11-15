@@ -19,6 +19,7 @@ namespace ClothesWeb.Models
     [ValidateNever]
     public Product Product { get; set; }
     public int Quantity { get; set; }
+    public string Username { get; set; }
     public double ProductPrice { get; set; }
   }
 }

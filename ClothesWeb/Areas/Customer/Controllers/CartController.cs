@@ -117,6 +117,7 @@ namespace ClothesWeb.Areas.Customer.Controllers
         {
           ProductId = item.ProductId,
           HoaDonId = cart.HoaDon.Id,
+          Username = cart.HoaDon.Name,
           ProductPrice = item.ProductPrice,
           Quantity = item.Quantity,
         };
