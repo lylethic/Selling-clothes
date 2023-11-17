@@ -101,7 +101,7 @@
                   {
                     <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
                       <a class="page-link" asp-controller="Home"
-                         asp-action="Catagori" asp-route-loaiId="@Model.FirstOrDefault()?.LoaiId"
+                         asp-action="Catagori" asp-route-loaiId="@ViewBag.LoaiId"
                          asp-route-page="@pge">@pge</a>
                       </li>
                     }

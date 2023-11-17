@@ -1,4 +1,4 @@
-﻿@model List<HoaDon>
+﻿@model IEnumerable<ChiTietHoaDon>
 
 <main class="main">
   <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
@@ -39,35 +39,30 @@
             </a>
           </aside><!-- End .col-lg-3 -->
           <div class="col-lg-9">
-            <table class="table table-cart table-mobile">
-              <thead>
-                <tr class="">
-                  <th>Tất cả</th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach (var item in Model)
-                {
-                  <tr>
-                    <td>
-                      @if (item.OrderStatus == "Đã xác nhận")
-                      {
-                        <span>Đơn hàng của bạn đã được xác nhận.</span>
-                      }
-                      else
-                      {
-                        <span>Đơn hàng của bạn đang chờ xác nhận.</span>
-                      }
-                    </td>
-                    <!-- Các cột khác của đơn hàng có thể điền vào đây -->
-                  </tr>
-                }
-              </tbody>
-            </table><!-- End .table table-wishlist -->
-          </div><!-- End .col-lg-9 -->
+            <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+
+            @*<label>Full Name</label>
+            <input asp-for="HoaDon.Name" type="text" class="form-control" required>
+
+            <label>Address</label>
+            <input asp-for="HoaDon.Address" type="text" class="form-control" required>
+
+            <label>Phone Number</label>
+            <input asp-for="HoaDon.PhoneNumber" type="text" class="form-control" required>*@
+
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="checkout-create-acc">
+              <label class="custom-control-label" for="checkout-create-acc">Create an account?</label>
+            </div><!-- End .custom-checkbox -->
+
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="checkout-diff-address">
+              <label class="custom-control-label" for="checkout-diff-address">Ship to a different address?</label>
+            </div><!-- End .custom-checkbox -->
+
+            <label>Order notes (optional)</label>
+            <textarea class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+          </div>
         </div><!-- End .row -->
       </div><!-- End .container -->
     </div><!-- End .cart -->

@@ -79,7 +79,7 @@
               @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
               {
                 <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
-                  <a class="page-link" asp-controller="Home" asp-route-loaiId="@Model.FirstOrDefault()?.LoaiId"
+                  <a class="page-link" asp-controller="Home" asp-route-loaiId="@ViewBag.LoaiId"
                      asp-action="Product_List"
                      asp-route-page="@pge">@pge</a>
                   </li>

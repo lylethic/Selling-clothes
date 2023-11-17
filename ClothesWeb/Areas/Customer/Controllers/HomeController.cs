@@ -1,9 +1,10 @@
 ﻿using Azure;
 using ClothesWeb.Data;
-using ClothesWeb.Migrations;
 using ClothesWeb.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -85,8 +86,8 @@ namespace ClothesWeb.Areas.Customer.Controllers
       var pager = new Pager(recsCount, page, pageSize);
       int recSkip = (page - 1) * pageSize;
       var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
-
       this.ViewBag.Pager = pager;
+      this.ViewBag.LoaiId = loaiId;
       return View(data);
     }
 
@@ -114,6 +115,7 @@ namespace ClothesWeb.Areas.Customer.Controllers
       int recSkip = (page - 1) * pageSize;
       var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
       this.ViewBag.Pager = pager;
+      this.ViewBag.LoaiId = loaiId;
       return View(data);
     }
 
@@ -256,20 +258,58 @@ namespace ClothesWeb.Areas.Customer.Controllers
     //  return View(products);
     //}
 
-    //[HttpGet]
-    //public IActionResult DonHang(int hoaDonId)
-    //{
-    //  //Get Infor of Account
-    //  var identity = (ClaimsIdentity)User.Identity;
-    //  var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
+    public IActionResult DonHang(int hoadonId)
+    {
+      //Get Info of Account
+      var identity = (ClaimsIdentity)User.Identity;
+      var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
 
-    //  var 
-    //}
+      var user = _db.ChiTietHoaDons.Where(x=> x.HoaDonId == hoadonId).FirstOrDefault();
+
+      return View(user);
+    }
+
 
     [HttpGet]
     public IActionResult GetUserName()
     {
       return View();
+    }
+
+    [HttpGet]
+    [Authorize] // Restrict access to authenticated users
+    public IActionResult TaiKhoan()
+    {
+      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get the current user's ID
+      var currentUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+
+      if (currentUser != null)
+      {
+        return View(currentUser);
+      }
+
+      return NotFound();
+    }
+
+    [HttpPost]
+    public IActionResult TaiKhoan(ApplicationUser updatedUser)
+    {
+      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+      var currentUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+
+      if (currentUser != null)
+      {
+        currentUser.Name = updatedUser.Name;
+        currentUser.Email = updatedUser.Email;
+        currentUser.Address = updatedUser.Address;
+        currentUser.PhoneNumber = updatedUser.PhoneNumber;
+
+        _db.SaveChanges(); // Save changes to the database
+
+        return RedirectToAction("TaiKhoan"); // Redirect to the profile page
+      }
+
+      return NotFound(); // Handle if the user is not found
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

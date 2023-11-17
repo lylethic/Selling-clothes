@@ -19,6 +19,14 @@
             <span asp-validation-for="Input.Name" class="text-danger"></span>
           </div>
         </div>
+        <div class="row">
+          @*UserName*@
+          <div class="form-floating col-12 mb-3">
+            <input asp-for="Input.UserName" class="form-control" autocomplete="name" aria-required="true" placeholder="Name" />
+            <label asp-for="Input.UserName">UserName</label>
+            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+          </div>
+        </div>
         @*Email*@
         <div class="row">
           <div class="form-floating col-12 mb-3">

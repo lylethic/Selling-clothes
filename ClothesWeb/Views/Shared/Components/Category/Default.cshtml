@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Category>
 
 <li>
-  <a asp-controller="Home" asp-action="Catagori">Product</a>
+  <a asp-controller="Home" asp-action="Catagori" asp-route-loaiId=0>Product</a>
   <ul class="submenu">
     @foreach (var item in Model)
     {

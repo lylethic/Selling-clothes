@@ -78,12 +78,13 @@ namespace ClothesWeb.Areas.Customer.Controllers
       cart.HoaDon.Name = cart.HoaDon.User.Name;
       cart.HoaDon.Address = cart.HoaDon.User.Address;
       cart.HoaDon.PhoneNumber = cart.HoaDon.User.PhoneNumber;
+
       return View(cart);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult ThanhToan(CartViewModel cart)
+    public async Task<IActionResult> ThanhToan(CartViewModel cart)
     {
       //Get Infor of Account
       var identity = (ClaimsIdentity)User.Identity;
@@ -102,7 +103,7 @@ namespace ClothesWeb.Areas.Customer.Controllers
       }
       cart.HoaDon.ApplicationUserId = claim.Value;
       cart.HoaDon.OrderDate = DateTime.Now;
-      cart.HoaDon.OrderStatus = "Dang xac nhan";
+      cart.HoaDon.OrderStatus = "Đang xác nhận";
 
       foreach (var item in cart.listCart)
       {
@@ -123,34 +124,16 @@ namespace ClothesWeb.Areas.Customer.Controllers
           HoaDonId = cart.HoaDon.Id,
           Username = cart.HoaDon.Name,
           ProductPrice = item.ProductPrice,
+          ImgURL = item.Product.ImageUrl,
+          ProductName = item.Product.Name,
           Quantity = item.Quantity,
         };
         _db.ChiTietHoaDons.Add(chiTietHoaDon);
         _db.SaveChanges();
       }
-      //
+
       _db.Carts.RemoveRange(cart.listCart);
       _db.SaveChanges();
-
-      //
-      //foreach (var item in cart.DsChiTietHoaDon)
-      //{
-      //  DonHang donHang = new DonHang()
-      //  {
-      //    OrderDetailId = item.Id,
-      //    ProductId = item.ProductId,
-      //    HoaDonId = cart.HoaDon.Id,
-      //    ImgUrl = item.Product.ImageUrl,
-      //    NameProduct = item.Product.Name,
-      //    PriceOfProduct = item.ProductPrice,
-      //    Quantity = item.Quantity,
-      //    OrderDate = item.HoaDon.OrderDate,
-      //    OrderStatus = item.HoaDon.OrderStatus,
-      //    Total = item.HoaDon.TotalPrice,
-      //  };
-      //  _db.DonHangs.Add(donHang);
-      //  _db.SaveChanges();
-      //}
 
       return RedirectToAction("Index", "Home");
     }

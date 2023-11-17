@@ -18,6 +18,9 @@ namespace ClothesWeb.Models
     [ForeignKey("ProductId")]
     [ValidateNever]
     public Product Product { get; set; }
+
+    public string ImgURL { get; set; }
+    public string ProductName { get; set; }
     public int Quantity { get; set; }
     public string Username { get; set; }
     public double ProductPrice { get; set; }
