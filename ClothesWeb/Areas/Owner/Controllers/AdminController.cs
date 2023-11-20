@@ -110,49 +110,6 @@ namespace ClothesWeb.Areas.Admin.Controllers
       return View(data);
     }
 
-    [HttpGet]
-    public IActionResult UpsertUser()
-    {
-      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get the current user's ID
-      var currentUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
-
-      if (currentUser != null)
-      {
-        return View(currentUser);
-      }
-
-      return NotFound();
-    }
-
-    [HttpPost]
-    public IActionResult UpsertUser(string id)
-    {
-      var currentUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == id);
-
-      var user = new ApplicationUser()
-      {
-        Name = currentUser.Name,
-        Email = currentUser.Email,
-        Address = currentUser.Address,
-        PhoneNumber = currentUser.PhoneNumber,
-      };
-      _db.SaveChanges();
-      return View();
-    }
-
-    public IActionResult DeleteUser(string id)
-    {
-      var user = _db.ApplicationUser.FirstOrDefault(x => x.Id == id);
-      if (user == null)
-      {
-        return NotFound();
-      }
-      _db.ApplicationUser.Remove(user);
-      _db.SaveChanges();
-
-      return RedirectToAction("ListUser");
-    }
-
     public IActionResult Login()
     {
       return View();
@@ -197,6 +154,7 @@ namespace ClothesWeb.Areas.Admin.Controllers
     {
       return View();
     }
+
     public IActionResult AdminProducts(int page = 1)
     {
       IEnumerable<Product> products = _db.Products.Include("Category").ToList();
@@ -306,15 +264,44 @@ namespace ClothesWeb.Areas.Admin.Controllers
       return View(data);
     }
 
-    public IActionResult UserDetail(string id)
+    [HttpGet]
+    public IActionResult EditUser(string id)
     {
-      //Get Info of Account
-      var identity = (ClaimsIdentity)User.Identity;
-      var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
-      id = claim.Value;
-
       var user = _db.ApplicationUser.FirstOrDefault(x => x.Id == id);
       return View(user);
+    }
+
+    [HttpPost]
+    public IActionResult EditUser(ApplicationUser updatedUser)
+    {
+      var idUser = updatedUser.Id;
+      var user = _db.ApplicationUser.FirstOrDefault(x => x.Id == idUser);
+
+      if (user != null)
+      {
+        user.Id = idUser;
+        user.Name = updatedUser.Name;
+        user.Email = updatedUser.Email;
+        user.PhoneNumber = updatedUser.PhoneNumber;
+        user.Address = updatedUser.Address;
+        _db.SaveChanges();
+        return RedirectToAction("ListUser"); // Redirect to the profile page
+
+      };
+      return NotFound();
+    }
+
+    public IActionResult DeleteUser(string id)
+    {
+      var user = _db.ApplicationUser.FirstOrDefault(x => x.Id == id);
+      if (user == null)
+      {
+        return NotFound();
+      }
+      _db.ApplicationUser.Remove(user);
+      _db.SaveChanges();
+
+      return RedirectToAction("ListUser");
     }
   }
 }

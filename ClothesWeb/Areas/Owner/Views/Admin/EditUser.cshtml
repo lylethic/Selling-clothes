@@ -170,27 +170,26 @@
       @*Header End*@
       <div class="py-5">
         <div class="container mt-5">
-          <form action="UpsertUser" method="post">
-            <div class="row">
-              <h2 class="mb-4">Thông tin người dùng</h2>
-
-              <div class="col-lg-4">
-                <div class="card mb-4">
-                  <div class="card-body text-center">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                         class="rounded-circle img-fluid" style="width: 150px;">
-                    <h5 class="my-3">@Model.Name</h5>
-                    <p class="text-muted mb-1">@Model.Email</p>
-                    <p class="text-muted mb-4">@Model.Address</p>
-                    <div class="d-flex justify-content-center mb-2">
-                      <button type="button" class="btn btn-outline-primary ms-1">Message</button>
-                    </div>
+          <div class="row">
+            <h2 class="mb-4">Thông tin người dùng</h2>
+            <div class="col-lg-4">
+              <div class="card mb-4">
+                <div class="card-body text-center">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                       class="rounded-circle img-fluid" style="width: 150px;">
+                  <h5 class="my-3">@Model.Name</h5>
+                  <p class="text-muted mb-1">@Model.Email</p>
+                  <p class="text-muted mb-4">@Model.Address</p>
+                  <div class="d-flex justify-content-center mb-2">
+                    <button type="button" class="btn btn-outline-primary ms-1">Message</button>
                   </div>
                 </div>
               </div>
-              <div class="col-lg-8">
-                <div class="card mb-4">
-                  <div class="card-body">
+            </div>
+            <div class="col-lg-8">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <form action="EditUser" method="post">
                     <div class="row">
                       <div class="col-sm-3">
                         <p class="mb-0">Id</p>
@@ -238,6 +237,7 @@
                       <div class="col-sm-9">
                         <label for="Address" class="form-label"></label>
                         <input class="form-control text-muted mb-0" asp-for="@Model.Address" type="text" />
+
                       </div>
                     </div>
                     <div class="row mt-5">
@@ -246,11 +246,11 @@
                         <a asp-controller="Admin" asp-action="ListUser" class="btn btn-secondary w-20 align-items-end" style="margin: 2px auto; font-size: 18px;">Quay về</a>
                       </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
 
