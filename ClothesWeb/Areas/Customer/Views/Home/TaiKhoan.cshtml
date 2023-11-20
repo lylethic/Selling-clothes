@@ -1,12 +1,6 @@
 ﻿@model ApplicationUser
 
 <main class="main">
-  <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
-    <div class="container">
-      <h1 class="page-title"><span>Đơn hàng</span></h1>
-    </div><!-- End .container -->
-    <hr class="m-5" />
-  </div><!-- End .page-header -->
   <div class="page-content" style="color:#000f">
     <div class="cart">
       <div class="container">
@@ -21,7 +15,7 @@
               <div class="user-links d-flex flex-column p-2">
                 <div class="d-flex align-items-center">
                   <i class="fa fa-user-circle"></i>
-                  <a href="#" class="btn__donhang">Tài khoản của tôi</a>
+                  <a asp-controller="Home" asp-action="TaiKhoan" class="btn__donhang">Tài khoản của tôi</a>
                 </div>
                 <div class="d-flex align-items-center">
                   <i class="fa fa-book"></i>
@@ -36,35 +30,29 @@
           </aside><!-- End .col-lg-3 -->
           <div class="col-lg-9">
             <div class="container mt-4">
-              <div class="row">
-                <div class="col-md-6 offset-md-3">
-                  <div class="card">
-                    <div class="card-body">
-                      <h1 class="card-title text-center mb-4">Thông Tin Cá Nhân</h1>
-                      <form action="TaiKhoan" method="post">
-                        <div class="mb-3">
-                          <label for="Name" class="form-label">Họ và tên:</label>
-                          <input asp-for="@Model.Name" type="text" class="form-control" id="fullName" />
-                        </div>
-                        <div class="mb-3">
-                          <label for="Email" class="form-label">Email:</label>
-                          <input asp-for="@Model.Email" type="email" class="form-control" id="email" />
-                        </div>
-                        <div class="mb-3">
-                          <label for="PhoneNumber" class="form-label">Số điện thoại:</label>
-                          <input asp-for="@Model.PhoneNumber" type="tel" class="form-control" id="phoneNumber" />
-                        </div>
-                        <div class="mb-3">
-                          <label for="Address" class="form-label">Địa chỉ:</label>
-                          <input asp-for="@Model.Address" type="tel" class="form-control" id="phoneNumber" />
-                        </div>
-                        <div class="text-center">
-                          <button type="submit" class="btn btn-primary">Lưu</button>
-                        </div>
-                      </form>
-                    </div>
+              <div class="">
+                <h1 class="text-center mb-4">Thông Tin Cá Nhân</h1>
+                <form action="TaiKhoan" method="post">
+                  <div class="mb-3">
+                    <label for="Name" class="form-label">Họ và tên:</label>
+                    <input asp-for="@Model.Name" type="text" class="form-control" id="fullName" />
                   </div>
-                </div>
+                  <div class="mb-3">
+                    <label for="Email" class="form-label">Email:</label>
+                    <input asp-for="@Model.Email" type="email" class="form-control" id="email" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="PhoneNumber" class="form-label">Số điện thoại:</label>
+                    <input asp-for="@Model.PhoneNumber" type="tel" class="form-control" id="phoneNumber" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="Address" class="form-label">Địa chỉ:</label>
+                    <input asp-for="@Model.Address" type="tel" class="form-control" id="phoneNumber" />
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>

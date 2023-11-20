@@ -469,18 +469,10 @@
 
   <script>
     function Xoa(id, row) {
-      $.ajax({
-        url: `/Owner/Admin/Delete/${id}`,
-        type: "POST",
-        success: function (data) {
-          // Loại bỏ phần tử sản phẩm khỏi DOM
-          row.closest("#box").remove();
-          confirmDelete();
-        },
-      })
-    }
+      // Store the ID of the item to be deleted in a variable
+      var itemId = id;
 
-    function confirmDelete() {
+      // Open a confirmation dialog using SweetAlert
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -488,25 +480,35 @@
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes'
       }).then((result) => {
         if (result.isConfirmed) {
-          // Perform the action for creating a new item here.
+          // If confirmed, send an AJAX request to delete the item
           $.ajax({
-            url: `/Owner/Admin/Delete/${id}`,
+            url: `/Owner/Admin/Delete/${itemId}`,
             type: "POST",
             success: function (data) {
-              row.closest("tr").remove();
-            }
+              // Remove the item from the DOM upon successful deletion
+              row.closest("#box").remove();
+              // Show a success message using SweetAlert
+              Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              )
+            },
           })
+        } else {
+          // If cancelled, show a cancellation message using SweetAlert (optional)
           Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
+            'Cancelled',
+            'Your action has been cancelled :)',
+            'error'
           )
         }
       });
     }
+
   </script>
 
   <script src="~/assets_admin/libs/jquery/dist/jquery.min.js"></script>

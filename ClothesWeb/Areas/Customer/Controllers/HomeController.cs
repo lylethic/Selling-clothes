@@ -264,11 +264,31 @@ namespace ClothesWeb.Areas.Customer.Controllers
       var identity = (ClaimsIdentity)User.Identity;
       var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
 
-      var user = _db.ChiTietHoaDons.Where(x=> x.HoaDonId == hoadonId).FirstOrDefault();
+      IEnumerable<HoaDon> donhang = _db.HoaDons.Include(x => x.User).ToList();
 
-      return View(user);
+      return View(donhang);
     }
 
+    public IActionResult DonhangDetails(int id)
+    {
+      var chiTietHoaDonList = _db.ChiTietHoaDons
+                                  .Include("HoaDon")
+                                  .Where(chiTiet => chiTiet.HoaDonId == id)
+                                  .ToList();
+
+      var totalprice = _db.HoaDons.Where(x => x.Id == id).FirstOrDefault();
+      if (totalprice != null)
+      {
+        ViewBag.Total = totalprice.TotalPrice;
+
+        if (chiTietHoaDonList.Any())
+        {
+          return View(chiTietHoaDonList);
+        }
+      }
+
+      return NotFound();
+    }
 
     [HttpGet]
     public IActionResult GetUserName()

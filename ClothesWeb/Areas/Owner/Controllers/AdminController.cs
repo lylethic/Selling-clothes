@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Printing;
+using System.Net;
 using System.Security.Claims;
 using X.PagedList;
 
@@ -37,20 +38,6 @@ namespace ClothesWeb.Areas.Admin.Controllers
     {
       IEnumerable<Product> products = _db.Products.Include("Category").ToList();
       return View(products);
-    }
-
-    [HttpGet]
-    public IActionResult ListUser(int page = 1)
-    {
-      IEnumerable<ApplicationUser> users = _db.ApplicationUser;
-      const int pageSize = 6;
-      page = page < 1 ? 1 : page;
-      int recsCount = users.Count();
-      var pager = new Pager(recsCount, page, pageSize);
-      int recSkip = (page - 1) * pageSize;
-      var data = users.Skip(recSkip).Take(pager.PageSize).ToList();
-      this.ViewBag.Pager = pager;
-      return View(data);
     }
 
     [HttpGet]
@@ -107,6 +94,63 @@ namespace ClothesWeb.Areas.Admin.Controllers
       _db.SaveChanges();
 
       return RedirectToAction("AdminProducts");
+    }
+
+    [HttpGet]
+    public IActionResult ListUser(int page = 1)
+    {
+      IEnumerable<ApplicationUser> users = _db.ApplicationUser;
+      const int pageSize = 6;
+      page = page < 1 ? 1 : page;
+      int recsCount = users.Count();
+      var pager = new Pager(recsCount, page, pageSize);
+      int recSkip = (page - 1) * pageSize;
+      var data = users.Skip(recSkip).Take(pager.PageSize).ToList();
+      this.ViewBag.Pager = pager;
+      return View(data);
+    }
+
+    [HttpGet]
+    public IActionResult UpsertUser()
+    {
+      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get the current user's ID
+      var currentUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+
+      if (currentUser != null)
+      {
+        return View(currentUser);
+      }
+
+      return NotFound();
+    }
+
+    [HttpPost]
+    public IActionResult UpsertUser(string id)
+    {
+      var currentUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == id);
+
+      var user = new ApplicationUser()
+      {
+        Name = currentUser.Name,
+        Email = currentUser.Email,
+        Address = currentUser.Address,
+        PhoneNumber = currentUser.PhoneNumber,
+      };
+      _db.SaveChanges();
+      return View();
+    }
+
+    public IActionResult DeleteUser(string id)
+    {
+      var user = _db.ApplicationUser.FirstOrDefault(x => x.Id == id);
+      if (user == null)
+      {
+        return NotFound();
+      }
+      _db.ApplicationUser.Remove(user);
+      _db.SaveChanges();
+
+      return RedirectToAction("ListUser");
     }
 
     public IActionResult Login()
@@ -169,7 +213,7 @@ namespace ClothesWeb.Areas.Admin.Controllers
     public IActionResult ViewLoaiSanPham()
     {
       var loaiSP = _db.Categories.ToList();
-      ViewBag.LoaiSP = loaiSP;  
+      ViewBag.LoaiSP = loaiSP;
       return View(loaiSP);
     }
 
@@ -262,6 +306,15 @@ namespace ClothesWeb.Areas.Admin.Controllers
       return View(data);
     }
 
-    
+    public IActionResult UserDetail(string id)
+    {
+      //Get Info of Account
+      var identity = (ClaimsIdentity)User.Identity;
+      var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
+      id = claim.Value;
+
+      var user = _db.ApplicationUser.FirstOrDefault(x => x.Id == id);
+      return View(user);
+    }
   }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ApplicationUser>
+﻿@model IEnumerable<ChiTietHoaDon>
 
 @{
   Layout = "";
@@ -25,6 +25,12 @@
       min-height: 100vh;
       background-color: #FFE53B;
       background-image: linear-gradient(147deg, #FFE53B 0%, #FF2525 100%);
+    }
+
+    .container-card {
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
     }
   </style>
 </head>
@@ -100,7 +106,6 @@
               </a>
             </li>
 
-            <!---->
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Loại sản phẩm</span>
@@ -168,93 +173,85 @@
         </nav>
       </header>
       @*Header End*@
-      <div class="container">
-        <div class="py-5">
+      <div class="container container-box">
+        <div class="py-5 w-100 container-card">
           <div class="col-lg-10 mt-5">
             <div class="card rounded shadow border-0">
               <div class="card-body p-5 bg-white rounded">
                 <div class="table-responsive">
-                  <h2>Danh sách người dùng</h2>
-                  @if (Model.Any())
+                  @if (Model != null && Model.Any())
                   {
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>User Id</th>
-                          <th>Name</th>
-                          <th>Email</th>
-                          <th>Address</th>
-                          <th>Chức năng</th>
-                        </tr>
-                      </thead>
-                      @foreach (var item in Model)
-                      {
-                        <tbody>
+                    <div class="container">
+                      <h2 class="text-center m-4">Danh sách các sản phẩm trong đơn hàng</h2>
+                      <hr />
+                      <table class="table table-bordered" style="font-size: 16px;">
+                        <thead class="text-center">
                           <tr>
-                            <td></td>
-                            <td>@item.Id</td>
-                            <td>@item.Name</td>
-                            <td>@item.Email</td>
-                            <td>@item.Address</td>
-                            <td class="d-flex flex-column">
-                              <a asp-controller="Admin" asp-action="UserDetail" asp-route-id="@item.Id" class="btn btn-primary mb-2">Chi tiết</a>
-                              <a asp-controller="Admin" asp-action="EditUser" class="btn btn-warning mb-2">Sửa</a>
-                              <a asp-controller="Admin" asp-action="DeleteUser" class="btn btn-danger mb-2">Xóa</a>
-                            </td>
+                            <th></th>
+                            <th>Tên sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Giá tiền</th>
                           </tr>
+                        </thead>
+                        <tbody class="text-center">
+                          @foreach (var item in Model)
+                          {
+                            <tr>
+                              <td><img style="width: 80px; height: 80px;" src="@item.ImgURL" alt="Product Image"></td>
+                              <td class="text-start">@item.ProductName</td>
+                              <td>@item.Quantity</td>
+                              <td>@String.Format("{0:0,0}", item.ProductPrice)</td>
+                            </tr>
+                          }
                         </tbody>
-                      }
-                    </table>
-                  }
-                  else
-                  {
-                    <div class="card">
-                      <div class="card-header">
-                        Không có người dùng
-                      </div>
-                      <div class="card-body">
-                        <h5 class="cart-title">
-                          Đăng ký mới
-                        </h5>
-                        <a class="btn btn-primary" style="width: auto;" asp-controller="Admin" asp-action="ListUsers">
-                          Thêm mới người dùng
-                        </a>
+                      </table>
+                      <div class="container">
+                        <hr />
+                        <div class="d-flex justify-content-end">
+                          <span style="color: red; font-size: 20px; font-weight: 700;">
+                            <strong class="text-uppercase" style="font-size: 14px;">Tổng tiền:</strong>
+                            @String.Format("{0:0,0}", @ViewBag.Total)
+                          </span>
+                        </div>
+                        <span><a asp-controller="DonHang" asp-action="Index" class="btn btn-outline-primary">Quay về</a></span>
                       </div>
                     </div>
                   }
-                  <div class="container">
-                    @if (pager.TotalPages > 0)
-                    {
-                      <ul class="pagination justify-content-center">
-                        @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
-                        {
-                          <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
-                            <a class="page-link" asp-controller="Admin"
-                               asp-action="ListUser"
-                               asp-route-page="@pge">@pge</a>
-                            </li>
-                          }
-                      </ul>
-                    }
-                  </div>
+                  else
+                  {
+                    <h3>Không có sản phẩm.</h3>
+                  }
+                  @*<div class="container">
+                      @if (pager.TotalPages > 0)
+                      {
+                        <ul class="pagination justify-content-center">
+                          @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                          {
+                            <li class="page-item @(pge == pager.CurentPage ? "active" : "")">
+                              <a class="page-link" asp-controller="DonHang"
+                                 asp-action="Index"
+                                 asp-route-page="@pge">@pge</a>
+                              </li>
+                            }
+                        </ul>
+                      }
+                    </div>*@
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-
-
-      <script src="~/assets_admin/libs/jquery/dist/jquery.min.js"></script>
-      <script src="~/assets_admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="~/assets_admin/js/sidebarmenu.js"></script>
-      <script src="~/assets_admin/js/app.min.js"></script>
-      <script src="~/assets_admin/libs/apexcharts/dist/apexcharts.min.js"></script>
-      <script src="~/assets_admin/libs/simplebar/dist/simplebar.js"></script>
-      <script src="~/assets_admin/js/dashboard.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/assets_admin/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets_admin/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets_admin/js/sidebarmenu.js"></script>
+    <script src="~/assets_admin/js/app.min.js"></script>
+    <script src="~/assets_admin/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="~/assets_admin/libs/simplebar/dist/simplebar.js"></script>
+    <script src="~/assets_admin/js/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

@@ -49,5 +49,39 @@ namespace ClothesWeb.Areas.Owner.Controllers
       }
       return RedirectToAction("Index");
     }
+
+    public IActionResult DonhangDetailsAdmin(int id)
+    {
+      var chiTietHoaDonList = _db.ChiTietHoaDons
+                                  .Include("HoaDon")
+                                  .Where(chiTiet => chiTiet.HoaDonId == id)
+                                  .ToList();
+
+      var totalprice = _db.HoaDons.Where(x => x.Id == id).FirstOrDefault();
+      if (totalprice != null)
+      {
+        ViewBag.Total = totalprice.TotalPrice;
+
+        if (chiTietHoaDonList.Any())
+        {
+          return View(chiTietHoaDonList);
+        }
+      }
+
+      return NotFound();
+    }
+
+    public IActionResult DonhangDeleteAdmin(int id)
+    {
+      var donhangDelete = _db.HoaDons.FirstOrDefault(c => c.Id == id);
+      if (donhangDelete == null)
+      {
+        return NotFound();
+      }
+      _db.HoaDons.Remove(donhangDelete);
+      _db.SaveChanges();
+
+      return RedirectToAction("Index");
+    }
   }
 }
