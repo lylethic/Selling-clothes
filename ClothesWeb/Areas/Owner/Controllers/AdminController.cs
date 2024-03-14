@@ -16,6 +16,7 @@ using X.PagedList;
 namespace ClothesWeb.Areas.Admin.Controllers
 {
   [Area("Owner")]
+  //[Authorize(Roles = "Admin")]
   public class AdminController : Controller
   {
     private readonly ApplicationDbContext _db;
@@ -28,7 +29,6 @@ namespace ClothesWeb.Areas.Admin.Controllers
       _roleManager = roleManager;
       _userManager = userManager;
     }
-
     public IActionResult Index()
     {
       return View();
@@ -154,6 +154,31 @@ namespace ClothesWeb.Areas.Admin.Controllers
     {
       return View();
     }
+
+    //public IActionResult PhanLoai(int loaiSanpham, int page = 1)
+    //{
+    //  IEnumerable<Product> products;
+    //  if (loaiSanpham != 0)
+    //  {
+    //    products = _db.Products.Include("Category")
+    //                           .Where(x => x.LoaiId == loaiSanpham)
+    //                           .ToList();
+    //  }
+    //  else
+    //  {
+    //    products = _db.Products.Include("Category")
+    //                           .ToList();
+    //  }
+
+    //  const int pageSize = 12;
+    //  page = page < 1 ? 1 : page;
+    //  int recsCount = products.Count();
+    //  var pager = new Pager(recsCount, page, pageSize);
+    //  int recSkip = (page - 1) * pageSize;
+    //  var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+    //  this.ViewBag.Pager = pager;
+    //  return View(data);
+    //}
 
     public IActionResult AdminProducts(int page = 1)
     {

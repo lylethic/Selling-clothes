@@ -15,18 +15,29 @@
 }
 else
 {
-  <div class="favorit-items">
-    <a class="nav-link" style="color: #000; padding: 0;" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-user bg-primary-subtle"></i>
-    </a>
-    <div class="dropdown-menu" aria-labelledby="userDropdown">
-      <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="TaiKhoan">Tài khoản</a>
-      <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="DonHang">Đơn hàng</a>
-      <div class="dropdown-divider"></div>
-      <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-        <button class="dropdown-item" type="submit">Logout</button>
-      </form>
+
+
+  @if (User.IsInRole("Admin"))
+  {
+    <script>window.location.href = 'Owner/Admin/Dashboard';</script>
+  }
+  else if (User.IsInRole("User"))
+  {
+    <div class="favorit-items">
+      <a class="nav-link" style="color: #000; padding: 0;" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user bg-primary-subtle">
+        </i>
+      </a>
+      <div class="dropdown-menu" aria-labelledby="userDropdown">
+        <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="TaiKhoan">Tài khoản</a>
+        <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="DonHang">Đơn hàng</a>
+        <div class="dropdown-divider"></div>
+        <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+          <button class="dropdown-item" type="submit">Logout</button>
+        </form>
+      </div>
     </div>
-  </div>
-  <a id="manage" class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="TaiKhoan" title="Manage">Hello @UserManager.GetUserName(User)</a>
+    <a id="manage" class="text-dark"title="Manage">Hello @UserManager.GetUserName(User)</a>
+  }
+
 }

@@ -15,10 +15,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-  .AddDefaultTokenProviders()
-  .AddDefaultUI().AddEntityFrameworkStores<ApplicationDbContext>();
+  .AddEntityFrameworkStores<ApplicationDbContext>()
+  .AddDefaultUI()
+  .AddDefaultTokenProviders();
 
-//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //  .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));

@@ -19,6 +19,7 @@ using X.PagedList.Mvc.Core;
 namespace ClothesWeb.Areas.Customer.Controllers
 {
   [Area("Customer")]
+  //[Authorize(Roles = "User")]
   public class HomeController : Controller
   {
     private readonly ILogger<HomeController> _logger;
@@ -264,8 +265,13 @@ namespace ClothesWeb.Areas.Customer.Controllers
       var identity = (ClaimsIdentity)User.Identity;
       var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
 
-      IEnumerable<HoaDon> donhang = _db.HoaDons.Include(x => x.User).ToList();
+      IEnumerable<HoaDon> donhang = _db.HoaDons
+        .Include(x => x.User)
+        .Where(x=> x.ApplicationUserId == claim.Value)
+        .ToList();
 
+      var userName = _db.Users.FirstOrDefault(x => x.Id == claim.Value).UserName;
+      ViewBag.Name = userName;
       return View(donhang);
     }
 

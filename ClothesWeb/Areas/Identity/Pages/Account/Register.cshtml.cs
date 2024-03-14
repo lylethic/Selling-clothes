@@ -39,7 +39,8 @@ namespace ClothesWeb.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
+            IEmailSender emailSender, 
+            RoleManager<IdentityRole> roleManager)
     {
       _userManager = userManager;
       _userStore = userStore;
@@ -108,6 +109,7 @@ namespace ClothesWeb.Areas.Identity.Pages.Account
       public string UserName { get; set; }
       public string? Address { get; set; }
       public string? Role { get; set; }
+      public string? PhoneNumber { get; set; }
       [ValidateNever]
       public IEnumerable<SelectListItem> RoleList { get; set; }
     }
@@ -144,10 +146,10 @@ namespace ClothesWeb.Areas.Identity.Pages.Account
         // Input la thong tin nhap vao trong form
         user.Name = Input.Name;
         user.Address = Input.Address;
+        user.PhoneNumber = Input.PhoneNumber;
 
         await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-
 
         var result = await _userManager.CreateAsync(user, Input.Password);
 

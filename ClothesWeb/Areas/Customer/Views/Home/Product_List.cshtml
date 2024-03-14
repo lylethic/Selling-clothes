@@ -48,7 +48,7 @@
       </div>
       @* Lọc sản phẩm *@
       <div class="col-md-9">
-        <span class="m-5 font-weight-bold">Phân loại: @Model.FirstOrDefault()?.Category.Name</span>
+        <span class="m-5 text-uppercase">Phân loại: @Model.FirstOrDefault()?.Category.Name</span>
         <hr />
         <div class="product_list d-flex flex-wrap">
           @foreach (var item in Model)
