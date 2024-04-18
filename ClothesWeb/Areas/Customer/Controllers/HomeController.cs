@@ -132,6 +132,7 @@ namespace ClothesWeb.Areas.Customer.Controllers
       {
         products = products.Where(s => s.Name.Contains(searchString));
       }
+
       switch (sortOrder)
       {
         case "name_desc":
@@ -173,11 +174,22 @@ namespace ClothesWeb.Areas.Customer.Controllers
       // Check product
       var cartdb = _db.Carts
         .FirstOrDefault(x => x.ProductId == cart.ProductId && x.Size == cart.Size && x.ApplicationUserId == cart.ApplicationUserId);
+      var productId = _db.Products.Include("Category").FirstOrDefault(sp => sp.IdProduct == cart.ProductId);
 
       // ko tim thay => them moi
       if (cartdb == null)
       {
-        _db.Carts.Add(cart);
+        var cartItem = new Cart()
+        {
+          ApplicationUserId = cart.ApplicationUserId,
+          ProductId = cart.ProductId,
+          Product = productId,
+          Quantity = cart.Quantity,
+          Size = cart.Size,
+          isCheckout = true
+        };
+
+        _db.Carts.Add(cartItem);
       }
       // tim thay => tang quantity
       else
@@ -267,7 +279,7 @@ namespace ClothesWeb.Areas.Customer.Controllers
 
       IEnumerable<HoaDon> donhang = _db.HoaDons
         .Include(x => x.User)
-        .Where(x=> x.ApplicationUserId == claim.Value)
+        .Where(x => x.ApplicationUserId == claim.Value)
         .ToList();
 
       var userName = _db.Users.FirstOrDefault(x => x.Id == claim.Value).UserName;

@@ -32,15 +32,15 @@
               <span style="font-size: 16px;">CONTINUE SHOPPING</span>
             </a>
           </aside><!-- End .col-lg-3 -->
-          @if (Model != null)
+          @if (Model.Any())
           {
             <div class="col-lg-9">
               <h3 class="m-4 text-center">Đơn hàng</h3>
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Tên khách hàng</th>
-                    <th>Tổng giá</th>
+                    <th>Đơn hàng</th>
+                    <th>Thành tiền</th>
                     <th>Ngày đặt</th>
                     <th>Trạng thái</th>
                     <th>Chức năng</th>
@@ -60,6 +60,12 @@
                 }
               </table>
             </div>
+          }
+          else
+          {
+            <div>
+              <h1>No Product</h1>
+            </div> 
           }
         </div><!-- End .row -->
       </div><!-- End .container -->

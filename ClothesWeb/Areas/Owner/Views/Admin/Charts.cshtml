@@ -1,0 +1,158 @@
+﻿<div class="p-4 bg-light mt-5">
+  <h4>Biểu đồ cột thông kê doanh thu</h4>
+  <div>
+    <canvas id="myLineChart" height="400" width="1000"></canvas>
+  </div>
+</div>
+
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  @* Xoa dau nay ko bam Ctrl+K+U
+    <script>
+      $(document).ready(function () {
+        $.ajax({
+          url: '/Owner/Admin/MonthlySales',
+          type: 'GET',
+          success: function (data) {
+            // Gọi hàm vẽ biểu đồ khi dữ liệu được nhận thành công
+            drawChart(data);
+            console.log(data);
+          },
+          error: function (xhr, status, error) {
+            // Xử lý lỗi nếu có
+            console.error(error);
+          }
+        });
+      });
+
+      function drawChart(data) {
+        // Phân tích dữ liệu và vẽ biểu đồ
+        const months = data.map(item => item.month);
+        const revenue = data.map(item => item.totalRevenue);
+        console.error(months);
+        console.error(revenue);
+
+
+        var ctx = document.getElementById('myLineChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: months,
+            datasets: [{
+              label: 'Doanh thu',
+              data: revenue,
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            },
+            {
+              label: 'Lợi nhuận',
+              data: revenue,
+              backgroundColor: 'rgba(255, 222, 99, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            }
+            ]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+          //const ctx = document.getElementById('myLineChart');
+          //const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];  // Ensure 12 months
+
+          //// Replace with your data source (make sure it has 12 data points)
+          //const data = [10, 15, 7, 8, 12, 16, 18, 14, 11, 9, 13, 20];  // Example data
+
+          //new Chart(ctx, {
+          //  type: 'bar',  // Change to line chart
+          //  data: {
+          //    labels: months,
+          //    datasets: [{
+          //      label: 'Thống kê',
+          //      backgroundColor: 'rgb(255, 99, 132)',
+          //      borderColor: 'rgb(255, 99, 132)',
+          //      data: data,
+          //      borderWidth: 1
+          //    }]
+          //  },
+          //  options: {
+          //    scales: {
+          //      y: {
+          //        beginAtZero: true
+          //      }
+          //    }
+          //  }
+          //});
+    </script>
+  *@
+
+  <script>
+    var fakeData = [
+      { month: 1, totalRevenue: 10000, profit: 5000 },
+      { month: 2, totalRevenue: 12000, profit: 6000 },
+      { month: 3, totalRevenue: 15000, profit: 7000 },
+      { month: 4, totalRevenue: 18000, profit: 8000 },
+      { month: 5, totalRevenue: 20000, profit: 8500 },
+      { month: 6, totalRevenue: 22000, profit: 9000 },
+      { month: 7, totalRevenue: 25000, profit: 9500 },
+      { month: 8, totalRevenue: 27000, profit: 10000 },
+      { month: 9, totalRevenue: 28000, profit: 10500 },
+      { month: 10, totalRevenue: 30000, profit: 11000 },
+      { month: 11, totalRevenue: 32000, profit: 11500 },
+      { month: 12, totalRevenue: 35000, profit: 12000 }
+    ];
+    $(document).ready(function () {
+      // Thay thế fakeData bằng dữ liệu thực tế từ AJAX
+      drawChart(fakeData);
+    });
+
+    function drawChart(data) {
+      const months = data.map(item => item.month);
+      const revenue = data.map(item => item.totalRevenue);
+      const profit = data.map(item => item.profit);
+
+      var ctx = document.getElementById('myLineChart').getContext('2d');
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: months,
+          datasets: [
+            {
+              label: 'Doanh thu',
+              data: revenue,
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            },
+            {
+              label: 'Lợi nhuận',
+              data: profit,
+              backgroundColor: 'rgba(255, 222, 99, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+  </script>
+}
+

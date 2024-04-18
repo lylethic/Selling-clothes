@@ -1,5 +1,4 @@
 ﻿@model CartViewModel
-
 <main class="main">
   <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
     <div class="container">
@@ -30,7 +29,7 @@
                   <th>Size</th>
                   <th>Price</th>
                   <th class="col-2">Quantity</th>
-                  <th>Total</th>
+                  <th>Total Price</th>
                   <th class="col-1"></th>
                 </tr>
               </thead>
@@ -38,67 +37,72 @@
                 @foreach (var item in Model.listCart)
                 {
                   <tr class="text-center">
-                    <td class="product-col text-left">
-                      <div class="product">
-                        <figure class="product-media">
-                          <a asp-controller="Home" asp-action="Product_Details" asp-route-productId="@item.Product.IdProduct">
-                            <img src="@item.Product.ImageUrl" alt="Product image" style="width: 60px; height: 60px;">
-                          </a>
-                        </figure>
+                    <td style="max-height: 30px; max-width: 30%; overflow: hidden" class="product-col text-left">
+                      <div class="product d-flex align-items-center">
+                        @*<figure class="product-media">*@
+                        <a class="mr-10 shadow shadow-5" asp-controller="Home" asp-action="Product_Details"
+                           asp-route-productId="@item.Product.IdProduct">
+                          <img src="@item.Product.ImageUrl" alt="Product image" style="width: 60px; height: 60px;">
+                        </a>
+                        @*</figure>*@
 
                         <a asp-action="Product_Details" asp-route-productId="@item.Product.IdProduct">
-                          <p class="product-title" style="display: block; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; color: black">
+                          <p style="display: block; flex-wrap: wrap; font-size: 14px; color: rgba(0, 0, 0, .87); text-overflow: ellipsis; word-break: break-all; -webkit-box-orient: vertical; -webkit-line-clamp: 2; "
+                             class="product-title">
                             @item.Product.Name
-                          </p><!-- End .product-title -->
+                          </p>
                         </a>
-                      </div><!-- End .product -->
+                      </div>
                     </td>
+
                     <td class="total-col">@item.Size</td>
 
-                    <td class="price-col">@String.Format("{0:0,0}", @item.Product.Price) đ </td>
+                    <td class="price-col">
+                      <div style="display: flex; font-size: 12px;">
+                        &#8363;@String.Format("{0:0,0}", @item.Product.Price)
+                      </div>
+                    </td>
                     <td class="quantity-col" style="max-width: 40px">
                       <div class="cart-product-quantity">
                         <div class="input-group input-spinner">
-                          <div class="input-group-prepend flex-center">
+                          <div class="input-group-prepend">
                             <a asp-action="Giam" asp-route-cartId="@item.Id"
-                               class="quantity-control decrement btn-secondary text-center"
+                               class="quantity-control decrement btn-secondary text-center d-flex align-items-center justify-content-center"
                                style="min-width: 26px">-</a>
                           </div>
 
-                          <input type="text"
-                                 class="form-control quantity-input"
-                                 value="@item.Quantity"
-                                 min="1" max="10" step="1"
-                                 data-decimals="0" required>
+                          <input type="text" class="form-control quantity-input" value="@item.Quantity" min="1" max="10"
+                                 step="1" data-decimals="0" required>
+
                           <div class="input-group-prepend flex-center">
                             <a asp-action="Tang" asp-route-cartId="@item.Id"
-                               class="quantity-control increment btn-secondary text-center"
+                               class="quantity-control increment btn-secondary text-center d-flex align-items-center justify-content-center"
                                style="min-width: 26px;">+</a>
                           </div>
                         </div>
-                      </div><!-- End .cart-product-quantity -->
+                      </div>
                     </td>
-                    <td class="total-col">@String.Format("{0:0,0}", @item.ProductPrice)đ</td>
+                    <td class="total-col">&#8363;@String.Format("{0:0,0}", @item.Product.Price * @item.Quantity)</td>
                     <td class="remove-col">
-                      <a class="btn" style="max-width: 50px; background-color: #2577fd; padding: 1rem; "
-                         asp-action="DeleteProduct"
-                         asp-route-cartId="@item.Id">
-                        X
+                      <a class="btn p-2" asp-action="DeleteProduct" asp-route-cartId="@item.Id">
+                        <i class="fa-solid fa-xmark"></i>
                       </a>
                     </td>
                   </tr>
                 }
               </tbody>
-            </table><!-- End .table table-wishlist -->
-
+            </table>
 
             <div class="cart-bottom">
               <div class="cart-discount">
                 <form action="#">
                   <div class="input-group align-items-center" style="height: 50px;">
-                    <input type="text" class="form-control h-100" required placeholder="coupon code" title="Nhập mã giảm giá">
+                    <input type="text" class="form-control h-100" required placeholder="coupon code"
+                           title="Nhập mã giảm giá">
                     <div class="input-group-append h-100">
-                      <button class="btn btn-outline-primary" style="padding: 0 20px" type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                      <button class="btn btn-outline-primary" style="padding: 0 20px" type="submit">
+                        <i class="fa-solid fa-arrow-right"></i>
+                      </button>
                     </div><!-- .End .input-group-append -->
                   </div><!-- End .input-group -->
                 </form>
@@ -131,31 +135,33 @@
                     </td>
                     <td>$0.00</td>
                   </tr><!-- End .summary-shipping-row -->
-
-                  <tr class="summary-shipping-row">
-                    <td>
-                      <div class="custom-control custom-radio">
-                        <input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
-                        <label class="custom-control-label" for="standart-shipping">Standart:</label>
-                      </div><!-- End .custom-control -->
-                    </td>
-                    <td>10.00 đ</td>
-                  </tr><!-- End .summary-shipping-row -->
-
-                  <tr class="summary-shipping-row">
+                  <!--<tr class="summary-shipping-row">-->
+                  <!--<td>
+                    <div class="custom-control custom-radio">
+                      <input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
+                      <label class="custom-control-label" for="standart-shipping">Standart:</label>
+                    </div>-->
+                  <!-- End .custom-control -->
+                  <!--</td>
+                    <td>0.00 đ</td>
+                  </tr>-->
+                  <!-- End .summary-shipping-row -->
+                  <!--<tr class="summary-shipping-row">
                     <td>
                       <div class="custom-control custom-radio">
                         <input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
                         <label class="custom-control-label" for="express-shipping">Express:</label>
-                      </div><!-- End .custom-control -->
-                    </td>
-                    <td>20.00 đ</td>
-                  </tr><!-- End .summary-shipping-row -->
-
-                  <tr class="summary-shipping-estimate">
+                      </div>-->
+                  <!-- End .custom-control -->
+                  <!--</td>
+                    <td>0.00 đ</td>
+                  </tr>-->
+                  <!-- End .summary-shipping-row -->
+                  <!--<tr class="summary-shipping-estimate">
                     <td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
                     <td>&nbsp;</td>
-                  </tr><!-- End .summary-shipping-estimate -->
+                  </tr>-->
+                  <!-- End .summary-shipping-estimate -->
 
                   <tr class="summary-total">
                     <td>Total:</td>
@@ -169,7 +175,8 @@
               </a>
             </div><!-- End .summary -->
 
-            <a asp-controller="Home" asp-action="Catagori" class="btn btn-outline-dark btn-block mb-3" style="padding: 24px 20px;">
+            <a asp-controller="Home" asp-action="Catagori" class="btn btn-outline-dark btn-block mb-3"
+               style="padding: 24px 20px;">
               <span style="font-size: 16px;">CONTINUE SHOPPING</span>
             </a>
           </aside><!-- End .col-lg-3 -->

@@ -43,7 +43,7 @@ namespace ClothesWeb.Migrations
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isChecked")
+                    b.Property<bool>("isCheckout")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -117,6 +117,35 @@ namespace ClothesWeb.Migrations
                     b.ToTable("ChiTietHoaDons");
                 });
 
+            modelBuilder.Entity("ClothesWeb.Models.ChiTietPhieuNhapKho", b =>
+                {
+                    b.Property<int>("Id_CTPNKho")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_CTPNKho"));
+
+                    b.Property<double>("GiaNhapSanPham")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Id_PhieuNhapKho")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id_Product")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SoLuongNhapKho")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id_CTPNKho");
+
+                    b.HasIndex("Id_PhieuNhapKho");
+
+                    b.HasIndex("Id_Product");
+
+                    b.ToTable("ChiTietPhieuNhapKhos");
+                });
+
             modelBuilder.Entity("ClothesWeb.Models.DonHang", b =>
                 {
                     b.Property<int>("Id")
@@ -131,6 +160,9 @@ namespace ClothesWeb.Migrations
                     b.Property<string>("ImgUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsCheckout")
+                        .HasColumnType("bit");
 
                     b.Property<string>("NameProduct")
                         .IsRequired()
@@ -187,6 +219,9 @@ namespace ClothesWeb.Migrations
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("GhiChu")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -197,7 +232,15 @@ namespace ClothesWeb.Migrations
                     b.Property<string>("OrderStatus")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PayMentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShippingUnit")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -209,6 +252,95 @@ namespace ClothesWeb.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("HoaDons");
+                });
+
+            modelBuilder.Entity("ClothesWeb.Models.NhaCungCap", b =>
+                {
+                    b.Property<string>("IdNhaCungCap")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DiaChi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DienThoai")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MoTa")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NguoiLienLac")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenCongTy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdNhaCungCap");
+
+                    b.ToTable("NhaCungCaps");
+                });
+
+            modelBuilder.Entity("ClothesWeb.Models.NhapKho", b =>
+                {
+                    b.Property<int>("Id_NhapKho")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_NhapKho"));
+
+                    b.Property<string>("IdNCC")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Id_LoaiHangHoa")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("NgayNhapKho")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("TongTienHang")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id_NhapKho");
+
+                    b.HasIndex("IdNCC");
+
+                    b.HasIndex("Id_LoaiHangHoa");
+
+                    b.ToTable("NhapKhos");
+                });
+
+            modelBuilder.Entity("ClothesWeb.Models.PhieuNhapKho", b =>
+                {
+                    b.Property<int>("Id_PhieuNhapKho")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_PhieuNhapKho"));
+
+                    b.Property<string>("Id_NhaCungCap")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ThoiGianNhapKho")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("TongTienPhieuNhapKho")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id_PhieuNhapKho");
+
+                    b.HasIndex("Id_NhaCungCap");
+
+                    b.ToTable("PhieuNhapKhos");
                 });
 
             modelBuilder.Entity("ClothesWeb.Models.Product", b =>
@@ -235,6 +367,9 @@ namespace ClothesWeb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("NhaCungCapIdNhaCungCap")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -245,7 +380,45 @@ namespace ClothesWeb.Migrations
 
                     b.HasIndex("LoaiId");
 
+                    b.HasIndex("NhaCungCapIdNhaCungCap");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ClothesWeb.Models.TonKho", b =>
+                {
+                    b.Property<int>("MaTonKho")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaTonKho"));
+
+                    b.Property<double>("GiaBan")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Id_PhieuNhapKho")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id_Product")
+                        .HasColumnType("int");
+
+                    b.Property<float?>("MucTonKhoToiThieu")
+                        .HasColumnType("real");
+
+                    b.Property<int>("SoLuongTK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenSanPham")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MaTonKho");
+
+                    b.HasIndex("Id_PhieuNhapKho");
+
+                    b.HasIndex("Id_Product");
+
+                    b.ToTable("TonKhos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -510,6 +683,25 @@ namespace ClothesWeb.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ClothesWeb.Models.ChiTietPhieuNhapKho", b =>
+                {
+                    b.HasOne("ClothesWeb.Models.PhieuNhapKho", "PhieuNhapKho")
+                        .WithMany()
+                        .HasForeignKey("Id_PhieuNhapKho")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClothesWeb.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("Id_Product")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PhieuNhapKho");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ClothesWeb.Models.DonHang", b =>
                 {
                     b.HasOne("ClothesWeb.Models.HoaDon", "HoaDon")
@@ -548,6 +740,36 @@ namespace ClothesWeb.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ClothesWeb.Models.NhapKho", b =>
+                {
+                    b.HasOne("ClothesWeb.Models.NhaCungCap", "NhaCungCap")
+                        .WithMany()
+                        .HasForeignKey("IdNCC")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClothesWeb.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("Id_LoaiHangHoa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("NhaCungCap");
+                });
+
+            modelBuilder.Entity("ClothesWeb.Models.PhieuNhapKho", b =>
+                {
+                    b.HasOne("ClothesWeb.Models.NhaCungCap", "NhaCungCap")
+                        .WithMany()
+                        .HasForeignKey("Id_NhaCungCap")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NhaCungCap");
+                });
+
             modelBuilder.Entity("ClothesWeb.Models.Product", b =>
                 {
                     b.HasOne("ClothesWeb.Models.Category", "Category")
@@ -556,7 +778,30 @@ namespace ClothesWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ClothesWeb.Models.NhaCungCap", null)
+                        .WithMany("HangHoas")
+                        .HasForeignKey("NhaCungCapIdNhaCungCap");
+
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ClothesWeb.Models.TonKho", b =>
+                {
+                    b.HasOne("ClothesWeb.Models.PhieuNhapKho", "PhieuNhapKho")
+                        .WithMany()
+                        .HasForeignKey("Id_PhieuNhapKho")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClothesWeb.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("Id_Product")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PhieuNhapKho");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -608,6 +853,11 @@ namespace ClothesWeb.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ClothesWeb.Models.NhaCungCap", b =>
+                {
+                    b.Navigation("HangHoas");
                 });
 #pragma warning restore 612, 618
         }

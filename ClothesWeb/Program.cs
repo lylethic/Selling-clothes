@@ -5,6 +5,7 @@ using ClothesWeb.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ClothesWeb.Models.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,9 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.Al
 builder.Services.AddSession();
 
 builder.Services.AddControllersWithViews();
+
+// Dang ky Interface
+builder.Services.AddSingleton<IVnPayService, VnPayService>();
 
 var app = builder.Build();
 

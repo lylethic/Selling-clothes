@@ -16,7 +16,7 @@ using X.PagedList;
 namespace ClothesWeb.Areas.Admin.Controllers
 {
   [Area("Owner")]
-  //[Authorize(Roles = "Admin")]
+  [Authorize(Roles = "Admin")]
   public class AdminController : Controller
   {
     private readonly ApplicationDbContext _db;
@@ -328,5 +328,60 @@ namespace ClothesWeb.Areas.Admin.Controllers
 
       return RedirectToAction("ListUser");
     }
+
+    // Tong doanh thu //
+    //public double GetTotalRevenue()
+    //{
+    //  // Access the HoaDon data (replace with your actual data access method)
+    //  var hoaDons = _db.HoaDons.GetAllHoaDons();
+
+    //  // Calculate total revenue by summing the TotalPrice of all HoaDons
+    //  double totalRevenue = hoaDons.Sum(hd => hd.TotalPrice);
+
+    //  return totalRevenue;
+    //}
+
+    // Tong doanh thu theo thang
+    [HttpGet]
+    public IActionResult MonthlySales()
+    {
+      // Truy vấn các hóa đơn từ cơ sở dữ liệu
+      var invoices = _db.HoaDons.ToList();
+
+      // Gom nhóm các hóa đơn theo tháng và tính tổng doanh thu cho mỗi tháng
+      var monthlySales = invoices.GroupBy(i => new { i.OrderDate.Year, i.OrderDate.Month })
+                                 .Select(group => new
+                                 {
+                                   Month = group.Key.Month,
+                                   Year = group.Key.Year,
+                                   TotalRevenue = group.Sum(i => i.TotalPrice)
+                                 })
+                                 .OrderBy(s => s.Year)
+                                 .ThenBy(s => s.Month)
+                                 .ToList();
+
+      // Trả về dữ liệu dưới dạng Json
+      return Json(monthlySales);
+    }
+
+    [HttpGet]
+    public IActionResult Charts()
+    {
+      // Get data for the chart (modify to suit your needs)
+      var chartData = _db.HoaDons
+          .GroupBy(hd => hd.OrderDate.Month) // Group by month
+          .Select(group => new ChartData
+          {
+            Month = group.Key,  // Extract month number
+            TotalSales = group.Sum(hd => hd.TotalPrice) // Sum total price per month
+          })
+          .ToList();
+
+      // Pass chart data to the view model
+      var viewModel = new ChartViewModel { ChartData = chartData };
+
+      return View(viewModel);
+    }
   }
 }
+

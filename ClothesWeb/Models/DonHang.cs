@@ -31,5 +31,6 @@ namespace ClothesWeb.Models
     public int Quantity { get; set; }
     public DateTime? OrderDate { get; set; }
     public string? OrderStatus { get; set; }
+    public bool IsCheckout { get; set; }
   }
 }

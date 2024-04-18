@@ -3833,7 +3833,7 @@ input:focus {
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   /* line 321, ../../SAIFUL/Running_project/250 eCommerce_HTML/250 eCommerce_HTML/250 eCommerce_HTML/assets/scss/_headerMenu.scss */
   .header-area .slicknav_btn {
-    top: -40px;
+    top: -30px;
   }
 }
 

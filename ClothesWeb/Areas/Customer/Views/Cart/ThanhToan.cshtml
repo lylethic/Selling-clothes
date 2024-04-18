@@ -3,7 +3,7 @@
 <main class="main">
   <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
     <div class="container">
-      <h1 class="page-title">Checkout<span>Shop</span></h1>
+      <h1 class="page-title">Checkout<span> Shop</span></h1>
     </div><!-- End .container -->
   </div><!-- End .page-header -->
   <nav aria-label="breadcrumb" class="breadcrumb-nav">
@@ -19,26 +19,35 @@
   <div class="page-content">
     <div class="checkout">
       <div class="container">
-        <div class="checkout-discount">
+        <!--<div class="checkout-discount">
           <form action="#">
             <input type="text" class="form-control" required id="checkout-discount-input">
             <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
           </form>
-        </div><!-- End .checkout-discount -->
+        </div>-->
+        <!-- End .checkout-discount -->
         <form action="ThanhToan" method="post">
           @Html.AntiForgeryToken()
-          <div class="row">
+          <div class="row mt-5">
             <div class="col-lg-8">
               <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
 
-              <label>Full Name</label>
-              <input asp-for="HoaDon.Name" type="text" class="form-control" required>
-
-              <label>Address</label>
-              <input asp-for="HoaDon.Address" type="text" class="form-control" required>
-
-              <label>Phone Number</label>
-              <input asp-for="HoaDon.PhoneNumber" type="text" class="form-control" required>
+              <div class="form-check my-3">
+                <input type="checkbox" name="GiongKhachHang" class="form-check-input" id="GiongKhachHang" value="false">
+                <label class="form-check-label" for="GiongKhachHang">Giống thông tin khách hàng?</label>
+              </div>
+              <div class="form-check my-3 delivery-infor">
+                <label>Người nhận hàng<sup>*</sup></label>
+                <input asp-for="HoaDon.Name" type="text" class="form-control" required>
+              </div>
+              <div class="form-check my-3 delivery-infor">
+                <label>Địa chỉ<sup>*</sup></label>
+                <input asp-for="HoaDon.Address" type="text" class="form-control" required>
+              </div>
+              <div class="form-check my-3 delivery-infor">
+                <label>Số điện thoại<sup>*</sup></label>
+                <input asp-for="HoaDon.PhoneNumber" type="text" class="form-control" required>
+              </div>
 
               <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="checkout-create-acc">
@@ -51,8 +60,9 @@
               </div><!-- End .custom-checkbox -->
 
               <label>Order notes (optional)</label>
-              <textarea class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+              <textarea asp-for="HoaDon.GhiChu" class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
             </div>
+
             <aside class="col-lg-4">
               <div class="summary">
                 <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
@@ -64,7 +74,6 @@
                       <th>Total</th>
                     </tr>
                   </thead>
-
                   <tbody>
                     @foreach (var item in Model.listCart)
                     {
@@ -82,99 +91,150 @@
                       <td>Free shipping</td>
                     </tr>
                     <tr class="summary-total">
-                      <td>Total:</td>
-                      <td>@String.Format("{0:0,0}", Model.HoaDon.TotalPrice)</td>
+                      <td style="color: red; font-weight: 600;">Total:</td>
+                      <td style="color: red; font-weight: 600; font-size: 18px">@String.Format("{0:0,0}", Model.HoaDon.TotalPrice)</td>
                     </tr><!-- End .summary-total -->
                   </tbody>
                 </table><!-- End .table table-summary -->
 
                 <div class="accordion-summary" id="accordion-payment">
-                  <div class="card">
-                    <div class="card-header" id="heading-1">
-                      <h2 class="card-title">
-                        <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-                          Direct bank transfer
-                        </a>
-                      </h2>
-                    </div><!-- End .card-header -->
-                    <div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-payment">
-                      <div class="card-body">
-                        Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
-                      </div><!-- End .card-body -->
-                    </div><!-- End .collapse -->
-                  </div><!-- End .card -->
-
-                  <div class="card">
-                    <div class="card-header" id="heading-2">
-                      <h2 class="card-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-                          Check payments
-                        </a>
-                      </h2>
-                    </div><!-- End .card-header -->
-                    <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-payment">
-                      <div class="card-body">
-                        Ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis.
-                      </div><!-- End .card-body -->
-                    </div><!-- End .collapse -->
-                  </div><!-- End .card -->
-
-                  <div class="card">
-                    <div class="card-header" id="heading-3">
-                      <h2 class="card-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-                          Cash on delivery
-                        </a>
-                      </h2>
-                    </div><!-- End .card-header -->
-                    <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
-                      <div class="card-body">
-                        Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.
-                      </div><!-- End .card-body -->
-                    </div><!-- End .collapse -->
-                  </div><!-- End .card -->
-
-                  <div class="card">
-                    <div class="card-header" id="heading-4">
-                      <h2 class="card-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-                          PayPal <small class="float-right paypal-link">What is PayPal?</small>
-                        </a>
-                      </h2>
-                    </div><!-- End .card-header -->
-                    <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
-                      <div class="card-body">
-                        Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
-                      </div><!-- End .card-body -->
-                    </div><!-- End .collapse -->
-                  </div><!-- End .card -->
-
-                  <div class="card">
-                    <div class="card-header" id="heading-5">
-                      <h2 class="card-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
-                          Credit Card (Stripe)
-                          <img src="~/assets/img/logo/clipart2889078.png" alt="payments cards">
-                        </a>
-                      </h2>
-                    </div><!-- End .card-header -->
-                    <div id="collapse-5" class="collapse" aria-labelledby="heading-5" data-parent="#accordion-payment">
-                      <div class="card-body">
-                        Donec nec justo eget felis facilisis fermentum.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Lorem ipsum dolor sit ame.
-                      </div><!-- End .card-body -->
-                    </div><!-- End .collapse -->
-                  </div><!-- End .card -->
+                  <!--<div class="card">
+                  <div class="card-header" id="heading-1">
+                    <h2 class="card-title">
+                      <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                        Direct bank transfer
+                      </a>
+                    </h2>
+                  </div>-->
+                  <!-- End .card-header -->
+                  <!--<div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-payment">
+                  <div class="card-body">
+                    Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                  </div>-->
+                  <!-- End .card-body -->
+                  <!--</div>--><!-- End .collapse -->
+                  <!--</div>--><!-- End .card -->
+                  <!--<div class="card">
+                  <div class="card-header" id="heading-2">
+                    <h2 class="card-title">
+                      <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+                        Check payments
+                      </a>
+                    </h2>
+                  </div>-->
+                  <!-- End .card-header -->
+                  <!--<div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-payment">
+                  <div class="card-body">
+                    Ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis.
+                  </div>-->
+                  <!-- End .card-body -->
+                  <!--</div>--><!-- End .collapse -->
+                  <!--</div>--><!-- End .card -->
+                  <!--<div class="card">
+                  <div class="card-header" id="heading-3">
+                    <h2 class="card-title">
+                      <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+                        Cash on delivery
+                      </a>
+                    </h2>
+                  </div>-->
+                  <!-- End .card-header -->
+                  <!--<div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
+                  <div class="card-body">
+                    Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.
+                  </div>-->
+                  <!-- End .card-body -->
+                  <!--</div>--><!-- End .collapse -->
+                  <!--</div>--><!-- End .card -->
+                  <!--<div class="card">
+                  <div class="card-header" id="heading-4">
+                    <h2 class="card-title">
+                      <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+                        PayPal <small class="float-right paypal-link">What is PayPal?</small>
+                      </a>
+                    </h2>
+                  </div>-->
+                  <!-- End .card-header -->
+                  <!--<div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
+                  <div class="card-body">
+                    Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
+                  </div>-->
+                  <!-- End .card-body -->
+                  <!--</div>--><!-- End .collapse -->
+                  <!--</div>--><!-- End .card -->
+                  <!--<div class="card">
+                     <div class="card-header" id="heading-5">
+                       <h2 class="card-title">
+                         <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
+                           Credit Card (Stripe)
+                           <img src="~/assets/img/logo/clipart2889078.png" alt="payments cards">
+                         </a>
+                       </h2>
+                     </div>
+                     <div id="collapse-5" class="collapse" aria-labelledby="heading-5" data-parent="#accordion-payment">
+                       <div class="card-body">
+                         Donec nec justo eget felis facilisis fermentum.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Lorem ipsum dolor sit ame.
+                       </div>
+                     </div>
+                   </div> -->
                 </div><!-- End .accordion -->
-
-                <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
-                  <span class="btn-text">Place Order</span>
-                  <span class="btn-hover-text">Proceed to Checkout</span>
-                </button>
+                @* Nút đặt hàng ở đây *@
+                <input type="submit" name="payment" class=" btn btn-outline-primary btn-order btn-block" value="Đặt hàng (COD)">
+                <input type="submit" name="payment" class=" btn btn-outline-primary btn-order btn-block" value="Thanh toán VNPay" />
               </div><!-- End .summary -->
-            </aside><!-- End .col-lg-3 -->
+            </aside>
           </div><!-- End .row -->
         </form>
       </div><!-- End .container -->
     </div><!-- End .checkout -->
   </div><!-- End .page-content -->
 </main><!-- End .main -->
+
+@section Scripts {
+  <script src="https://www.paypal.com/sdk/js?client-id=@ViewBag.PaypalClientdId"></script>
+  <script>
+    $(document).ready(function () {
+      $("#GiongKhachHang").change(function () {
+        if ($(this).prop("checked")) {
+          $(this).val(true);
+          $(".delivery-infor").addClass("d-none");
+        } else {
+          $(this).val(false);
+          $(".delivery-infor").removeClass("d-none");
+        }
+      });
+    });
+
+        //paypal.Buttons({
+        //  style: {
+        //    layout: 'vertical',
+        //    color: 'silver',
+        //    tagline: 'false'
+        //  },
+        //  createOrder: (data, actions) => {
+        //    return fetch("/Cart/create-paypal-order", {
+        //      method: "post",
+        //    }).then((response) => {
+        //      if (!response.ok) {
+        //        return response.json().then(error => { throw error; });
+        //      }
+
+        //      return response.json();
+        //    }).then((order) => order.id)
+        //      .catch(error => alert(error.message));
+        //  },
+        //  onApprove: (data, actions) => {
+        //    return fetch(`/Cart/capture-paypal-order?orderId=${data.orderID}`, {
+        //      method: "post",
+        //    }).then((response) => {
+        //      if (!response.ok) {
+        //        return response.json().then(error => { throw error; });
+        //      }
+
+        //      //Đổi địa chỉ tới action thông báo thành công
+        //      window.location.href = "/Cart/PaymentSuccess";
+        //    }).catch(error => alert(error.message));
+        //  }
+        //}).render('#paypal-button-container');
+  </script>
+}

@@ -1,4 +1,4 @@
-import Utils from '../utils/Utils'
+﻿import Utils from '../utils/Utils'
 
 /**
  * ApexCharts Animation Class.
@@ -259,3 +259,69 @@ export default class Animations {
       })
   }
 }
+
+//// Lấy dữ liệu mới từ action trong controller
+//$.get('@Url.Action("GetChartData", "ChartData")', function (data) {
+//  var labels = [];
+//  var values = [];
+
+//  // Lặp qua dữ liệu và chuyển đổi nó thành mảng các nhãn và giá trị
+//  data.forEach(function (item) {
+//    labels.push(item.Label);
+//    values.push(item.Value);
+//  });
+
+//  // Cập nhật biểu đồ với dữ liệu mới
+//  updateChart(labels, values);
+//});
+
+//// Hàm cập nhật biểu đồ
+//function updateChart(labels, values) {
+//  // Sử dụng thư viện ApexCharts
+//  var options = {
+//    series: [{
+//      name: 'Your Dataset Label', // Nhãn của dữ liệu
+//      data: values // Giá trị của dữ liệu
+//    }],
+//    chart: {
+//      type: 'bar',
+//      height: 350
+//    },
+//    plotOptions: {
+//      bar: {
+//        horizontal: false,
+//        columnWidth: '55%',
+//        endingShape: 'rounded'
+//      },
+//    },
+//    dataLabels: {
+//      enabled: false
+//    },
+//    stroke: {
+//      show: true,
+//      width: 2,
+//      colors: ['transparent']
+//    },
+//    xaxis: {
+//      categories: labels, // Nhãn của trục x
+//    },
+//    yaxis: {
+//      title: {
+//        text: 'Revenue' // Tiêu đề của trục y
+//      }
+//    },
+//    fill: {
+//      opacity: 1
+//    },
+//    tooltip: {
+//      y: {
+//        formatter: function (val) {
+//          return "$ " + val + " thousands"
+//        }
+//      }
+//    }
+//  };
+
+//  var chart = new ApexCharts(document.querySelector("#monthlySalesChart"), options);
+//  chart.render();
+//}

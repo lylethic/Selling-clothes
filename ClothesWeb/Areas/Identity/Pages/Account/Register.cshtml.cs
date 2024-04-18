@@ -39,7 +39,7 @@ namespace ClothesWeb.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender, 
+            IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager)
     {
       _userManager = userManager;
@@ -122,9 +122,11 @@ namespace ClothesWeb.Areas.Identity.Pages.Account
         _roleManager.CreateAsync(new IdentityRole("Admin")).GetAwaiter().GetResult();
         _roleManager.CreateAsync(new IdentityRole("User")).GetAwaiter().GetResult();
       }
+
       ReturnUrl = returnUrl;
       ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
+      // Doi tuong Input de chon role trong khi dang ky!!!!
       Input = new InputModel()
       {
         RoleList = _roleManager.Roles.Select(x => new SelectListItem

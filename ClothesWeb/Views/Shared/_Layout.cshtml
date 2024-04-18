@@ -105,7 +105,10 @@
                         <a asp-controller="Home" asp-action="Index">Home</a>
                       </li>
 
-                      <vc:category></vc:category>
+                      <li>
+                        <a asp-controller="Home" asp-action="Catagori" asp-route-loaiId=0>Product</a>
+                        <vc:category></vc:category>
+                      </li>
 
                       <li class="hot">
                         <a asp-controller="Home" asp-action="Product_List" asp-route-loaId=0>Shop</a>
@@ -124,7 +127,7 @@
                 </div>
               </div>
               <div class="col-xl-5 col-lg-3 col-md-3 col-sm-3 fix-card">
-                <ul class="header-right f-right d-none d-lg-block d-flex justify-content-between">
+                <ul class="header-right f-right d-none d-lg-block d-flex align-items-center justify-content-between">
                   <li class="d-none d-xl-block">
                     @* SEARCH Ở ĐÂY *@
                     <div class="form-box f-right">
@@ -142,7 +145,7 @@
                     </div>
                   </li>
 
-                  <li>
+                  <li class="d-none d-xl-block">
                     <div class="shopping-card">
                       <div class="header__cart">
                         <div class="header__cart-wrap">
@@ -156,7 +159,7 @@
                   @*<li class="d-none d-lg-block"> <a asp-controller="Home" asp-action="Login" class="btn header-btn">Sign in</a></li>*@
 
                   @*REGISTER LOGIN*@
-                  <li nav-item dropdown>
+                  <li class="d-none d-xl-block nav-item dropdown">
                     <partial name="_LoginPartial" />
                   </li>
                 </ul>

@@ -1,0 +1,21 @@
+﻿
+@{
+  ViewData["Title"] = "Payment Fail";
+}
+
+<div class="container-fluid contact py-5">
+  <div class="container">
+    <div class="p-5 bg-light rounded">
+      <div class="row g-4">
+        <div class="col-12">
+          <div class="text-center mx-auto" style="max-width: 700px;">
+            <h1 class="text-primary">Payment Fail</h1>
+            <h3 class="text-danger">@TempData["Message"]</h3>
+            <h3 class="text-danger">Giao dịch không thành công do: Khách hàng hủy giao dịch</h3>
+            <a class="btn btn-outline-primary btn-block" asp-controller="Home" asp-action="Index">Về trang chủ</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

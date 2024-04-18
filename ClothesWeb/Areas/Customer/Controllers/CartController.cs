@@ -1,9 +1,13 @@
 ﻿using ClothesWeb.Data;
+using ClothesWeb.Helpers;
 using ClothesWeb.Models;
+using ClothesWeb.Models.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Security.Claims;
 
 namespace ClothesWeb.Areas.Customer.Controllers
@@ -13,11 +17,15 @@ namespace ClothesWeb.Areas.Customer.Controllers
   public class CartController : Controller
   {
     private readonly ApplicationDbContext _db;
+    private readonly IVnPayService _vnPayService;
 
-    public CartController(ApplicationDbContext db)
+    public CartController(ApplicationDbContext db, IVnPayService vnPayService)
     {
       _db = db;
+      _vnPayService = vnPayService;
     }
+
+    public List<Cart> Cart = new List<Cart>();
 
     public IActionResult Index()
     {
@@ -36,10 +44,19 @@ namespace ClothesWeb.Areas.Customer.Controllers
 
       foreach (var item in cart.listCart)
       {
-        //Pay by product quantity.
-        item.ProductPrice = item.Quantity * item.Product.Price;
-        //Check out the shopping cart.
-        cart.HoaDon.TotalPrice += item.ProductPrice;
+        if (item.isCheckout == false)
+        {
+          return RedirectToAction("NoProductPage");
+
+        }
+        else
+        {
+          //Pay by product quantity.
+          item.ProductPrice = item.Quantity * item.Product.Price;
+
+          //Check out the shopping cart.
+          cart.HoaDon.TotalPrice += item.ProductPrice;
+        }
       }
 
       if (cart.listCart.Count() == 0)
@@ -84,60 +101,88 @@ namespace ClothesWeb.Areas.Customer.Controllers
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ThanhToan(CartViewModel cart)
+    public async Task<IActionResult> ThanhToan(CartViewModel cart, string payment = "COD")
     {
+
       //Get Infor of Account
       var identity = (ClaimsIdentity)User.Identity;
       var claim = identity.FindFirst(ClaimTypes.NameIdentifier);
 
-      // Update cart and hoadon
+      // Update cart and hoadon//
+      // Tim id KH trong table Cart
       cart.listCart = _db.Carts
         .Include("Product")
-        .Where(cart => cart.ApplicationUserId == claim.Value)
-        .ToList();
+          .Where(cart => cart.ApplicationUserId == claim.Value)
+          .ToList();
 
+      // Dem sp trong Cart
       if (cart.listCart.Count() == 0)
       {
         TempData["EmptyCartMessage"] = "Chưa có sản phẩm trong giỏ hàng.";
         return RedirectToAction("Index", "Home");
       }
-      cart.HoaDon.ApplicationUserId = claim.Value;
-      cart.HoaDon.OrderDate = DateTime.Now;
-      cart.HoaDon.OrderStatus = "Đang xác nhận";
 
-      foreach (var item in cart.listCart)
+      // Chon phuong thuc thanh toan vaf thanh toan
+      if (payment == "Thanh toán VNPay")
       {
-        //Pay by product quantity.
-        item.ProductPrice = item.Quantity * item.Product.Price;
-        //Check out the shopping cart.
-        cart.HoaDon.TotalPrice += item.ProductPrice;
-      }
-      _db.HoaDons.Add(cart.HoaDon);
-      _db.SaveChanges();
-
-      //
-      foreach (var item in cart.listCart)
-      {
-        ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon()
+        var vnPaymentModel = new VnPaymentRequestModel();
+        foreach (var item in cart.listCart)
         {
-          ProductId = item.ProductId,
-          HoaDonId = cart.HoaDon.Id,
-          Username = cart.HoaDon.Name,
-          ProductPrice = item.ProductPrice,
-          ImgURL = item.Product.ImageUrl,
-          ProductName = item.Product.Name,
-          Quantity = item.Quantity,
-        };
-        _db.ChiTietHoaDons.Add(chiTietHoaDon);
+          item.ProductPrice = item.Quantity * item.Product.Price;
+          vnPaymentModel.Amount += item.ProductPrice;
+        }
+        vnPaymentModel.CreatedDate = DateTime.Now;
+        vnPaymentModel.OrderId = new Random().Next(1000, 100000);
+
+        // Tien hanh luu vao HoaDon và ChiTietHoaDon //
+        cart.HoaDon.ApplicationUserId = claim.Value; // Lay id KH gans = id KH vao HoaDon
+        cart.HoaDon.OrderStatus = "0"; // Trang thai cho xac nhan
+        cart.HoaDon.OrderDate = DateTime.Now; // Thoi gian hien tại
+        cart.HoaDon.GhiChu = cart.HoaDon.GhiChu; // Ghi chu
+        cart.HoaDon.PayMentMethod = payment; // PT thanh toan
+        cart.HoaDon.ShippingUnit = "LiliExpress"; // Cứng
+
+        foreach (var item in cart.listCart)
+        {
+          //Pay by product quantity.
+          item.ProductPrice = item.Quantity * item.Product.Price;
+          //Check out the shopping cart.
+          cart.HoaDon.TotalPrice += item.ProductPrice;
+        }
+        _db.HoaDons.Add(cart.HoaDon);
         _db.SaveChanges();
+
+        // Ghi vao table ChiTietHoaDon
+        foreach (var item in cart.listCart)
+        {
+          ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon()
+          {
+            ProductId = item.ProductId,
+            HoaDonId = cart.HoaDon.Id,
+            Username = cart.HoaDon.Name,
+            ProductName = item.Product.Name,
+            ProductPrice = item.ProductPrice,
+            Quantity = item.Quantity,
+            ImgURL = item.Product.ImageUrl,
+          };
+
+          item.isCheckout = false;
+
+          _db.ChiTietHoaDons.Add(chiTietHoaDon);
+          _db.SaveChanges();
+        }
+
+        _db.Carts.RemoveRange(cart.listCart);
+
+        _db.SaveChanges();
+
+        return Redirect(_vnPayService.CreatePaymentUrl(HttpContext, vnPaymentModel));
       }
-
-      _db.Carts.RemoveRange(cart.listCart);
-      _db.SaveChanges();
-
-      return RedirectToAction("Index", "Home");
+      //
+      return RedirectToAction("PaymentSuccess");
     }
 
+    // Xoa sp khoi Gio Hang
     public IActionResult DeleteProduct(int cartId)
     {
       var cartItem = _db.Carts.FirstOrDefault(x => x.Id == cartId);
@@ -147,10 +192,12 @@ namespace ClothesWeb.Areas.Customer.Controllers
       return RedirectToAction("Index");
     }
 
+    // Giam so luong san pham
     public IActionResult Giam(int cartId)
     {
       var cart = _db.Carts.FirstOrDefault(cart => cart.Id == cartId);
       cart.Quantity -= 1;
+
       if (cart.Quantity == 0)
       {
         _db.Carts.Remove(cart);
@@ -160,6 +207,7 @@ namespace ClothesWeb.Areas.Customer.Controllers
       return RedirectToAction("Index");
     }
 
+    // Tang so luong san pham
     public IActionResult Tang(int cartId)
     {
       var cart = _db.Carts.FirstOrDefault(cart => cart.Id == cartId);
@@ -169,9 +217,36 @@ namespace ClothesWeb.Areas.Customer.Controllers
       return RedirectToAction("Index");
     }
 
+    // Khong co sp trong Gio Hang Redirect 
     public IActionResult NoProductPage()
     {
       return View();
+    }
+
+    public IActionResult PaymentFail()
+    {
+      return View();
+    }
+
+    public IActionResult PaymentSuccess()
+    {
+      return View();
+    }
+
+    public IActionResult PaymentCallBack()
+    {
+      var response = _vnPayService.PaymentExecute(Request.Query);
+
+      if (response == null || response.VnPayResponseCode != "00")
+      {
+        TempData["Message"] = $"Lỗi thanh toán VNPay: {response.VnPayResponseCode}";
+        return RedirectToAction("PaymentFail");
+      }
+
+      // Lưu đơn hàng o DB
+
+      TempData["Message"] = "Thanh toán VNPay thành công";
+      return RedirectToAction("PaymentSuccess");
     }
   }
 }

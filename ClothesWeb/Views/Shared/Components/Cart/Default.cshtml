@@ -1,49 +1,55 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
 @model CartViewModel
 <div class="header__cart-list header__cart-list--cart">
-  @if (SignInManager.IsSignedIn(User))
-  {
-    if (Model.listCart.Any())
+    @if (SignInManager.IsSignedIn(User))
     {
-      <div class="header__cart-list--title">
-        <p>Sản phẩm mới thêm</p>
-      </div>
-      @foreach (var item in Model.listCart.OrderByDescending(item => item.Id).Take(5))
+      if (Model.listCart.Any())
       {
-        @if (item.Product != null)
+        <div class="header__cart-list--title">
+          <p>Sản phẩm mới thêm</p>
+        </div>
+        @foreach (var item in Model.listCart.OrderByDescending(item => item.Id).Take(5))
         {
-          <div class="d-flex header__cart-list-item">
-            <div class="col-2">
-              <a asp-action="Product_Details" asp-route-productId="@item.Product.IdProduct">
-                <img src="@item.Product.ImageUrl" class="header__cart-cart-img" />
-              </a>
-
-            </div>
-            <div class="col">
-              <div class="header__cart-list-name">
+          @if (item.Product != null)
+          {
+            <div class="d-flex header__cart-list-item">
+              <div class="col-2">
                 <a asp-action="Product_Details" asp-route-productId="@item.Product.IdProduct">
-                  @item.Product.Name
+                  <img src="@item.Product.ImageUrl" class="header__cart-cart-img" />
                 </a>
+
+              </div>
+              <div class="col">
+                <div class="header__cart-list-name">
+                  <a asp-action="Product_Details" asp-route-productId="@item.Product.IdProduct">
+                    @item.Product.Name
+                  </a>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="header__cart-list-price">@String.Format("{0:0,0}", @item.Product.Price)đ</div>
               </div>
             </div>
-            <div class="col-4">
-              <div class="header__cart-list-price">@String.Format("{0:0,0}", @item.Product.Price)đ</div>
+          }
+          else
+          {
+            <div class="header__cart-list header__cart-list--no-cart">
+              <img src="~/assets/img/no-product-found.png" alt="" class="header__cart-list--no-cart-img" />
             </div>
-          </div>
+          }
         }
-        else
-        {
-          <div class="header__cart-list header__cart-list--no-cart">
-            <img src="~/assets/img/no-product-found.png" alt="" class="header__cart-list--no-cart-img" />
-          </div>
-        }
+        <div class="header__cart-btn">
+          <a asp-controller="Cart" asp-action="Index" class="header__cart-btn-link">Xem giỏ hàng</a>
+        </div>
       }
-      <div class="header__cart-btn">
-        <a asp-controller="Cart" asp-action="Index" class="header__cart-btn-link">Xem giỏ hàng</a>
-      </div>
+      else
+      {
+        <div class="header__cart-list--no-title">
+          <img src="~/assets/img/no-product-found.png" alt="" class="header__cart-list--no-cart-img" />
+        </div>
+      }
     }
     else
     {
@@ -51,13 +57,4 @@
         <img src="~/assets/img/no-product-found.png" alt="" class="header__cart-list--no-cart-img" />
       </div>
     }
-  }
-  else
-  {
-    <div class="header__cart-list--no-title">
-      <img src="~/assets/img/no-product-found.png" alt="" class="header__cart-list--no-cart-img" />
-    </div>
-  }
-
-
-</div>
+  </div>

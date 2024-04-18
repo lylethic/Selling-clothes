@@ -18,7 +18,7 @@ namespace ClothesWeb.Models
     public int Quantity { get; set; }
     public string? Size { get; set; }
 
-    public bool isChecked { get; set; }
+    public bool isCheckout { get; set; }
 
     [NotMapped]
     public double ProductPrice { get; set; }

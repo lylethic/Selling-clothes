@@ -31,9 +31,12 @@
       <div class="d-flex justify-content-end">
         <span>
           <strong class="text-uppercase">Tổng tiền:</strong>
-          @String.Format("{0:0,0}", @ViewBag.Total)
+          <span class="text-danger" style="font-weight: 600">
+            @String.Format("{0:0,0}", @ViewBag.Total)
+          </span>
         </span>
       </div>
+
     </div>
   </div>
 }

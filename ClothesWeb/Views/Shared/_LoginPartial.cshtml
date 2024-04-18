@@ -3,7 +3,6 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-
 @if (!SignInManager.IsSignedIn(User))
 {
   <div class="favorit-items">
@@ -15,8 +14,6 @@
 }
 else
 {
-
-
   @if (User.IsInRole("Admin"))
   {
     <script>window.location.href = 'Owner/Admin/Dashboard';</script>
@@ -37,7 +34,8 @@ else
         </form>
       </div>
     </div>
-    <a id="manage" class="text-dark"title="Manage">Hello @UserManager.GetUserName(User)</a>
+    // Ten User
+    <a id="manage" class="text-dark" title="Manage">Hello @UserManager.GetUserName(User)</a>
   }
 
 }

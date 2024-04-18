@@ -13,15 +13,27 @@
           <hr />
           <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
           <div class="form-floating mb-3">
-            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@gmail.com" />
             <label asp-for="Input.Email" class="form-label">Email</label>
             <span asp-validation-for="Input.Email" class="text-danger"></span>
           </div>
-          <div class="form-floating mb-3">
-            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-            <label asp-for="Input.Password" class="form-label">Password</label>
+
+          <div class="form-floating mb-3 position-relative" id="password-section">
+
+            <input type="password"
+                   asp-for="Input.Password"
+                   class="form-control"
+                   autocomplete="current-password"
+                   aria-required="true"
+                   placeholder="password..."
+                   id="password-field" />
+            <i style="transform: translateY(-50%); top: 50%; right: 20px; z-index: 99; cursor: pointer"
+               id="hideShowPassword"
+               class="far fa-eye position-absolute"></i>
             <span asp-validation-for="Input.Password" class="text-danger"></span>
           </div>
+
+
           <div class="form-floating mb-3">
             <div class="form-check form-switch">
               <label asp-for="Input.RememberMe" class="form-label">
@@ -90,4 +102,24 @@
 
 @section Scripts {
   <partial name="_ValidationScriptsPartial" />
+
+  <script>
+    $(document).ready(function () {
+      $("#hideShowPassword").removeClass("far fa-eye").addClass("far fa-eye-slash");
+      $("#hideShowPassword").click(function () {
+        const passwordInput = $("#password-field");
+        console.log(passwordInput);
+        const type = passwordInput.attr("type");
+        if (type === "password") {
+          passwordInput.attr("type", "text");
+          $("#hideShowPassword").removeClass("far fa-eye-slash").addClass("far fa-eye");
+        }
+        else {
+          passwordInput.attr("type", "password");
+          $("#hideShowPassword").removeClass("far fa-eye").addClass("far fa-eye-slash");
+        }
+      })
+    })
+  </script>
 }
+
